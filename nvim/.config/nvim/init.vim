@@ -20,14 +20,25 @@ Plug 'mattn/emmet-vim'
 " file explorer
 Plug 'preservim/nerdtree'
 
-" all the fancy auto complete stuff out of the box
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" DIY auto complete stuff using nvim-cmp
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'onsails/lspkind-nvim'
+Plug 'ray-x/lsp_signature.nvim'
+
+"Snippets. vnsip lets you use vs code ones!
+Plug 'johnpapa/vscode-angular-snippets'
+Plug 'andys8/vscode-jest-snippets'
 
 " Highlight on yank
 Plug 'machakann/vim-highlightedyank'
 
 " Theme from mike hartington
-Plug 'mhartington/oceanic-next'
 Plug 'gruvbox-community/gruvbox'
 
 " JS Doc
@@ -48,14 +59,24 @@ Plug 'airblade/vim-gitgutter'
 " Initialize plugin system
 call plug#end()
 
+set completeopt=menu,menuone,noselect
+lua require("lsp-config")
+lua require('nvim_comment').setup()
+
 let mapleader = " " 
-
-
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
 
+
+" time for event like CursoHold (hover) to make docs appear quick
+set updatetime=500
+set redrawtime=500
+
+
+" Highlight search as you type
+set incsearch
 " disable highlighting after searching
 set nohlsearch
 
@@ -71,14 +92,13 @@ set nobackup
 set undodir=~/.vim/undodir
 set undofile
 
-" start scrolling 8 lines from the bottom instead of waiting until cursor is
-" all the way down
+" start scrolling 8 lines from the bottom instead of waiting until cursor is all the way down
 set scrolloff=8
 
 set signcolumn=yes
 
 " set working directory relative to open buffer
-set autochdir
+" set autochdir
 
 " visual paste but don't replace buffer
 vnoremap <leader>p "_dp
@@ -92,17 +112,12 @@ augroup numbertoggle
 augroup END
 
 
-" Highlight search as you type
-set incsearch
-
-nnoremap <silent> <Leader>+ :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
-nnoremap <silent> <Leader>- :exe "vertical resize  " . (winwidth(0) * 2/3)<CR>
-
 " Telescope
 nnoremap <c-p> :lua require'telescope.builtin'.git_files{}<CR>
 
 " Standard Vim Keymappings
-"
+nnoremap <silent> <Leader>+ :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "vertical resize  " . (winwidth(0) * 2/3)<CR>
 " move line up/down
 nnoremap <leader>k :m .-2<CR>==
 nnoremap <leader>j :m .+1<CR>==
@@ -113,6 +128,13 @@ vnoremap J :m '>+1<CR>gv=gv
 
 " remap capital Y to highlight to end of line
 nnoremap Y y$
+
+" quickfix navigation
+nnoremap <leader>cn :cn<CR>
+nnoremap <leader>cp :cp<CR>
+nnoremap <leader>co :copen<CR>
+nnoremap <leader>cl :cclose<CR>
+nnoremap <leader>cl :cclose<CR>
 
 
 " split navigation
@@ -136,65 +158,35 @@ augroup END
 
 
 " NERDTree
-let NERDTreeWinSize=60
+let NERDTreeWinSize=45
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+" remap open split
+let g:NERDTreeMapOpenVSplit = 'v'
 
 
-" CoC 
-" Remap keys for gotos
-nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gs :vsp<CR><Plug>(coc-definition)
-nmap <silent> <leader>gt :vsp<CR><Plug>(coc-definition)<C-W>T
-nmap <silent> <leader>gy <Plug>(coc-type-definition)
-nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap <silent> <leader>gr <Plug>(coc-references)
-nmap <silent> <leader>ge <Plug>(coc-diagnostic-next)
+"vim-vsnip 
+imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph 
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-
-" Undo breakpoints
+" Add undo breakpoints to make undo less aggressive
 inoremap , ,<c-g>u
 inoremap . .<c-g>u
 inoremap ? ?<c-g>u
 inoremap ! !<c-g>u
-
+inoremap { {<c-g>u
+inoremap } }<c-g>u
+inoremap ( (<c-g>u
+inoremap ) )<c-g>u
 
 
 " Highlight  on yank plugin
-let g:highlightedyank_highlight_duration = 300
-
-" remap open split
-let g:NERDTreeMapOpenVSplit = 'v'
-
+let g:highlightedyank_highlight_duration = 250
 
 
 " Theme (Move to new file)
@@ -275,7 +267,4 @@ call ColorMyPencils()
 
 
 
-
-lua require("lsp-config")
-lua require('nvim_comment').setup()
 "lua require("treesitter")

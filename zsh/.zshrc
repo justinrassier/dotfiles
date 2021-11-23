@@ -14,8 +14,8 @@ alias vim="nvim"
 
 
 # Custom env vars
-
 export NODE_ENV="development"
+export CAVO="~/dev/cavo/{apps,libs}/**/*.ts"
 
 alias gc="git add -A && git commit -m"
 alias gco="git checkout"

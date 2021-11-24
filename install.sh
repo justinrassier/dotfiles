@@ -7,7 +7,12 @@ STOW_FOLDERS="nvim,kitty,zsh"
 # Oh My ZSH
 #
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-#
+
+
+#Nvim
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+
 # HOMEBREW
 xcode-select --install
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -15,15 +20,17 @@ brew update
 
 
 brew install neovim
-brew install --cask font-fira-code-nerd-font
+brew tap homebrew/cask-fonts && brew install font-Fira-Code-nerd-font
 brew install stow
+
 #
 #
 # Vim Plug (https://github.com/junegunn/vim-plug)
 #
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
  
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
  
  # nvim-lsp reference  (https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md)
  

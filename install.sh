@@ -1,8 +1,12 @@
-#!/usr/bin/env zsh
 DOTFILES=$HOME/dotfiles
+#!/usr/bin/env zsh
 STOW_FOLDERS="nvim,kitty,zsh"
 
 # Prerequisites I don't want to just do all the time
+#
+# Oh My ZSH
+#
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 #
 # HOMEBREW
 xcode-select --install

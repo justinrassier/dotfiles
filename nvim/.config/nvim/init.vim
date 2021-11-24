@@ -35,6 +35,9 @@ Plug 'ray-x/lsp_signature.nvim'
 Plug 'johnpapa/vscode-angular-snippets'
 Plug 'andys8/vscode-jest-snippets'
 
+" TODO plugin
+Plug 'folke/todo-comments.nvim'
+
 " Highlight on yank
 Plug 'machakann/vim-highlightedyank'
 
@@ -62,6 +65,7 @@ call plug#end()
 set completeopt=menu,menuone,noselect
 lua require("lsp-config")
 lua require('nvim_comment').setup()
+lua require("todo-comments").setup {}
 
 let mapleader = " " 
 set tabstop=2

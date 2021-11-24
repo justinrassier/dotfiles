@@ -1,8 +1,4 @@
-" Specify a directory for plugins
-" - For Neovim: stdpath('data') . '/plugged'
-" - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
-
 " Lsp stuff
 Plug 'neovim/nvim-lspconfig'
 
@@ -10,6 +6,8 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
+Plug 'nvim-telescope/telescope-github.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 " Prettier formatting
 Plug 'sbdchd/neoformat'
@@ -53,21 +51,23 @@ Plug 'heavenshell/vim-jsdoc', {
 " Block commenting
 Plug 'terrortylor/nvim-comment'
 
-
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
 
-" Initialize plugin system
 call plug#end()
 
 set completeopt=menu,menuone,noselect
+let mapleader = " " 
+
+lua require("jr.mappings")
+
 lua require("lsp-config")
+lua require("jr.telescope")
 lua require('nvim_comment').setup()
 lua require("todo-comments").setup {}
 
-let mapleader = " " 
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -115,9 +115,6 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
 augroup END
 
-
-" Telescope
-nnoremap <c-p> :lua require'telescope.builtin'.git_files{}<CR>
 
 " Standard Vim Keymappings
 nnoremap <silent> <Leader>+ :exe "vertical resize " . (winwidth(0) * 3/2)<CR>

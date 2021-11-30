@@ -2,12 +2,13 @@ call plug#begin('~/.vim/plugged')
 " Lsp stuff
 Plug 'neovim/nvim-lspconfig'
 
-" Fuzzy finder
+" Fuzzy: finder
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
 Plug 'nvim-telescope/telescope-github.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'nvim-telescope/telescope-node-modules.nvim'
 
 " Prettier formatting
 Plug 'sbdchd/neoformat'
@@ -50,11 +51,18 @@ Plug 'heavenshell/vim-jsdoc', {
 
 " Block commenting
 Plug 'terrortylor/nvim-comment'
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
+
+Plug 'kyazdani42/nvim-web-devicons'
+" Experimental
+Plug 'mhinz/vim-startify'
+Plug 'pwntester/octo.nvim'
+
 
 call plug#end()
 
@@ -62,17 +70,21 @@ set completeopt=menu,menuone,noselect
 let mapleader = " " 
 
 lua require("jr.mappings")
-
-lua require("lsp-config")
+lua require("jr.treesitter")
+lua require("jr.lsp")
 lua require("jr.telescope")
-lua require('nvim_comment').setup()
+lua require ("jr.comment")
+
 lua require("todo-comments").setup {}
+lua require('octo').setup()
 
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
 
+set foldmethod=syntax
+set foldlevelstart=1
 
 " time for event like CursoHold (hover) to make docs appear quick
 set updatetime=500
@@ -101,12 +113,6 @@ set scrolloff=8
 
 set signcolumn=yes
 
-" set working directory relative to open buffer
-" set autochdir
-
-" visual paste but don't replace buffer
-vnoremap <leader>p "_dp
-
 " hybrid line numbers
 set number
 augroup numbertoggle
@@ -116,40 +122,10 @@ augroup numbertoggle
 augroup END
 
 
-" Standard Vim Keymappings
-nnoremap <silent> <Leader>+ :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
-nnoremap <silent> <Leader>- :exe "vertical resize  " . (winwidth(0) * 2/3)<CR>
-" move line up/down
-nnoremap <leader>k :m .-2<CR>==
-nnoremap <leader>j :m .+1<CR>==
-inoremap <C-j> <Esc>:m .+1<CR>==gi
-inoremap <C-k> <Esc>:m .-2<CR>==gi
-vnoremap K :m '<-2<CR>gv=gv
-vnoremap J :m '>+1<CR>gv=gv
-
-" remap capital Y to highlight to end of line
-nnoremap Y y$
-
-" quickfix navigation
-nnoremap <leader>cn :cn<CR>
-nnoremap <leader>cp :cp<CR>
-nnoremap <leader>co :copen<CR>
-nnoremap <leader>cl :cclose<CR>
-nnoremap <leader>cl :cclose<CR>
-
-
 " split navigation
 set splitbelow
 set splitright
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
 
-
-" buffer navigation
-nnoremap <C-j> :bnext<CR>
-nnoremap <C-k> :bprev<CR>
 
 " Runm prettier on save
 augroup fmt
@@ -164,7 +140,6 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
-" remap open split
 let g:NERDTreeMapOpenVSplit = 'v'
 
 
@@ -173,18 +148,6 @@ imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab
 smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-
-
-" Add undo breakpoints to make undo less aggressive
-inoremap , ,<c-g>u
-inoremap . .<c-g>u
-inoremap ? ?<c-g>u
-inoremap ! !<c-g>u
-inoremap { {<c-g>u
-inoremap } }<c-g>u
-inoremap ( (<c-g>u
-inoremap ) )<c-g>u
-
 
 " Highlight  on yank plugin
 let g:highlightedyank_highlight_duration = 250

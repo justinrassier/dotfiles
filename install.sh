@@ -39,6 +39,8 @@ npm install -g typescript typescript-language-server
 npm install -g @angular/language-server@latest
 npm install -g @tailwindcss/language-server
 npm install -g vscode-langservers-extracted
+npm i -g vscode-langservers-extracted
+
  
 
  # # ripgrep is used by some plugins for searching

@@ -4,20 +4,22 @@ local builtIn = require("telescope.builtin")
 local actions = require("telescope.actions")
 local gh = telescope.load_extension("gh")
 
+
 telescope.load_extension("fzy_native")
+telescope.load_extension("node_modules")
+
+
 
 local M = {}
-
-
-
-
 
 
 telescope.setup {
   defaults = {
     file_sorter = require("telescope.sorters").get_fzy_sorter,
+    -- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
     mappings = {
       i = {
+    grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
         ["<esc>"] = actions.close,
         ["<CR>"] = actions.select_default,
         ["<Tab>"] = actions.toggle_selection
@@ -56,7 +58,7 @@ telescope.setup {
 function M.find_files()
   local cmn_opts = {} --generateOpts({})
   cmn_opts.find_command = {"rg","--hidden", "--files", "-L", "--glob", "!.git"}
-  builtIn.find_files()
+  builtIn.find_files(cmn_opts)
 end
 
 function M.github_issues()

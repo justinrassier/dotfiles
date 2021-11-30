@@ -9,7 +9,7 @@ require "lsp_signature".setup()
 local lsp = vim.lsp
 local handlers = lsp.handlers
 
--- Hover doc popup
+-- -- Hover doc popup
 -- local pop_opts = { border = "rounded", max_width = 80 }
 -- handlers["textDocument/hover"] = lsp.with(handlers.hover, pop_opts)
 -- handlers["textDocument/signatureHelp"] = lsp.with(handlers.signature_help, pop_opts)
@@ -104,11 +104,11 @@ cmp.setup({
 })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline('/', {
-  sources = {
-    { name = 'buffer' }
-  }
-})
+-- cmp.setup.cmdline('/', {
+--   sources = {
+--     { name = 'buffer' }
+--   }
+-- })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
@@ -204,4 +204,65 @@ lspconfig.tailwindcss.setup {
 }
 
 
-lspconfig.eslint.setup{}
+lspconfig.eslint.setup{
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
+
+lspconfig.jsonls.setup {
+  cmd = {"vscode-json-language-server", "--stdio"},
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = {"json", "jsonc"},
+  settings = {
+    json = {
+      -- Schemas https://www.schemastore.org
+      schemas = {
+        {
+          fileMatch = {"package.json"},
+          url = "https://json.schemastore.org/package.json"
+        },
+        {
+          fileMatch = {"tsconfig*.json"},
+          url = "https://json.schemastore.org/tsconfig.json"
+        },
+        {
+          fileMatch = {
+            ".prettierrc",
+            ".prettierrc.json",
+            "prettier.config.json"
+          },
+          url = "https://json.schemastore.org/prettierrc.json"
+        },
+        {
+          fileMatch = {".eslintrc", ".eslintrc.json"},
+          url = "https://json.schemastore.org/eslintrc.json"
+        },
+        {
+          fileMatch = {".babelrc", ".babelrc.json", "babel.config.json"},
+          url = "https://json.schemastore.org/babelrc.json"
+        },
+        {
+          fileMatch = {"now.json", "vercel.json"},
+          url = "https://json.schemastore.org/now.json"
+        },
+        {
+          fileMatch = {
+            ".stylelintrc",
+            ".stylelintrc.json",
+            "stylelint.config.json"
+          },
+          url = "http://json.schemastore.org/stylelintrc.json"
+        },
+        -- {
+        --   fileMatch = {
+        --     "project.json",
+        --     "angular.json",
+        --   },
+        --   url = "https://raw.githubusercontent.com/angular/angular-cli/master/packages/angular/cli/lib/config/workspace-schema.json"
+        -- }
+      }
+    }
+  }
+}

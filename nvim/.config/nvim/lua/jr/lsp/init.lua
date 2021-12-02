@@ -5,16 +5,8 @@ local uv = vim.loop
 -- help with function signatures
 require "lsp_signature".setup()
 
-
 local lsp = vim.lsp
 local handlers = lsp.handlers
-
--- -- Hover doc popup
--- local pop_opts = { border = "rounded", max_width = 80 }
--- handlers["textDocument/hover"] = lsp.with(handlers.hover, pop_opts)
--- handlers["textDocument/signatureHelp"] = lsp.with(handlers.signature_help, pop_opts)
-
-
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -130,16 +122,25 @@ local on_attach = function(client, bufnr)
   -- gives me the type info of what I am hovering on
   mapBuf(bufnr, "n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>")
 
-  -- Perform code actions in native buffer dialog
-  -- TODO: find plugin that can do a fancy dialog
-  mapBuf(bufnr, "n", "<Leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
-  mapBuf(bufnr, "v", "<Leader>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>")
+  -- Perform code actions
+  mapBuf(bufnr, "n", "<Leader>ca", "<cmd>CodeActionMenu<CR>")
+  mapBuf(bufnr, "v", "<Leader>ca", "<cmd>CodeActionMenu<CR>")
 
   -- find references
   mapBuf(bufnr, "n", "<Leader>gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 
   -- rename
   mapBuf(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+
+  -- diagnostic errors
+  mapBuf(bufnr, "n", "<Leader>ne", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
+  mapBuf(bufnr, "n", "<Leader>pe", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
+  -- add errors to quickfix list
+  mapBuf(bufnr, "n", "<Leader>qe", "<cmd>lua vim.lsp.diagnostic.set_qflist()<CR>")
+
+  -- show diagnostic error for current position
+  mapBuf(bufnr, "n", "<Leader>E", "<cmd>lua vim.lsp.diagnostic.show_position_diagnostics()<CR>")
+  
 
   --markers in the gutter to highlight issues
   vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"

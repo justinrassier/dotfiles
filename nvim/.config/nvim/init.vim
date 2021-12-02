@@ -29,6 +29,7 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'onsails/lspkind-nvim'
 Plug 'ray-x/lsp_signature.nvim'
+Plug 'weilbith/nvim-code-action-menu'
 
 "Snippets. vnsip lets you use vs code ones!
 Plug 'johnpapa/vscode-angular-snippets'

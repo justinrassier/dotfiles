@@ -11,13 +11,19 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope-node-modules.nvim'
 
 " Prettier formatting
-Plug 'sbdchd/neoformat'
+" Plug 'sbdchd/neoformat'
+Plug 'mhartington/formatter.nvim'
 
 " emmet
 Plug 'mattn/emmet-vim'
 
+" Surround 
+Plug 'tpope/vim-surround'
+
 " file explorer
 Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+  
 
 " DIY auto complete stuff using nvim-cmp
 Plug 'hrsh7th/nvim-cmp'
@@ -41,8 +47,9 @@ Plug 'folke/todo-comments.nvim'
 " Highlight on yank
 Plug 'machakann/vim-highlightedyank'
 
-" Theme from mike hartington
+" Theme
 Plug 'gruvbox-community/gruvbox'
+Plug 'mhartington/oceanic-next'
 
 " JS Doc
 Plug 'heavenshell/vim-jsdoc', {
@@ -51,18 +58,25 @@ Plug 'heavenshell/vim-jsdoc', {
 \}
 
 " Block commenting
-Plug 'terrortylor/nvim-comment'
+Plug 'numToStr/Comment.nvim'
+" Plug 'terrortylor/nvim-comment'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
+Plug 'lewis6991/gitsigns.nvim'
 
 Plug 'kyazdani42/nvim-web-devicons'
+
+" package.json info
+Plug 'meain/vim-package-info', { 'do': 'npm install' }
+
 " Experimental
-Plug 'mhinz/vim-startify'
 Plug 'pwntester/octo.nvim'
+Plug 'folke/zen-mode.nvim'
+Plug 'folke/twilight.nvim'
 
 
 call plug#end()
@@ -75,9 +89,14 @@ lua require("jr.treesitter")
 lua require("jr.lsp")
 lua require("jr.telescope")
 lua require ("jr.comment")
+lua require ("jr.formatting")
 
 lua require("todo-comments").setup {}
 lua require('octo').setup()
+lua require("zen-mode").setup()
+lua require("twilight").setup()
+lua require('gitsigns').setup()
+
 
 set tabstop=2
 set softtabstop=2
@@ -88,8 +107,8 @@ set foldmethod=syntax
 set foldlevelstart=1
 
 " time for event like CursoHold (hover) to make docs appear quick
-set updatetime=500
-set redrawtime=500
+" set updatetime=500
+" set redrawtime=500
 
 
 " Highlight search as you type
@@ -123,16 +142,9 @@ augroup numbertoggle
 augroup END
 
 
-" split navigation
+" split navigation default locations
 set splitbelow
 set splitright
-
-
-" Runm prettier on save
-augroup fmt
-  autocmd!
-  autocmd BufWritePre *.{js,ts,html} undojoin | Neoformat
-augroup END
 
 
 " NERDTree
@@ -141,7 +153,7 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
-let g:NERDTreeMapOpenVSplit = 'v'
+let g:NERDTreeMapOpenVSplit = '<c-v>'
 
 
 "vim-vsnip 
@@ -154,48 +166,16 @@ smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-T
 let g:highlightedyank_highlight_duration = 250
 
 
-" Theme (Move to new file)
+" Theme
 if (has("termguicolors"))
  set termguicolors
 endif
 
-" Theme
 syntax enable
 
-"colorscheme OceanicNext
-colorscheme gruvbox
-
-
-let g:theprimeagen_colorscheme = "gruvbox"
-fun! ColorMyPencils()
-    let g:gruvbox_contrast_dark = 'hard'
-    if exists('+termguicolors')
-        let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-        let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-    endif
-    let g:gruvbox_invert_selection='0'
-
-    set background=dark
-    if has('nvim')
-        call luaeval('vim.cmd("colorscheme " .. _A[1])', [g:theprimeagen_colorscheme])
-    else
-        " TODO: What the way to use g:theprimeagen_colorscheme
-        colorscheme gruvbox
-    endif
-
-    highlight ColorColumn ctermbg=0 guibg=grey
-    hi SignColumn guibg=none
-    hi CursorLineNR guibg=None
-    highlight Normal guibg=none
-    " highlight LineNr guifg=#ff8659
-    " highlight LineNr guifg=#aed75f
-    highlight LineNr guifg=#5eacd3
-    highlight netrwDir guifg=#5eacd3
-    highlight qfFileName guifg=#aed75f
-    hi TelescopeBorder guifg=#5eacd
-endfun
-call ColorMyPencils()
-
+" colorscheme gruvbox
+colorscheme OceanicNext
+let g:airline_theme='oceanicnext'
 
 
 " Emmet customization -------------------------------------------------------{{{
@@ -230,6 +210,6 @@ call ColorMyPencils()
 
 "}}}
 
-
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 "lua require("treesitter")

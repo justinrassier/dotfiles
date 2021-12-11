@@ -30,6 +30,7 @@ M.map("n", "<Leader>a", "<cmd>Telescope live_grep<cr>")
 M.map("n", "<leader>jt", "<cmd>lua require('jr.custom').jump_to_angular_component_part('html')<cr>")
 M.map("n", "<leader>jc", "<cmd>lua require('jr.custom').jump_to_angular_component_part('ts')<cr>")
 M.map("n", "<leader>js", "<cmd>lua require('jr.custom').jump_to_angular_component_part('scss')<cr>")
+M.map("n", "<leader>jj", "<cmd>lua require('jr.custom').jump_to_angular_component_part('spec%.ts')<cr>")
 
 
 -- Window navigation
@@ -48,7 +49,8 @@ M.map("i", "}", "}<c-g>u")
 M.map("i", "(", "(<c-g>u")
 M.map("i", ")", ")<c-g>u")
 
-
+-- gitsigns
+M.map("n", "<leader>gl", ":Gitsigns toggle_current_line_blame<cr>")
 
 -- quickfix navigation
 M.map("n","<leader>cn", ":cn<CR>")
@@ -56,6 +58,10 @@ M.map("n","<leader>cp", ":cp<CR>")
 M.map("n","<leader>co", ":copen<CR>")
 M.map("n","<leader>cl", ":cclose<CR>")
 M.map("n","<leader>cl", ":cclose<CR>")
+
+-- buffer navigation
+M.map("n","<leader>bn", ":bnext<cr>")
+M.map("n","<leader>bp", ":bprevious<cr>")
 
 
 
@@ -78,3 +84,10 @@ M.map("v", "J", ":m '>+1<CR>gv=gv")
 -- resize window helper
 M.map("n","<silent> <Leader>+", ":exe \"vertical resize \" . (winwidth(0) * 3/2)<CR>")
 M.map("n","<silent> <Leader>-", ":exe \"vertical resize  \" . (winwidth(0) * 2/3)<CR>")
+
+
+-- dev start terminal
+M.map("n", "<leader>dst", "<cmd>10 new | set winfixheight |  terminal npm run dev:all<cr>")
+
+M.map("i", "{} ", "{}<esc>i<cr><esc>O")
+

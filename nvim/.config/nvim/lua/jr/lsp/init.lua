@@ -1,57 +1,25 @@
-local lspconfig = require "lspconfig"
 local vim = vim
-local uv = vim.loop
+local lsp = vim.lsp
+local handlers = lsp.handlers
+local lspconfig = require "lspconfig"
+local cmp = require'cmp'
+local lspkind = require("lspkind")
+local mapBuf = require("jr.utils").mapBuf
+local autocmd = require("jr.utils").autocmd
+local get_node_modules = require("jr.utils").get_node_modules
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+-- use GH CLI as a copletion source for git commit window
+require("jr.lsp.cmp_gh_source")
 
 -- help with function signatures
 require "lsp_signature".setup()
 
-local lsp = vim.lsp
-local handlers = lsp.handlers
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-function mapBuf(buf, mode, lhs, rhs, opts)
-  local options = {noremap = true, silent = true}
-  if opts then
-    options = vim.tbl_extend("force", options, opts)
-  end
-  vim.api.nvim_buf_set_keymap(buf, mode, lhs, rhs, options)
-end
-
-
-function autocmd(event, triggers, operations)
-  local cmd = string.format("autocmd %s %s %s", event, triggers, operations)
- vim.cmd(cmd)
-end
-
--- find local node modules for Angular LSP
-local function get_node_modules(root_dir)
-  -- util.find_node_modules_ancestor()
-  local root_node = root_dir .. "/node_modules"
-  local stats = uv.fs_stat(root_node)
-  if stats == nil then
-    return nil
-  else
-    return root_node
-  end
-end
-local function organize_imports()
-  local params = {
-    command = "_typescript.organizeImports",
-    arguments = {vim.api.nvim_buf_get_name(0)},
-    title = ""
-  }
-  vim.lsp.buf.execute_command(params)
-end
-
-
-local default_node_modules = get_node_modules(vim.fn.getcwd())
-
-local cmp = require'cmp'
-local lspkind = require("lspkind")
+-- custom text in auto complete dropdown
 lspkind.init();
 
-
+-- auto-completion dropdown
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -84,10 +52,12 @@ cmp.setup({
         nvim_lsp = "[LSP]",
         path = "[path]",
         vsnip = "[snip]",
+        gh_issues = "[issues]",
       },
     },
   },
   sources = cmp.config.sources({
+    { name = "gh_issues" },
     { name = 'nvim_lsp' },
     { name = 'vsnip' }, 
   }, {
@@ -112,9 +82,6 @@ cmp.setup({
 -- })
 
 
-
-
-
 local on_attach = function(client, bufnr)
   mapBuf(bufnr, "n", "<Leader>gdc", "<Cmd>lua vim.lsp.buf.declaration()<CR>")
   mapBuf(bufnr, "n", "<Leader>gd", "<Cmd>lua vim.lsp.buf.definition()<CR>")
@@ -129,9 +96,6 @@ local on_attach = function(client, bufnr)
   -- find references
   mapBuf(bufnr, "n", "<Leader>gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 
-  -- rename
-  mapBuf(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
-
   -- diagnostic errors
   mapBuf(bufnr, "n", "<Leader>ne", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
   mapBuf(bufnr, "n", "<Leader>pe", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
@@ -140,7 +104,6 @@ local on_attach = function(client, bufnr)
 
   -- show diagnostic error for current position
   mapBuf(bufnr, "n", "<Leader>E", "<cmd>lua vim.lsp.diagnostic.show_position_diagnostics()<CR>")
-  
 
   --markers in the gutter to highlight issues
   vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
@@ -149,6 +112,17 @@ local on_attach = function(client, bufnr)
   vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "•"})
   vim.fn.sign_define("LspDiagnosticsSignHint", {text = "•"})
 
+  --HACK:  disable rename on the angular LS because it causes conflicts with the TS language service during renames (remove after this is solved https://github.com/neovim/neovim/issues/16363)
+  local rc = client.resolved_capabilities 
+  if client.name == "angularls" then
+    rc.rename = false
+  end
+
+  -- only attach renaming mapping if the client supports renaming
+  if client.resolved_capabilities.rename then
+    mapBuf(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+  end
+
   -- when you have your curosor over the top it highlights references in scope
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_command("autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()")
@@ -156,6 +130,17 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
   end
 
+end
+
+
+-- makes :OrganizeImports available as a command for TS
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = {vim.api.nvim_buf_get_name(0)},
+    title = ""
+  }
+  vim.lsp.buf.execute_command(params)
 end
 
 lspconfig.tsserver.setup {
@@ -180,6 +165,7 @@ lspconfig.tsserver.setup {
 
 
 
+local default_node_modules = get_node_modules(vim.fn.getcwd())
 local ngls_cmd = {
   "ngserver",
   "--stdio",
@@ -204,12 +190,10 @@ lspconfig.tailwindcss.setup {
   capabilities = capabilities
 }
 
-
 lspconfig.eslint.setup{
   on_attach = on_attach,
   capabilities = capabilities
 }
-
 
 lspconfig.jsonls.setup {
   cmd = {"vscode-json-language-server", "--stdio"},
@@ -256,14 +240,20 @@ lspconfig.jsonls.setup {
           },
           url = "http://json.schemastore.org/stylelintrc.json"
         },
-        -- {
-        --   fileMatch = {
-        --     "project.json",
-        --     "angular.json",
-        --   },
-        --   url = "https://raw.githubusercontent.com/angular/angular-cli/master/packages/angular/cli/lib/config/workspace-schema.json"
-        -- }
       }
     }
   }
 }
+
+lspconfig.cssls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+lspconfig.svelte.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+
+

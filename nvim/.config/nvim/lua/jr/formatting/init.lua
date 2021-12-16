@@ -3,7 +3,7 @@ local formatter = require("formatter")
 local prettierConfig = function()
   return {
     exe = "prettier",
-    args = {"--stdin-filepath", vim.fn.shellescape(vim.api.nvim_buf_get_name(0)), "--single-quote"},
+    args = {"--stdin-filepath", vim.fn.shellescape(vim.api.nvim_buf_get_name(0))},
     stdin = true
   }
 end
@@ -11,11 +11,20 @@ end
 
 
 local formatterConfig = {
+  svelte = {
+    function()
+      return {
+        exe = "prettier",
+        args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0),  "--plugin-search-dir", "."},
+        stdin = true
+      }
+    end
+  },
   vue = {
     function()
       return {
         exe = "prettier",
-        args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), "--single-quote", "--parser", "vue"},
+        args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0),  "--parser", "vue"},
         stdin = true
       }
     end
@@ -51,7 +60,7 @@ formatter.setup(
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.ts,*,html,*.js FormatWrite
+  autocmd BufWritePost *.ts,*.html,*.js,*.json,*.svelte FormatWrite
 augroup END
 ]], true)
 

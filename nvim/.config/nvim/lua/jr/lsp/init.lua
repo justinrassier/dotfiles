@@ -106,11 +106,12 @@ local on_attach = function(client, bufnr)
   mapBuf(bufnr, "n", "<Leader>E", "<cmd>lua vim.lsp.diagnostic.show_position_diagnostics()<CR>")
 
   --markers in the gutter to highlight issues
-  vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
-  vim.fn.sign_define("LspDiagnosticsSignError", {text = "•"})
-  vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "•"})
-  vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "•"})
-  vim.fn.sign_define("LspDiagnosticsSignHint", {text = "•"})
+  vim.fn.sign_define("DiagnosticSignError", {text = "•"})
+  vim.fn.sign_define("DiagnosticSignWarn", {text = "•"})
+  vim.fn.sign_define("DiagnosticSignInfo", {text = "•"})
+  vim.fn.sign_define("DiagnosticSignHint", {text = "•"})
+
+
 
   --HACK:  disable rename on the angular LS because it causes conflicts with the TS language service during renames (remove after this is solved https://github.com/neovim/neovim/issues/16363)
   local rc = client.resolved_capabilities 
@@ -125,6 +126,7 @@ local on_attach = function(client, bufnr)
 
   -- when you have your curosor over the top it highlights references in scope
   if client.resolved_capabilities.document_highlight then
+    mapBuf(bufnr, "n", "<Leader>H", "<cmd>lua vim.lsp.buf.document_highlight()<CR>")
     vim.api.nvim_command("autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()")
     vim.api.nvim_command("autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()")
     vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")

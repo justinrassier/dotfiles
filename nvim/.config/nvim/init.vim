@@ -50,6 +50,9 @@ Plug 'machakann/vim-highlightedyank'
 " Theme
 Plug 'gruvbox-community/gruvbox'
 Plug 'mhartington/oceanic-next'
+Plug 'dracula/vim'
+Plug 'editorconfig/editorconfig-vim'
+
 
 " JS Doc
 Plug 'heavenshell/vim-jsdoc', {
@@ -65,6 +68,7 @@ Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
+Plug 'akinsho/bufferline.nvim'
 " Plug 'airblade/vim-gitgutter'
 Plug 'lewis6991/gitsigns.nvim'
 
@@ -77,6 +81,11 @@ Plug 'meain/vim-package-info', { 'do': 'npm install' }
 Plug 'pwntester/octo.nvim'
 Plug 'folke/zen-mode.nvim'
 Plug 'folke/twilight.nvim'
+Plug 'mogelbrod/vim-jsonpath'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+" Plug 'jiangmiao/auto-pairs'
+" Plug 'tmsvg/pear-tree'
+
 
 
 call plug#end()
@@ -84,12 +93,16 @@ call plug#end()
 set completeopt=menu,menuone,noselect
 let mapleader = " " 
 
+
+lua require("jr.colors")
 lua require("jr.mappings")
+lua require("jr.autocmds")
 lua require("jr.treesitter")
 lua require("jr.lsp")
 lua require("jr.telescope")
 lua require ("jr.comment")
 lua require ("jr.formatting")
+lua require ("jr.statusline")
 
 lua require("todo-comments").setup {}
 lua require('octo').setup()
@@ -107,7 +120,7 @@ set foldmethod=syntax
 set foldlevelstart=1
 
 " time for event like CursoHold (hover) to make docs appear quick
-" set updatetime=500
+set updatetime=500
 " set redrawtime=500
 
 
@@ -173,9 +186,10 @@ endif
 
 syntax enable
 
-" colorscheme gruvbox
-colorscheme OceanicNext
-let g:airline_theme='oceanicnext'
+colorscheme gruvbox
+" colorscheme OceanicNext
+" let g:airline_theme='oceanicnext'
+
 
 
 " Emmet customization -------------------------------------------------------{{{
@@ -210,6 +224,16 @@ let g:airline_theme='oceanicnext'
 
 "}}}
 
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+function! Scratch()
+    "split
+    noswapfile hide enew
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal filetype=markdown
+    "setlocal nobuflisted
+    "lcd ~
+    file scratch
+endfunction
 
 "lua require("treesitter")

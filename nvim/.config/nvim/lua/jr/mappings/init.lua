@@ -17,9 +17,11 @@ function M.mapBuf(buf, mode, lhs, rhs, opts)
 end
 
 
+M.map("n", "<leader>T", ":TestFile<CR>")
 
 --telescope mappings
 M.map("n", "<c-p>", "<cmd>lua require('jr.telescope').find_files()<cr>")
+M.map("n", "<Leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>")
 M.map("n", "<Leader>gpr", "<cmd>lua require('telescope').extensions.gh.pull_request()<cr>")
 M.map("n", "<Leader>gi", "<cmd>lua require('telescope').extensions.gh.issues()<cr>")
 M.map("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")
@@ -71,6 +73,7 @@ M.map("n","<leader>bn", ":bnext<cr>")
 M.map("n","<leader>bp", ":bprevious<cr>")
 
 
+
 -- visual paste but don't replace buffer
 M.map("v", "<leader>p", "\"_dp")
 
@@ -107,6 +110,7 @@ M.map("n", "<leader>pc", ":norm \"+p<cr>")
 
 -- new scratch buffer
 M.map("n", "<leader>ns", ":call Scratch()<cr>")
+M.map("n", "<leader>njs", ":call JsonScratch()<cr>")
 
 
 -- Experimental

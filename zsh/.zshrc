@@ -8,6 +8,10 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/justinrassier/.oh-my-zsh"
+export LDFLAGS=-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+
+
+
 
 
 alias vim="nvim"

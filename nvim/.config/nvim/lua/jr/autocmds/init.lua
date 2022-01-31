@@ -5,4 +5,4 @@ function M.autocmd(event, triggers, operations)
 end
 
 
-M.autocmd("ColorScheme",  "*",   "lua require('jr.colors').setItalics()")
+-- M.autocmd("ColorScheme",  "*",   "lua require('jr.colors').setItalics()")

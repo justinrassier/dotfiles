@@ -2,6 +2,7 @@ local vim = vim
 local lsp = vim.lsp
 local handlers = lsp.handlers
 local lspconfig = require "lspconfig"
+local util = lspconfig.util
 local cmp = require'cmp'
 local lspkind = require("lspkind")
 local mapBuf = require("jr.utils").mapBuf
@@ -83,7 +84,7 @@ cmp.setup({
 
 
 local on_attach = function(client, bufnr)
-  mapBuf(bufnr, "n", "<Leader>gdc", "<Cmd>lua vim.lsp.buf.declaration()<CR>")
+  -- mapBuf(bufnr, "n", "<Leader>gdc", "<Cmd>lua vim.lsp.buf.declaration()<CR>")
   mapBuf(bufnr, "n", "<Leader>gd", "<Cmd>lua vim.lsp.buf.definition()<CR>")
 
   -- gives me the type info of what I am hovering on
@@ -97,13 +98,14 @@ local on_attach = function(client, bufnr)
   mapBuf(bufnr, "n", "<Leader>gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 
   -- diagnostic errors
-  mapBuf(bufnr, "n", "<Leader>ne", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
-  mapBuf(bufnr, "n", "<Leader>pe", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
+  mapBuf(bufnr, "n", "<Leader>ne", "<cmd>lua vim.diagnostic.goto_next()<CR>")
+  mapBuf(bufnr, "n", "<Leader>pe", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+  mapBuf(bufnr, "n", "<Leader>le", "<cmd>Telescope diagnostics<CR>")
   -- add errors to quickfix list
-  mapBuf(bufnr, "n", "<Leader>qe", "<cmd>lua vim.lsp.diagnostic.set_qflist()<CR>")
+  -- mapBuf(bufnr, "n", "<Leader>qe", "<cmd>lua vim.diagnostic.set_qflist()<CR>")
 
   -- show diagnostic error for current position
-  mapBuf(bufnr, "n", "<Leader>E", "<cmd>lua vim.lsp.diagnostic.show_position_diagnostics()<CR>")
+  mapBuf(bufnr, "n", "<Leader>E", "<cmd>lua vim.diagnostic.open_float()<CR>")
 
   --markers in the gutter to highlight issues
   vim.fn.sign_define("DiagnosticSignError", {text = "•"})
@@ -144,7 +146,6 @@ local function organize_imports()
   }
   vim.lsp.buf.execute_command(params)
 end
-
 lspconfig.tsserver.setup {
   filetypes = {
     "javascript",
@@ -258,4 +259,7 @@ lspconfig.svelte.setup{
 }
 
 
-
+require'lspconfig'.rust_analyzer.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}

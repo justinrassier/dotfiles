@@ -1,12 +1,48 @@
 local bufferline = require "bufferline"
+local lualine = require "lualine"
 local colors = require "jr.colors"
+
+
+lualine.setup(
+  {
+    options = {
+      theme = "gruvbox",
+      section_separators = { left = '', right = ''},
+      component_separators = { left = '', right = ''}
+    },
+    sections = {
+      lualine_a = {""},
+      lualine_b = {"branch"},
+      lualine_c = {"filename"},
+      lualine_x = {"b:gitsigns_status"},
+      lualine_y = {"filetype"},
+      lualine_z = {
+        "location",
+        {
+          "diagnostics",
+          sources = {"nvim_diagnostic"},
+          symbols = {error = " ", warn = " ", info = " "},
+          colored = true,
+          diagnostics_color = {
+            error = 'DiagnosticError', 
+            warn  = 'DiagnosticWarn',  
+            info  = 'DiagnosticInfo',  
+            hint  = 'DiagnosticHint',  
+          }
+        }
+      }
+    }
+  }
+)
+
 
 
 bufferline.setup {
   options = {
     view = "default",
     numbers = function(opts) 
-      return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
+      -- return string.format('%s', opts.ordinal)
+       return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
     end,
     -- mappings = false,
     buffer_close_icon = "",

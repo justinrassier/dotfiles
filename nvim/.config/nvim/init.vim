@@ -11,7 +11,7 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope-node-modules.nvim'
 
 " Prettier formatting
-" Plug 'sbdchd/neoformat'
+Plug 'sbdchd/neoformat' "keep neoformat for in-buffer formatting only
 Plug 'mhartington/formatter.nvim'
 
 " emmet
@@ -23,7 +23,6 @@ Plug 'tpope/vim-surround'
 " file explorer
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-  
 
 " DIY auto complete stuff using nvim-cmp
 Plug 'hrsh7th/nvim-cmp'
@@ -47,11 +46,12 @@ Plug 'folke/todo-comments.nvim'
 " Highlight on yank
 Plug 'machakann/vim-highlightedyank'
 
-" Theme
+" Theme and editor basics
 Plug 'gruvbox-community/gruvbox'
+Plug 'EdenEast/nightfox.nvim'
 Plug 'mhartington/oceanic-next'
-Plug 'dracula/vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'kyazdani42/nvim-web-devicons'
 
 
 " JS Doc
@@ -62,29 +62,30 @@ Plug 'heavenshell/vim-jsdoc', {
 
 " Block commenting
 Plug 'numToStr/Comment.nvim'
-" Plug 'terrortylor/nvim-comment'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
 " Git
 Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
-Plug 'akinsho/bufferline.nvim'
-" Plug 'airblade/vim-gitgutter'
 Plug 'lewis6991/gitsigns.nvim'
 
-Plug 'kyazdani42/nvim-web-devicons'
+" Bufferline and statuslin
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'akinsho/bufferline.nvim'
+" Markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
-" package.json info
-Plug 'meain/vim-package-info', { 'do': 'npm install' }
+Plug 'jiangmiao/auto-pairs'
+
 
 " Experimental
+Plug 'vim-test/vim-test'
 Plug 'pwntester/octo.nvim'
-Plug 'folke/zen-mode.nvim'
-Plug 'folke/twilight.nvim'
-Plug 'mogelbrod/vim-jsonpath'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-" Plug 'jiangmiao/auto-pairs'
-" Plug 'tmsvg/pear-tree'
+Plug 'sotte/presenting.vim'
+Plug 'nvim-treesitter/nvim-treesitter-angular'
+Plug 'sindrets/diffview.nvim'
+
+" Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
 
 
 
@@ -106,9 +107,12 @@ lua require ("jr.statusline")
 
 lua require("todo-comments").setup {}
 lua require('octo').setup()
-lua require("zen-mode").setup()
-lua require("twilight").setup()
 lua require('gitsigns').setup()
+lua require'nvim-web-devicons'.setup()
+
+au FileType markdown let b:presenting_slide_separator = '---'
+
+
 
 
 set tabstop=2
@@ -116,11 +120,10 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab
 
-set foldmethod=syntax
-set foldlevelstart=1
-
+" set foldmethod=syntax
+" set foldlevelstart=1
 " time for event like CursoHold (hover) to make docs appear quick
-set updatetime=500
+" set updatetime=500
 " set redrawtime=500
 
 
@@ -176,7 +179,9 @@ imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-T
 smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 " Highlight  on yank plugin
-let g:highlightedyank_highlight_duration = 250
+let g:highlightedyank_highlight_duration = 100
+
+let test#javascript#runner = 'nx'
 
 
 " Theme
@@ -185,12 +190,6 @@ if (has("termguicolors"))
 endif
 
 syntax enable
-
-colorscheme gruvbox
-" colorscheme OceanicNext
-" let g:airline_theme='oceanicnext'
-
-
 
 " Emmet customization -------------------------------------------------------{{{
 
@@ -231,9 +230,19 @@ function! Scratch()
     setlocal buftype=nofile
     setlocal bufhidden=hide
     setlocal filetype=markdown
+    setlocal spell
+    set wrap linebreak
     "setlocal nobuflisted
     "lcd ~
     file scratch
+endfunction
+function! JsonScratch()
+    "split
+    noswapfile hide enew
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal filetype=json
+    file json-scratch
 endfunction
 
 "lua require("treesitter")

@@ -29,11 +29,45 @@ local formatterConfig = {
       }
     end
   },
+  rust = {
+    -- Rustfmt
+    function()
+      return {
+        exe = "rustfmt",
+        args = {"--emit=stdout"},
+        stdin = true
+      }
+    end
+  },
+  html = {
+    function()
+      -- Tailwind opinionated formatter
+      return {
+        exe = "rustywind",
+        args = {"--stdin"},
+        stdin = true
+      }
+    end,
+     -- and standard prettier formatter
+     prettierConfig
+  },
+  ejs = {
+    function()
+      -- Tailwind opinionated formatter
+      return {
+        exe = "rustywind",
+        args = {"--stdin"},
+        stdin = true
+      }
+    end,
+     -- and standard prettier formatter
+     prettierConfig
+  },
+
 }
 local commonFT = {
   "css",
   "scss",
-  "html",
   "java",
   "javascript",
   "typescript",
@@ -60,7 +94,7 @@ formatter.setup(
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.ts,*.html,*.js,*.json,*.svelte FormatWrite
+  autocmd BufWritePost *.ejs,*.ts,*.html,*.js,*.json,*.svelte,*.rs FormatWrite
 augroup END
 ]], true)
 

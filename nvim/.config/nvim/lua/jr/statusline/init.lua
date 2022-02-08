@@ -6,7 +6,7 @@ local colors = require "jr.colors"
 lualine.setup(
   {
     options = {
-      theme = "gruvbox",
+      -- theme = "gruvbox",
       section_separators = { left = '', right = ''},
       component_separators = { left = '', right = ''}
     },
@@ -41,8 +41,8 @@ bufferline.setup {
   options = {
     view = "default",
     numbers = function(opts) 
-      -- return string.format('%s', opts.ordinal)
-       return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
+      return string.format('%s', opts.ordinal)
+       -- return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
     end,
     -- mappings = false,
     buffer_close_icon = "",

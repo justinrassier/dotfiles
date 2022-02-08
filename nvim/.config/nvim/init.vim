@@ -50,6 +50,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'gruvbox-community/gruvbox'
 Plug 'EdenEast/nightfox.nvim'
 Plug 'mhartington/oceanic-next'
+Plug 'cocopon/iceberg.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'kyazdani42/nvim-web-devicons'
 
@@ -65,27 +66,25 @@ Plug 'numToStr/Comment.nvim'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
 " Git
-Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'kdheepak/lazygit.nvim'
+Plug 'sindrets/diffview.nvim'
+
 
 " Bufferline and statuslin
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim'
+
 " Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 Plug 'jiangmiao/auto-pairs'
 
+Plug 'ThePrimeagen/harpoon'
 
 " Experimental
 Plug 'vim-test/vim-test'
 Plug 'pwntester/octo.nvim'
-Plug 'sotte/presenting.vim'
-Plug 'nvim-treesitter/nvim-treesitter-angular'
-Plug 'sindrets/diffview.nvim'
-
-" Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-
 
 
 
@@ -167,7 +166,7 @@ set splitright
 let NERDTreeWinSize=45
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
+" nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 let g:NERDTreeMapOpenVSplit = '<c-v>'
 

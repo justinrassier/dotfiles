@@ -26,6 +26,7 @@ M.map("n", "<Leader>gpr", "<cmd>lua require('telescope').extensions.gh.pull_requ
 M.map("n", "<Leader>gi", "<cmd>lua require('telescope').extensions.gh.issues()<cr>")
 M.map("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")
 M.map("n", "<Leader>a", "<cmd>Telescope live_grep<cr>")
+M.map("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
 
 
 -- Custom jump around Angular component parts
@@ -60,6 +61,7 @@ M.map("i", ")", ")<c-g>u")
 
 -- gitsigns
 M.map("n", "<leader>gl", ":Gitsigns toggle_current_line_blame<cr>")
+M.map("n", "<leader>lg", ":LazyGit<cr>")
 
 -- quickfix navigation
 M.map("n","<leader>cn", ":cn<CR>")
@@ -111,6 +113,11 @@ M.map("n", "<leader>pc", ":norm \"+p<cr>")
 -- new scratch buffer
 M.map("n", "<leader>ns", ":call Scratch()<cr>")
 M.map("n", "<leader>njs", ":call JsonScratch()<cr>")
+
+
+--Harpoooooooon
+M.map("n", "<leader>mf", "<cmd>lua require(\"harpoon.mark\").add_file()<cr>")
+M.map("n", "<leader>mu", "<cmd>lua require(\"harpoon.ui\").toggle_quick_menu()<cr>")
 
 
 -- Experimental

@@ -17,8 +17,7 @@ function M.mapBuf(buf, mode, lhs, rhs, opts)
 end
 
 
-M.map("n", "<leader>T", ":TestFile<CR>")
-
+  
 --telescope mappings
 M.map("n", "<c-p>", "<cmd>lua require('jr.telescope').find_files()<cr>")
 M.map("n", "<Leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>")
@@ -124,6 +123,6 @@ M.map("n", "<leader>mu", "<cmd>lua require(\"harpoon.ui\").toggle_quick_menu()<c
 -- Bracket completion
 -- M.map("i", "{} ", "{}<esc>i<cr><esc>O")
 -- while typing delete back a WORD
-M.map("i", "<c-b> ", "<esc>BdiWi")
+M.map("n", "<leader>td", "<cmd>VimwikiGoto TODO<cr>")
 
 

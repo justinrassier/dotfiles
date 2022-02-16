@@ -5,11 +5,6 @@ local colors = require "jr.colors"
 
 lualine.setup(
   {
-    options = {
-      -- theme = "gruvbox",
-      section_separators = { left = '', right = ''},
-      component_separators = { left = '', right = ''}
-    },
     sections = {
       lualine_a = {""},
       lualine_b = {"branch"},
@@ -54,7 +49,8 @@ bufferline.setup {
     max_prefix_length = 15,
     show_buffer_close_icons = false,
     persist_buffer_sort = true,
-    separator_style = {"", ""},
+    -- separator_style = {"", ""},
+    separator_style = "slant",
     enforce_regular_tabs = false,
     always_show_bufferline = true
   },

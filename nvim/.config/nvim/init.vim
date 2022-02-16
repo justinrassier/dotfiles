@@ -52,7 +52,9 @@ Plug 'EdenEast/nightfox.nvim'
 Plug 'mhartington/oceanic-next'
 Plug 'cocopon/iceberg.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'kyazdani42/nvim-web-devicons'
+" Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ryanoasis/vim-devicons'
+
 
 
 " JS Doc
@@ -85,6 +87,8 @@ Plug 'ThePrimeagen/harpoon'
 " Experimental
 Plug 'vim-test/vim-test'
 Plug 'pwntester/octo.nvim'
+Plug 'vimwiki/vimwiki'
+
 
 
 
@@ -103,11 +107,11 @@ lua require("jr.telescope")
 lua require ("jr.comment")
 lua require ("jr.formatting")
 lua require ("jr.statusline")
+lua require('jr.gitsigns')
 
 lua require("todo-comments").setup {}
 lua require('octo').setup()
-lua require('gitsigns').setup()
-lua require'nvim-web-devicons'.setup()
+"lua require'nvim-web-devicons'.setup()
 
 au FileType markdown let b:presenting_slide_separator = '---'
 
@@ -165,8 +169,7 @@ set splitright
 " NERDTree
 let NERDTreeWinSize=45
 nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-" nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 let g:NERDTreeMapOpenVSplit = '<c-v>'
 

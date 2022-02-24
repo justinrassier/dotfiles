@@ -39,6 +39,14 @@ local formatterConfig = {
       }
     end
   },
+  go = {
+    function()
+      return {
+        exe = "gofmt",
+        stdin = true
+      }
+    end
+  },
   html = {
     function()
       -- Tailwind opinionated formatter
@@ -94,7 +102,7 @@ formatter.setup(
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.ejs,*.ts,*.html,*.js,*.json,*.svelte,*.rs FormatWrite
+  autocmd BufWritePost *.go,*.ejs,*.ts,*.html,*.js,*.json,*.svelte,*.rs FormatWrite
 augroup END
 ]], true)
 

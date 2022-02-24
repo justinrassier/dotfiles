@@ -117,6 +117,8 @@ M.map("n", "<leader>njs", ":call JsonScratch()<cr>")
 --Harpoooooooon
 M.map("n", "<leader>mf", "<cmd>lua require(\"harpoon.mark\").add_file()<cr>")
 M.map("n", "<leader>mu", "<cmd>lua require(\"harpoon.ui\").toggle_quick_menu()<cr>")
+M.map("n", "<leader>mn", "<cmd>lua require(\"harpoon.ui\").nav_next()<cr>")
+M.map("n", "<leader>mp", "<cmd>lua require(\"harpoon.ui\").nav_prev()<cr>")
 
 
 -- Experimental
@@ -124,5 +126,18 @@ M.map("n", "<leader>mu", "<cmd>lua require(\"harpoon.ui\").toggle_quick_menu()<c
 -- M.map("i", "{} ", "{}<esc>i<cr><esc>O")
 -- while typing delete back a WORD
 M.map("n", "<leader>td", "<cmd>VimwikiGoto TODO<cr>")
+
+
+-- jvim.nvim
+
+M.map("n", "<left>", "<cmd>lua require('jvim').to_parent()<cr>")
+M.map("n", "<right>", "<cmd>lua require('jvim').descend()<cr>")
+M.map("n", "<up>", "<cmd>lua require('jvim').prev_sibling()<cr>")
+M.map("n", "<down>", "<cmd>lua require('jvim').next_sibling()<cr>")
+-- nnoremap <left> :lua require("jvim").to_parent()<CR>
+-- nnoremap <right> :lua require("jvim").descend()<CR>
+-- nnoremap <up> :lua require("jvim").prev_sibling()<CR>
+-- nnoremap <down> :lua require("jvim").next_sibling()<CR>
+M.map("n", "<leader>dl", "<cmd>lua require('jr.custom.lsp-debug').debug_lsp()<cr>")
 
 

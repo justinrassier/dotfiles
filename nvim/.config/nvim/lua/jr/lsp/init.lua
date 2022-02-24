@@ -162,7 +162,9 @@ lspconfig.tsserver.setup {
       organize_imports,
       description = "Organize Imports"
     }
-  }
+  },
+  root_dir = util.root_pattern("package.json", ".git")
+
 }
 
 
@@ -259,7 +261,14 @@ lspconfig.svelte.setup{
 }
 
 
-require'lspconfig'.rust_analyzer.setup{
+lspconfig.rust_analyzer.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
+
+
+lspconfig.gopls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+

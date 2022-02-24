@@ -88,6 +88,8 @@ Plug 'ThePrimeagen/harpoon'
 Plug 'vim-test/vim-test'
 Plug 'pwntester/octo.nvim'
 Plug 'vimwiki/vimwiki'
+Plug 'theprimeagen/jvim.nvim'
+
 
 
 

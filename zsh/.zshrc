@@ -12,14 +12,18 @@ export LDFLAGS=-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
 
 
 
-
-
 alias vim="nvim"
+alias work="tmuxinator start work"
 
 
 # Custom env vars
 export NODE_ENV="development"
-export CAVO="~/dev/cavo/{apps,libs}/**/*.ts"
+export EDITOR='nvim'
+
+# add gopath
+export PATH=$PATH:$(go env GOPATH)/bin
+
+
 
 alias gc="git add -A && git commit -m"
 alias gco="git checkout"

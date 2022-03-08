@@ -6,6 +6,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
+Plug 'nvim-treesitter/playground'
 Plug 'nvim-telescope/telescope-github.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope-node-modules.nvim'
@@ -89,6 +90,7 @@ Plug 'vim-test/vim-test'
 Plug 'pwntester/octo.nvim'
 Plug 'vimwiki/vimwiki'
 Plug 'theprimeagen/jvim.nvim'
+Plug 'SmiteshP/nvim-gps'
 
 
 

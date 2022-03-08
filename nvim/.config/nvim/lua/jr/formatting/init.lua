@@ -51,8 +51,8 @@ local formatterConfig = {
     function()
       -- Tailwind opinionated formatter
       return {
-        exe = "rustywind",
-        args = {"--stdin"},
+        exe = "prettier",
+        args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0),  "--plugin-search-dir", "."},
         stdin = true
       }
     end,
@@ -63,8 +63,8 @@ local formatterConfig = {
     function()
       -- Tailwind opinionated formatter
       return {
-        exe = "rustywind",
-        args = {"--stdin"},
+        exe = "prettier",
+        args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0),  "--plugin-search-dir", "."},
         stdin = true
       }
     end,

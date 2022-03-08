@@ -1,6 +1,8 @@
+require("nvim-gps").setup()
 local bufferline = require "bufferline"
 local lualine = require "lualine"
 local colors = require "jr.colors"
+local gps = require("nvim-gps")
 
 
 lualine.setup(
@@ -9,7 +11,8 @@ lualine.setup(
       lualine_a = {""},
       lualine_b = {"branch"},
       lualine_c = {"filename"},
-      lualine_x = {"b:gitsigns_status"},
+      lualine_x = {{ gps.get_location, cond = gps.is_available }},
+      -- lualine_x = {"b:gitsigns_status"},
       lualine_y = {"filetype"},
       lualine_z = {
         "location",

@@ -155,6 +155,7 @@ lspconfig.tsserver.setup {
     "typescriptreact",
     "typescript.tsx"
   },
+  -- cmd = {"typescript-language-server", "--stdio", "--log-level=4", "--tsserver-log-file=ts-logs.txt"},
   on_attach = on_attach,
   capabilities = capabilities,
   commands = {

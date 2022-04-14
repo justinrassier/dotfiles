@@ -16,7 +16,9 @@ function M.mapBuf(buf, mode, lhs, rhs, opts)
   vim.api.nvim_buf_set_keymap(buf, mode, lhs, rhs, options)
 end
 
-
+-- nvim-tree
+M.map("n", "<c-n>", "<cmd>:NvimTreeToggle<cr>")
+M.map("n", "<c-f>", "<cmd>:NvimTreeFindFile<cr>")
   
 --telescope mappings
 M.map("n", "<c-p>", "<cmd>lua require('jr.telescope').find_files()<cr>")
@@ -29,6 +31,7 @@ M.map("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
 
 
 -- Custom jump around Angular component parts
+M.map("n", "<leader>jm", "<cmd>lua require('jr.custom').jump_to_nearest_module()<cr>")
 M.map("n", "<leader>jc", "<cmd>lua require('jr.custom').jump_to_angular_component_part('ts')<cr>")
 M.map("n", "<leader>jt", "<cmd>lua require('jr.custom').jump_to_angular_component_part('html')<cr>")
 M.map("n", "<leader>js", "<cmd>lua require('jr.custom').jump_to_angular_component_part('scss')<cr>")

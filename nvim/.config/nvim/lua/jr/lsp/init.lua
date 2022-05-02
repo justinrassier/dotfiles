@@ -20,51 +20,73 @@ require "lsp_signature".setup()
 -- custom text in auto complete dropdown
 lspkind.init();
 
--- auto-completion dropdown
+
+
+local luasnip = require("luasnip")
+require("luasnip/loaders/from_vscode").lazy_load()
+
+local down_func = cmp.mapping(function(fallback)
+	if cmp.visible() then
+		cmp.select_next_item()
+	elseif luasnip.expand_or_jumpable() then
+		luasnip.expand_or_jump()
+	elseif has_words_before() then
+		cmp.complete()
+	else
+		fallback()
+	end
+end, { "i", "s" })
+
+local up_func = cmp.mapping(function(fallback)
+	if cmp.visible() then
+		cmp.select_prev_item()
+	elseif luasnip.jumpable(-1) then
+		luasnip.jump(-1)
+	else
+		fallback()
+	end
+end, { "i", "s" })
+
+
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  mapping = {
-    ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-    ['<C-e>'] = cmp.mapping({
-      i = cmp.mapping.abort(),
-      c = cmp.mapping.close(),
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      end,
+    },
+    window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<Down>"] = down_func,
+      ["<Up>"] = up_func,
     }),
-    ['<CR>'] = cmp.mapping.confirm({ 
-        -- auto insert when confirm selection
-        behavior = cmp.ConfirmBehavior.Insert,
-        select = true 
-      }),
-  },
-  experimental = {
-    ghost_text = true,
-  },
-  formatting = {
-    format = lspkind.cmp_format {
-      with_text = true,
-      menu = {
-        buffer = "[buf]",
-        nvim_lsp = "[LSP]",
-        path = "[path]",
-        vsnip = "[snip]",
-        gh_issues = "[issues]",
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' }, -- For luasnip users.
+    }, {
+      { name = 'buffer' },
+    }),
+    formatting = {
+      format = lspkind.cmp_format {
+        with_text = true,
+        menu = {
+          buffer = "[buf]",
+          nvim_lsp = "[LSP]",
+          path = "[path]",
+          luasnip = "[snip]",
+          gh_issues = "[issues]",
+        },
       },
     },
-  },
-  sources = cmp.config.sources({
-    { name = "gh_issues" },
-    { name = 'nvim_lsp' },
-    { name = 'vsnip' }, 
-  }, {
-    { name = 'buffer' },
   })
-})
+
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 -- cmp.setup.cmdline('/', {

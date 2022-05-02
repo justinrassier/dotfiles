@@ -22,12 +22,11 @@ M.map("n", "<c-f>", "<cmd>:NvimTreeFindFile<cr>")
   
 --telescope mappings
 M.map("n", "<c-p>", "<cmd>lua require('jr.telescope').find_files()<cr>")
-M.map("n", "<Leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>")
-M.map("n", "<Leader>gpr", "<cmd>lua require('telescope').extensions.gh.pull_request()<cr>")
-M.map("n", "<Leader>gi", "<cmd>lua require('telescope').extensions.gh.issues()<cr>")
-M.map("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")
+M.map("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
 M.map("n", "<Leader>a", "<cmd>Telescope live_grep<cr>")
 M.map("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
+M.map("n", "<Leader>gpr", "<cmd>lua require('telescope').extensions.gh.pull_request()<cr>")
+M.map("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")
 
 
 -- Custom jump around Angular component parts

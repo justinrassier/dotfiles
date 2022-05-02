@@ -1,4 +1,5 @@
-call plug#begin('~/.vim/plugged')
+" call plug#begin('~/.vim/plugged')
+call plug#begin()
 " Lsp stuff
 Plug 'neovim/nvim-lspconfig'
 
@@ -15,15 +16,16 @@ Plug 'nvim-telescope/telescope-node-modules.nvim'
 Plug 'sbdchd/neoformat' "keep neoformat for in-buffer formatting only
 Plug 'mhartington/formatter.nvim'
 
-" emmet
-Plug 'mattn/emmet-vim'
+" Plug 'mattn/emmet-vim'
+Plug 'windwp/nvim-ts-autotag'
 
 " Surround 
 Plug 'tpope/vim-surround'
 
 " file explorer
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'preservim/nerdtree'
+Plug 'kyazdani42/nvim-tree.lua'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " DIY auto complete stuff using nvim-cmp
 Plug 'hrsh7th/nvim-cmp'
@@ -31,8 +33,13 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/vim-vsnip'
+
+" Plug 'hrsh7th/cmp-vsnip'
+" Plug 'hrsh7th/vim-vsnip'
+
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+"
 Plug 'onsails/lspkind-nvim'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'weilbith/nvim-code-action-menu'
@@ -53,8 +60,8 @@ Plug 'EdenEast/nightfox.nvim'
 Plug 'mhartington/oceanic-next'
 Plug 'cocopon/iceberg.vim'
 Plug 'editorconfig/editorconfig-vim'
-" Plug 'kyazdani42/nvim-web-devicons'
-Plug 'ryanoasis/vim-devicons'
+Plug 'kyazdani42/nvim-web-devicons'
+" Plug 'ryanoasis/vim-devicons'
 
 
 
@@ -112,10 +119,13 @@ lua require ("jr.comment")
 lua require ("jr.formatting")
 lua require ("jr.statusline")
 lua require('jr.gitsigns')
+lua require('jr.nvim-tree')
 
+" stuff that doesn't need its own config file yet
 lua require("todo-comments").setup {}
 lua require('octo').setup()
-"lua require'nvim-web-devicons'.setup()
+lua require'nvim-web-devicons'.setup()
+lua require('nvim-ts-autotag').setup()
 
 au FileType markdown let b:presenting_slide_separator = '---'
 
@@ -171,18 +181,18 @@ set splitright
 
 
 " NERDTree
-let NERDTreeWinSize=45
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
-let g:NERDTreeMapOpenVSplit = '<c-v>'
+" let NERDTreeWinSize=45
+" nnoremap <leader>n :NERDTreeFocus<CR>
+" nnoremap <C-n> :NERDTreeToggle<CR>
+" nnoremap <C-f> :NERDTreeFind<CR>
+" let g:NERDTreeMapOpenVSplit = '<c-v>'
 
 
-"vim-vsnip 
-imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+" "vim-vsnip 
+" imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+" smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+" imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+" smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 " Highlight  on yank plugin
 let g:highlightedyank_highlight_duration = 100
@@ -197,37 +207,6 @@ endif
 
 syntax enable
 
-" Emmet customization -------------------------------------------------------{{{
-
-" Remaps to be like Emmet in a normal editor with tab expand
-  function! s:expand_html_tab()
-" try to determine if we're within quotes or tags.
-" if so, assume we're in an emmet fill area.
-   let line = getline('.')
-   if col('.') < len(line)
-     let line = matchstr(line, '[">][^<"]*\%'.col('.').'c[^>"]*[<"]')
-     if len(line) >= 2
-        return "\<C-n>"
-     endif
-   endif
-" expand anything emmet thinks is expandable.
-  if emmet#isExpandable()
-    return emmet#expandAbbrIntelligent("\<tab>")
-    " return "\<C-y>,"
-  endif
-" return a regular tab character
-  return "\<tab>"
-  endfunction
-  " let g:user_emmet_expandabbr_key='<Tab>'
-  " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-
-  autocmd FileType html,css,scss,typescriptreact,vue,javascript,markdown.mdx imap <silent><buffer><expr><tab> <sid>expand_html_tab()
-  let g:user_emmet_mode='a'
-  let g:user_emmet_complete_tag = 0
-  let g:user_emmet_install_global = 0
-  autocmd FileType html,css,scss,typescriptreact,vue,javascript,markdown.mdx EmmetInstall
-
-"}}}
 
 
 function! Scratch()

@@ -2,7 +2,7 @@ local ts = require "nvim-treesitter.configs"
 
 ts.setup {
   context_commentstring = {enable = true},
-  ensure_installed = "maintained",
+  ensure_installed = "all",
   highlight = {
     enable = true,
     disable = { "html" },

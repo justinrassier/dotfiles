@@ -61,6 +61,12 @@ function M.jump_to_ngrx_parts(ngrx_part)
   -- assemble the full destination 
   local full_destination = libs_dir_root .. "/shared/" .. feature ..  "/data-access/src/lib/store/" .. feature .. "." .. ngrx_part ..".ts"
 
+
+  -- stupid hack due to Cavo naming convention change
+  if feature == "notes" then
+   full_destination = libs_dir_root .. "/shared/" .. "notes" ..  "/data-access/src/lib/store/" .. "note" .. "." .. ngrx_part ..".ts"
+  end
+
   local exists = vim.fn.filereadable(full_destination)
 
   if exists == 0 then
@@ -111,12 +117,6 @@ function table_length(T)
   for _ in pairs(T) do count = count + 1 end
   return count
 end
-
-
-
-
-
-
 
 
 

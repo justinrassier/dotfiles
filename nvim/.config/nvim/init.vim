@@ -11,6 +11,7 @@ Plug 'nvim-treesitter/playground'
 Plug 'nvim-telescope/telescope-github.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope-node-modules.nvim'
+Plug 'nvim-telescope/telescope-live-grep-args.nvim'
 
 " Prettier formatting
 Plug 'sbdchd/neoformat' "keep neoformat for in-buffer formatting only
@@ -58,6 +59,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'gruvbox-community/gruvbox'
 Plug 'EdenEast/nightfox.nvim'
 Plug 'mhartington/oceanic-next'
+Plug 'folke/tokyonight.nvim'
 Plug 'cocopon/iceberg.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'kyazdani42/nvim-web-devicons'
@@ -88,7 +90,7 @@ Plug 'akinsho/bufferline.nvim'
 " Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 
 Plug 'ThePrimeagen/harpoon'
 
@@ -98,17 +100,12 @@ Plug 'pwntester/octo.nvim'
 Plug 'vimwiki/vimwiki'
 Plug 'theprimeagen/jvim.nvim'
 Plug 'SmiteshP/nvim-gps'
-
-
-
+Plug 'github/copilot.vim'
 
 
 call plug#end()
 
-set completeopt=menu,menuone,noselect
-let mapleader = " " 
-
-
+lua require("jr.options")
 lua require("jr.colors")
 lua require("jr.mappings")
 lua require("jr.autocmds")
@@ -120,6 +117,7 @@ lua require ("jr.formatting")
 lua require ("jr.statusline")
 lua require('jr.gitsigns')
 lua require('jr.nvim-tree')
+lua require('jr.harpoon')
 
 " stuff that doesn't need its own config file yet
 lua require("todo-comments").setup {}
@@ -127,85 +125,8 @@ lua require('octo').setup()
 lua require'nvim-web-devicons'.setup()
 lua require('nvim-ts-autotag').setup()
 
-au FileType markdown let b:presenting_slide_separator = '---'
 
-
-
-
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set expandtab
-
-" set foldmethod=syntax
-" set foldlevelstart=1
-" time for event like CursoHold (hover) to make docs appear quick
-" set updatetime=500
-" set redrawtime=500
-
-
-" Highlight search as you type
-set incsearch
-" disable highlighting after searching
-set nohlsearch
-
-" keep buffers open in the background
-set hidden
-
-" don't wrap text
-set nowrap
-
-" history stuff
-set noswapfile
-set nobackup
-set undodir=~/.vim/undodir
-set undofile
-
-" start scrolling 8 lines from the bottom instead of waiting until cursor is all the way down
-set scrolloff=8
-
-set signcolumn=yes
-
-" hybrid line numbers
-set number
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
-  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
-augroup END
-
-
-" split navigation default locations
-set splitbelow
-set splitright
-
-
-" NERDTree
-" let NERDTreeWinSize=45
-" nnoremap <leader>n :NERDTreeFocus<CR>
-" nnoremap <C-n> :NERDTreeToggle<CR>
-" nnoremap <C-f> :NERDTreeFind<CR>
-" let g:NERDTreeMapOpenVSplit = '<c-v>'
-
-
-" "vim-vsnip 
-" imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-" smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-" imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-" smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-
-" Highlight  on yank plugin
-let g:highlightedyank_highlight_duration = 100
-
-let test#javascript#runner = 'nx'
-
-
-" Theme
-if (has("termguicolors"))
- set termguicolors
-endif
-
-syntax enable
+" au FileType markdown let b:presenting_slide_separator = '---'
 
 
 

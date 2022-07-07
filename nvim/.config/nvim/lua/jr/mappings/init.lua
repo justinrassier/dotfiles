@@ -16,6 +16,18 @@ function M.mapBuf(buf, mode, lhs, rhs, opts)
   vim.api.nvim_buf_set_keymap(buf, mode, lhs, rhs, options)
 end
 
+
+-- shortcut to save quickly
+M.map("n", "<Leader>w", ":w<cr>")
+-- save to system clipboard shortcuts
+M.map("v", "<Leader>y", '"+y', {noremap = false})
+M.map("v", "<Leader>d", '"+d', {noremap = false})
+M.map("n", "<Leader>p", '"+p', {noremap = false})
+M.map("n", "<Leader>p", '"+P', {noremap = false})
+M.map("v", "<Leader>p", '"+p', {noremap = false})
+M.map("v", "<Leader>P", '"+P', {noremap = false})
+
+
 -- nvim-tree
 M.map("n", "<c-n>", "<cmd>:NvimTreeToggle<cr>")
 M.map("n", "<c-f>", "<cmd>:NvimTreeFindFile<cr>")
@@ -23,7 +35,8 @@ M.map("n", "<c-f>", "<cmd>:NvimTreeFindFile<cr>")
 --telescope mappings
 M.map("n", "<c-p>", "<cmd>lua require('jr.telescope').find_files()<cr>")
 M.map("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
-M.map("n", "<Leader>a", "<cmd>Telescope live_grep<cr>")
+M.map("n", "<Leader>a", "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>")
+M.map("n", "<Leader>tr", "<cmd>Telescope resume<cr>")
 M.map("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
 M.map("n", "<Leader>gpr", "<cmd>lua require('telescope').extensions.gh.pull_request()<cr>")
 M.map("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")

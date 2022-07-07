@@ -20,11 +20,11 @@ local M = {
 
 -- vim.cmd("colorscheme gruvbox")
 
-vim.cmd("colorscheme OceanicNext")
+vim.cmd("colorscheme TokyoNight")
 -- document_highlight() colors. Not super great, but something at least
-vim.cmd("hi LspReferenceRead cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
-vim.cmd("hi LspReferenceText cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
-vim.cmd("hi LspReferenceWrite cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
+-- vim.cmd("hi LspReferenceRead cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
+-- vim.cmd("hi LspReferenceText cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
+-- vim.cmd("hi LspReferenceWrite cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
 
 
 function M.setItalics()

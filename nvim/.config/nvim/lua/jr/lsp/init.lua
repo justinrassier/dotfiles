@@ -194,15 +194,17 @@ lspconfig.tsserver.setup {
 
 
 local default_node_modules = get_node_modules(vim.fn.getcwd())
+-- local default_node_modules = '/Users/justinrassier/dev/cavo'
 local ngls_cmd = {
   "ngserver",
   "--stdio",
   "--tsProbeLocations",
   default_node_modules,
   "--ngProbeLocations",
-  default_node_modules,
-  "--experimental-ivy"
+  default_node_modules
 }
+-- local cmd = {"ngserver", "--stdio", "--tsProbeLocations", project_library_path , "--ngProbeLocations", project_library_path}
+
 
 lspconfig.angularls.setup {
   cmd = ngls_cmd,

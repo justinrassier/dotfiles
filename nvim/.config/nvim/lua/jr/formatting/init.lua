@@ -3,7 +3,7 @@ local formatter = require("formatter")
 local prettierConfig = function()
   return {
     exe = "prettier",
-    args = {"--stdin-filepath", vim.fn.shellescape(vim.api.nvim_buf_get_name(0))},
+    args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0),  "--plugin-search-dir", "."},
     stdin = true
   }
 end

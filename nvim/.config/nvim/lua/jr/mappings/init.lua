@@ -17,6 +17,7 @@ function M.mapBuf(buf, mode, lhs, rhs, opts)
 end
 
 
+M.map("i", "jk", "<Esc>", {noremap = false, silent = true})
 -- shortcut to save quickly
 M.map("n", "<Leader>w", ":w<cr>")
 -- save to system clipboard shortcuts
@@ -55,6 +56,9 @@ M.map("n", "<leader>jxe", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('eff
 M.map("n", "<leader>jxa", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('actions')<cr>")
 M.map("n", "<leader>jxf", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('facade')<cr>")
 M.map("n", "<leader>jxs", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('selectors')<cr>")
+--
+-- new scratch buffer
+M.map("n", "<leader>ns", "<cmd>lua require('jr.custom').new_scratch_buffer()<cr>")
 
 
 -- Window navigation
@@ -124,9 +128,6 @@ M.map("n", "<leader>cac", ":%y+<cr>")
 M.map("n", "<leader>pc", ":norm \"+p<cr>")
 
 
--- new scratch buffer
-M.map("n", "<leader>ns", ":call Scratch()<cr>")
-M.map("n", "<leader>njs", ":call JsonScratch()<cr>")
 
 
 --Harpoooooooon
@@ -154,5 +155,14 @@ M.map("n", "<down>", "<cmd>lua require('jvim').next_sibling()<cr>")
 -- nnoremap <up> :lua require("jvim").prev_sibling()<CR>
 -- nnoremap <down> :lua require("jvim").next_sibling()<CR>
 M.map("n", "<leader>dl", "<cmd>lua require('jr.custom.lsp-debug').debug_lsp()<cr>")
+
+
+
+
+-- call vimscript function
+
+
+-- create new scratch buffer using vim api
+--
 
 

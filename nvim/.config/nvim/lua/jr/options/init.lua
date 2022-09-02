@@ -39,7 +39,7 @@ Option.g {
   -- history stuff
   swapfile = false,
   backup = false,
-  undodir = "~/.vim/undodir",
+  undodir = vim.fn.expand("$HOME/.vim/undos"),
   undofile = true,
   -- start scrolling 8 lines from the bottom
   scrolloff = 8,

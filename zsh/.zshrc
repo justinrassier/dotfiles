@@ -19,6 +19,8 @@ export EDITOR='nvim'
 
 # add gopath
 export PATH=$PATH:$(go env GOPATH)/bin
+alias python=python2
+export PYTHON=python2
 
 
 

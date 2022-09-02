@@ -91,26 +91,36 @@ function M.jump_to_nearest_module()
   local scan_result
   local count = 1
 -- keep going up directories until you find a `.module.ts` (or stop at 10 as then something went wrong)
-repeat
-    current_dir = current_dir:parent()
-    scan_result = scan.scan_dir(current_dir:normalize() , {  search_pattern = '.module.ts' });
-    count = count + 1
-until (table_length(scan_result) > 0 or count >= 10)
+  repeat
+      current_dir = current_dir:parent()
+      scan_result = scan.scan_dir(current_dir:normalize() , {  search_pattern = '.module.ts' });
+      count = count + 1
+  until (table_length(scan_result) > 0 or count >= 10)
 
-local module_relative_path = scan_result[1]
+  local module_relative_path = scan_result[1]
 
-if module_relative_path ~= nil then
-  local module_absolute_path = path:new(module_relative_path):absolute()
-  -- load up the destination in the current buffer
-  local uri = vim.uri_from_fname(module_absolute_path)
-  local new_buff = vim.uri_to_bufnr(uri)
-  vim.api.nvim_win_set_buf(0, new_buff)
-  -- force buffer to be loaded
-  vim.fn.execute("edit")
+  if module_relative_path ~= nil then
+    local module_absolute_path = path:new(module_relative_path):absolute()
+    -- load up the destination in the current buffer
+    local uri = vim.uri_from_fname(module_absolute_path)
+    local new_buff = vim.uri_to_bufnr(uri)
+    vim.api.nvim_win_set_buf(0, new_buff)
+    -- force buffer to be loaded
+    vim.fn.execute("edit")
+  end
+
 end
 
 
+function M.new_scratch_buffer()
+  vim.api.nvim_command("enew")
+  vim.api.nvim_command("setlocal buftype=nofile")
+  vim.api.nvim_command("setlocal bufhidden=hide")
+  vim.api.nvim_command("setlocal filetype=json")
+  -- go to insert mode
+  vim.api.nvim_command("normal i")
 end
+
 
 function table_length(T)
   local count = 0

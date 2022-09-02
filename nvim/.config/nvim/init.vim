@@ -17,16 +17,13 @@ Plug 'nvim-telescope/telescope-live-grep-args.nvim'
 Plug 'sbdchd/neoformat' "keep neoformat for in-buffer formatting only
 Plug 'mhartington/formatter.nvim'
 
-" Plug 'mattn/emmet-vim'
 Plug 'windwp/nvim-ts-autotag'
 
 " Surround 
 Plug 'tpope/vim-surround'
 
 " file explorer
-" Plug 'preservim/nerdtree'
 Plug 'kyazdani42/nvim-tree.lua'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " DIY auto complete stuff using nvim-cmp
 Plug 'hrsh7th/nvim-cmp'
@@ -34,9 +31,6 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
-
-" Plug 'hrsh7th/cmp-vsnip'
-" Plug 'hrsh7th/vim-vsnip'
 
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
@@ -57,14 +51,10 @@ Plug 'machakann/vim-highlightedyank'
 
 " Theme and editor basics
 Plug 'gruvbox-community/gruvbox'
-Plug 'EdenEast/nightfox.nvim'
 Plug 'mhartington/oceanic-next'
 Plug 'folke/tokyonight.nvim'
-Plug 'cocopon/iceberg.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'kyazdani42/nvim-web-devicons'
-" Plug 'ryanoasis/vim-devicons'
-
 
 
 " JS Doc
@@ -130,25 +120,25 @@ lua require('nvim-ts-autotag').setup()
 
 
 
-function! Scratch()
-    "split
-    noswapfile hide enew
-    setlocal buftype=nofile
-    setlocal bufhidden=hide
-    setlocal filetype=markdown
-    setlocal spell
-    set wrap linebreak
-    "setlocal nobuflisted
-    "lcd ~
-    file scratch
-endfunction
-function! JsonScratch()
-    "split
-    noswapfile hide enew
-    setlocal buftype=nofile
-    setlocal bufhidden=hide
-    setlocal filetype=json
-    file json-scratch
-endfunction
+" function! Scratch()
+"     "split
+"     noswapfile hide enew
+"     setlocal buftype=nofile
+"     setlocal bufhidden=hide
+"     setlocal filetype=markdown
+"     setlocal spell
+"     set wrap linebreak
+"     "setlocal nobuflisted
+"     "lcd ~
+"     file scratch
+" endfunction
+" function! JsonScratch()
+"     "split
+"     noswapfile hide enew
+"     setlocal buftype=nofile
+"     setlocal bufhidden=hide
+"     setlocal filetype=json
+"     file json-scratch
+" endfunction
 
 "lua require("treesitter")

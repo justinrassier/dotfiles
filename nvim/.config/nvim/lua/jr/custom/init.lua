@@ -1,6 +1,8 @@
 local M = {}
 local scan = require'plenary.scandir'
 local path = require'plenary.path'
+local Job = require'plenary.job'
+local nvim_tree_api = require("nvim-tree.api")
 
 
 function M.jump_to_angular_component_part(extension)
@@ -87,17 +89,7 @@ end
 
 function M.jump_to_nearest_module()
   local current_buffer = vim.api.nvim_buf_get_name(0)
-  local current_dir = path:new(current_buffer)
-  local scan_result
-  local count = 1
--- keep going up directories until you find a `.module.ts` (or stop at 10 as then something went wrong)
-  repeat
-      current_dir = current_dir:parent()
-      scan_result = scan.scan_dir(current_dir:normalize() , {  search_pattern = '.module.ts' });
-      count = count + 1
-  until (table_length(scan_result) > 0 or count >= 10)
-
-  local module_relative_path = scan_result[1]
+  local module_relative_path = find_nearest_angular_module(current_buffer)
 
   if module_relative_path ~= nil then
     local module_absolute_path = path:new(module_relative_path):absolute()
@@ -110,6 +102,105 @@ function M.jump_to_nearest_module()
   end
 
 end
+
+
+function M.run_nx_generator(generator_type)
+  local node_path = nvim_tree_api.tree.get_node_under_cursor().absolute_path
+  local relative_path = path:new(node_path):make_relative()
+  local module_relative_path = find_nearest_angular_module(node_path)
+  -- if the module path then we just exit with a message
+  if module_relative_path == nil then
+    print("No module found!")
+    return
+  end
+
+  -- get the module name from the module file file
+  -- NOTE: this won't work anymore if we switch away from ng-modules. But it works for now
+  local project_name = module_relative_path:match("^.+/(.+).module.ts$")
+
+  if generator_type == 'component' then
+    local component_name = vim.fn.input("Component name:");
+    local options = {
+      "\nselect a component type:",
+      "1. simple",
+      "2. route",
+      "3. container",
+    }
+
+    local selection = vim.fn.inputlist(options)
+    -- get selection by index from options
+    local selected_option = options[selection + 1]
+    -- strip off the number from the string
+    local selected_clean = string.gsub(selected_option, "%d%. ", "")
+    local module_relative_path = find_nearest_angular_module(node_path)
+
+    Job:new({
+      command = 'nx',
+      args = { 'workspace-generator'
+      , 'cavo-component'
+      , component_name
+      , '--project'
+      , project_name
+      , '--path'
+      , relative_path
+      , '--componentType'
+      , selected_clean
+    },
+    cwd = node_path,
+    on_exit = function (j, return_val)
+      -- print(vim.inspect(j:result()))
+      -- don't need to do anything here
+    end
+  }):sync(10000)
+
+  end
+
+  if generator_type == 'service' then
+
+    local service_name = vim.fn.input("Service name:");
+    Job:new({
+      command = 'nx',
+      args = { 'generate'
+      , '@nrwl/angular:service'
+      , service_name
+      , '--project'
+      , project_name
+      , '--path'
+      , relative_path
+      , '--skipTests'
+    },
+    cwd = node_path,
+    on_exit = function (j, return_val)
+      -- print(vim.inspect(j:result()))
+      -- don't need to do anything here
+    end
+    }):sync(10000)
+
+  end
+
+end
+
+
+
+
+-- find the nearest angular module file by walking up the directory tree 
+-- looking for a file that matches the pattern *.module.ts
+function find_nearest_angular_module(starting_dir)
+  local current_dir = path:new(starting_dir)
+  local scan_result
+  local count = 1
+-- keep going up directories until you find a `.module.ts` (or stop at 10 as then something went wrong)
+  repeat
+      current_dir = current_dir:parent()
+      scan_result = scan.scan_dir(current_dir:normalize() , {  search_pattern = '.module.ts' });
+      count = count + 1
+  until (table_length(scan_result) > 0 or count >= 10)
+
+  return scan_result[1]
+
+end
+
+
 
 
 function M.new_scratch_buffer()

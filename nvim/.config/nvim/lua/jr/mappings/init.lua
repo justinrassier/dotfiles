@@ -57,6 +57,11 @@ M.map("n", "<leader>jxa", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('act
 M.map("n", "<leader>jxf", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('facade')<cr>")
 M.map("n", "<leader>jxs", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('selectors')<cr>")
 --
+-- Call nx generator
+M.map("n", "<leader>nxgc", "<cmd>lua require('jr.custom').run_nx_generator('component')<cr>")
+M.map("n", "<leader>nxgs", "<cmd>lua require('jr.custom').run_nx_generator('service')<cr>")
+
+
 -- new scratch buffer
 M.map("n", "<leader>ns", "<cmd>lua require('jr.custom').new_scratch_buffer()<cr>")
 

@@ -1,4 +1,7 @@
-
+local Job = require'plenary.job'
+local api = require("nvim-tree.api")
+local scan = require'plenary.scandir'
+local path = require'plenary.path'
 -- local M = {}
 --
 -- function M.debug_lsp()
@@ -24,5 +27,10 @@ function GlobalFunction()
 
 end
 
+function table_length(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
 --
 -- return M

@@ -186,10 +186,17 @@ lspconfig.tsserver.setup {
       description = "Organize Imports"
     }
   },
-  root_dir = util.root_pattern("package.json", ".git")
+  root_dir = util.root_pattern("package.json")
 
 }
 
+
+
+lspconfig.denols.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = util.root_pattern("deno.json", "deno.jsonc"),
+}
 
 
 

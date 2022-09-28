@@ -89,6 +89,8 @@ function M.get_project_name_from_path(current_path)
   return project_name
 end
 
+-- find the path to the library directory from the project name 
+-- by looking it up in the angular.json file
 function M.get_relative_path_from_project_name(project_name)
   -- read in angular.json file
   local angular_json = vim.fn.json_decode(vim.fn.readfile("angular.json"))
@@ -110,13 +112,19 @@ function M.get_relative_path_from_project_name(project_name)
   return project_path
 end
 
+function M.load_file_into_buffer(file)
+    local uri = vim.uri_from_fname(file)
+    local new_buff = vim.uri_to_bufnr(uri)
+    vim.api.nvim_win_set_buf(0, new_buff)
+    vim.fn.execute("edit")
+end
 
 
 --DEPRECATED
 -- return the name of the project from the module file
-function M.get_project_name_from_module_file(module_relative_path)
-  return module_relative_path:match("^.+/(.+).module.ts$")
-end
+-- function M.get_project_name_from_module_file(module_relative_path)
+--   return module_relative_path:match("^.+/(.+).module.ts$")
+-- end
 
 
 return M

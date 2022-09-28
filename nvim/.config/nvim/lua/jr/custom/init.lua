@@ -50,10 +50,9 @@ function M.jump_to_ngrx_parts(ngrx_part)
     -- if in data-access layer, then jump to nearest ngrx particular
      found_ngrx_part = find_nearest_ngrx_part(current_buffer, ngrx_part)
   else
-    -- replace 'feature' with 'data-access'
+    -- find the corresponding data-access lib by naming convention
     local data_access_project_name = string.gsub(project_name, "feature", "data%-access")
     data_access_project_name = "shared-" .. data_access_project_name
-    -- get relative path from project
     local absolute_path_to_project = path:new(get_relative_path_from_project_name(data_access_project_name)):absolute();
     found_ngrx_part = find_nearest_ngrx_part(absolute_path_to_project, ngrx_part)
 
@@ -61,11 +60,12 @@ function M.jump_to_ngrx_parts(ngrx_part)
   if found_ngrx_part ~= nil then
     local full_destination = path:new(found_ngrx_part):absolute()
     load_file_into_buffer(full_destination)
+    else
+      print("Could not find related ngrx part: " .. ngrx_part)
+
   end
 
 end
-
-
 
 function M.jump_to_nearest_module()
   local current_buffer = vim.api.nvim_buf_get_name(0)

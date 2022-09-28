@@ -1,9 +1,26 @@
 local scan = require'plenary.scandir'
 local path = require'plenary.path'
-local Job = require'plenary.job'
 local table_length = require'jr.utils'.table_length
 
+-- exported functions
 local M = {}
+
+-- internal  functions
+local I = {}
+
+function I.find_nearest_project_json(starting_dir)
+  local current_dir = path:new(starting_dir)
+  local scan_result
+  local count = 1
+-- keep going up directories until you find a `.module.ts` (or stop at 10 as then something went wrong)
+  repeat
+      current_dir = current_dir:parent()
+      scan_result = scan.scan_dir(current_dir:normalize() , {  search_pattern = '.project.json' });
+      count = count + 1
+  until (table_length(scan_result) > 0 or count >= 10)
+
+  return scan_result[1]
+end
 -- find the nearest angular module file by walking up the directory tree 
 -- looking for a file that matches the pattern *.module.ts
 function M.find_nearest_angular_module(starting_dir)
@@ -21,20 +38,7 @@ function M.find_nearest_angular_module(starting_dir)
 
 end
 
-function M.find_nearest_project_json(starting_dir)
-  local current_dir = path:new(starting_dir)
-  local scan_result
-  local count = 1
--- keep going up directories until you find a `.module.ts` (or stop at 10 as then something went wrong)
-  repeat
-      current_dir = current_dir:parent()
-      scan_result = scan.scan_dir(current_dir:normalize() , {  search_pattern = '.project.json' });
-      count = count + 1
-  until (table_length(scan_result) > 0 or count >= 10)
 
-  return scan_result[1]
-
-end
 function M.find_nearest_ngrx_part(starting_dir, ngrx_part)
   local current_dir = path:new(starting_dir)
   local scan_result
@@ -62,7 +66,7 @@ end
 -- given a path, find the project name by first finding the directory of the nearest project.json file
 -- then using the root angular.json to match the project name to the directory
 function M.get_project_name_from_path(current_path)
-  local nearest_project_json_directory = M.find_nearest_project_json(current_path)
+  local nearest_project_json_directory = I.find_nearest_project_json(current_path)
   if nearest_project_json_directory == nil then
     print("No project.json found!")
     return
@@ -95,7 +99,6 @@ function M.get_relative_path_from_project_name(project_name)
   -- read in angular.json file
   local angular_json = vim.fn.json_decode(vim.fn.readfile("angular.json"))
 
-  print('project_name', project_name)
   -- get the project name from the project_directory
   local project_path = nil
   for key, value in pairs(angular_json.projects) do

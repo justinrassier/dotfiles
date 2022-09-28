@@ -1,25 +1,15 @@
 local path = require'plenary.path'
 local Job = require'plenary.job'
 local nvim_tree_api = require("nvim-tree.api")
-local find_nearest_angular_module = require'jr.custom.utils'.find_nearest_angular_module
 local get_project_name_from_path = require'jr.custom.utils'.get_project_name_from_path
-
 
 local M = {};
 
 function M.run_nx_generator(generator_type)
   local node_path = nvim_tree_api.tree.get_node_under_cursor().absolute_path
   local relative_path = path:new(node_path):make_relative()
-  local module_relative_path = find_nearest_angular_module(node_path)
-  -- if the module path then we just exit with a message
-  if module_relative_path == nil then
-    print("No module found!")
-    return
-  end
+  local project_name = get_project_name_from_path(node_path)
 
-  -- get the module name from the module file file
-  -- NOTE: this won't work anymore if we switch away from ng-modules. But it works for now
-  local project_name = module_relative_path:match("^.+/(.+).module.ts$")
 
   if generator_type == 'component' then
     local component_name = vim.fn.input("Component name:");
@@ -35,7 +25,6 @@ function M.run_nx_generator(generator_type)
     local selected_option = options[selection + 1]
     -- strip off the number from the string
     local selected_clean = string.gsub(selected_option, "%d%. ", "")
-    local module_relative_path = find_nearest_angular_module(node_path)
 
     Job:new({
       command = 'nx',

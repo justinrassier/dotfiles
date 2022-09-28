@@ -1,6 +1,8 @@
 " call plug#begin('~/.vim/plugged')
 call plug#begin()
 " Lsp stuff
+" Plug 'williamboman/mason.nvim'
+" Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 
 " Fuzzy: finder
@@ -95,12 +97,14 @@ Plug 'github/copilot.vim'
 
 call plug#end()
 
+" lua require("mason").setup()
+" lua require("mason-lspconfig").setup({ensure_installed = { "sumneko_lua", "rust_analyzer" }})
+lua require("jr.lsp")
 lua require("jr.options")
 lua require("jr.colors")
 lua require("jr.mappings")
 lua require("jr.autocmds")
 lua require("jr.treesitter")
-lua require("jr.lsp")
 lua require("jr.telescope")
 lua require ("jr.comment")
 lua require ("jr.formatting")

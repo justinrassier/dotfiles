@@ -52,14 +52,18 @@ M.map("n", "<leader>jj", "<cmd>lua require('jr.custom').jump_to_angular_componen
 
 -- Jump to ngrx parts
 M.map("n", "<leader>jxr", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('reducer')<cr>")
-M.map("n", "<leader>jxe", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('effects')<cr>")
-M.map("n", "<leader>jxa", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('actions')<cr>")
+M.map("n", "<leader>jxe", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('effect')<cr>")
+M.map("n", "<leader>jxa", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('action')<cr>")
 M.map("n", "<leader>jxf", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('facade')<cr>")
-M.map("n", "<leader>jxs", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('selectors')<cr>")
+M.map("n", "<leader>jxs", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('selector')<cr>")
 --
 -- Call nx generator
-M.map("n", "<leader>nxgc", "<cmd>lua require('jr.custom').run_nx_generator('component')<cr>")
-M.map("n", "<leader>nxgs", "<cmd>lua require('jr.custom').run_nx_generator('service')<cr>")
+M.map("n", "<leader>nxgc", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('component')<cr>")
+M.map("n", "<leader>nxgcs", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('component-store')<cr>")
+M.map("n", "<leader>nxgs", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('service')<cr>")
+M.map("n", "<leader>nxgp", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('pipe')<cr>")
+M.map("n", "<leader>nxgd", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('directive')<cr>")
+M.map("n", "<leader>nxt", "<cmd>lua require('jr.custom.nx-commands').run_nx_test_for_file()<cr>")
 
 
 -- new scratch buffer
@@ -123,7 +127,7 @@ M.map("n","<silent> <Leader>-", ":exe \"vertical resize  \" . (winwidth(0) * 2/3
 M.map("n", "<leader>dst", "<cmd>10 new | set winfixheight |  terminal npm run dev:all<cr>")
 
 -- Nx affected commands in new terminal
-M.map("n", "<leader>nxt", "<cmd>10 new | set winfixheight |  terminal nx affected:test<cr>")
+-- M.map("n", "<leader>nxt", "<cmd>10 new | set winfixheight |  terminal nx affected:test<cr>")
 M.map("n", "<leader>nxl", "<cmd>10 new | set winfixheight |  terminal nx affected:lint<cr>")
 
 

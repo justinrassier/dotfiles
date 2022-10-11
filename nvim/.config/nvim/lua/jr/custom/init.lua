@@ -1,5 +1,6 @@
 local M = {}
 local path = require'plenary.path'
+local Job = require'plenary.job'
 local find_nearest_angular_module = require'jr.custom.utils'.find_nearest_angular_module
 local find_nearest_ngrx_part = require'jr.custom.utils'.find_nearest_ngrx_part
 local get_project_name_from_path = require'jr.custom.utils'.get_project_name_from_path
@@ -78,6 +79,18 @@ function M.jump_to_nearest_module()
 
 end
 
+
+function M.open_github_pr()
+    Job:new({
+      command = 'gh',
+      args = { 'pr'
+      , 'view'
+      , '--web'
+    },
+    on_exit = function (j, return_val)
+    end
+  }):sync()
+end
 
 
 

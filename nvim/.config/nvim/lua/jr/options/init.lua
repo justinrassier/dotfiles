@@ -22,6 +22,8 @@ Option.b = function(options)
   add_options(Type.BUFFER_OPTION, options)
 end
 
+vim.g.loaded = 1
+vim.g.loaded_netrwPlugin = 1
 
 Option.g {
   completeopt = "menu,menuone,noselect",

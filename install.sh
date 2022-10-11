@@ -43,6 +43,7 @@ npm install -g typescript typescript-language-server
 npm install -g @angular/language-server@latest
 npm install -g @tailwindcss/language-server
 npm install -g vscode-langservers-extracted
+npm install -g cspell@latest
 # npm install -g neovim
 
  

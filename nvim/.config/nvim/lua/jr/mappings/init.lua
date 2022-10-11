@@ -1,5 +1,4 @@
 local vim = vim
-local api = vim.api
 local M = {}
 function M.map(mode, lhs, rhs, opts)
   local options = {noremap = true, silent = true}
@@ -17,9 +16,7 @@ function M.mapBuf(buf, mode, lhs, rhs, opts)
 end
 
 
-M.map("i", "jk", "<Esc>", {noremap = false, silent = true})
--- shortcut to save quickly
-M.map("n", "<Leader>w", ":w<cr>")
+-- M.map("i", "jk", "<Esc>", {noremap = false, silent = true})
 -- save to system clipboard shortcuts
 M.map("v", "<Leader>y", '"+y', {noremap = false})
 M.map("v", "<Leader>d", '"+d', {noremap = false})
@@ -32,14 +29,15 @@ M.map("v", "<Leader>P", '"+P', {noremap = false})
 -- nvim-tree
 M.map("n", "<c-n>", "<cmd>:NvimTreeToggle<cr>")
 M.map("n", "<c-f>", "<cmd>:NvimTreeFindFile<cr>")
-  
+
 --telescope mappings
 M.map("n", "<c-p>", "<cmd>lua require('jr.telescope').find_files()<cr>")
 M.map("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
+M.map('n', '<leader>rn', "<cmd>lua vim.lsp.buf.rename()<CR>")
+
 M.map("n", "<Leader>a", "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>")
 M.map("n", "<Leader>tr", "<cmd>Telescope resume<cr>")
 M.map("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
-M.map("n", "<Leader>gpr", "<cmd>lua require('telescope').extensions.gh.pull_request()<cr>")
 M.map("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")
 
 
@@ -65,6 +63,9 @@ M.map("n", "<leader>nxgp", "<cmd>lua require('jr.custom.nx-commands').run_nx_gen
 M.map("n", "<leader>nxgd", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('directive')<cr>")
 M.map("n", "<leader>nxt", "<cmd>lua require('jr.custom.nx-commands').run_nx_test_for_file()<cr>")
 
+-- open github PR in  browser
+M.map('n', "<leader>gpr", "<cmd>lua require('jr.custom').open_github_pr()<cr>")
+
 
 -- new scratch buffer
 M.map("n", "<leader>ns", "<cmd>lua require('jr.custom').new_scratch_buffer()<cr>")
@@ -89,6 +90,8 @@ M.map("i", ")", ")<c-g>u")
 -- gitsigns
 M.map("n", "<leader>gl", ":Gitsigns toggle_current_line_blame<cr>")
 M.map("n", "<leader>lg", ":LazyGit<cr>")
+M.map("n", "<leader>dv", ":DiffviewOpen<cr>")
+M.map("n", "<leader>dc", ":DiffviewClose<cr>")
 
 -- quickfix navigation
 M.map("n","<leader>cn", ":cn<CR>")
@@ -118,25 +121,15 @@ M.map("v", "K", ":m '<-2<CR>gv=gv")
 M.map("v", "J", ":m '>+1<CR>gv=gv")
 
 
-
 -- resize window helper
 M.map("n","<silent> <Leader>+", ":exe \"vertical resize \" . (winwidth(0) * 3/2)<CR>")
 M.map("n","<silent> <Leader>-", ":exe \"vertical resize  \" . (winwidth(0) * 2/3)<CR>")
-
--- dev start terminal
-M.map("n", "<leader>dst", "<cmd>10 new | set winfixheight |  terminal npm run dev:all<cr>")
-
--- Nx affected commands in new terminal
--- M.map("n", "<leader>nxt", "<cmd>10 new | set winfixheight |  terminal nx affected:test<cr>")
-M.map("n", "<leader>nxl", "<cmd>10 new | set winfixheight |  terminal nx affected:lint<cr>")
 
 
 -- copy all to clipboard
 M.map("n", "<leader>cac", ":%y+<cr>")
 -- paste from clipboard
 M.map("n", "<leader>pc", ":norm \"+p<cr>")
-
-
 
 
 --Harpoooooooon
@@ -146,32 +139,10 @@ M.map("n", "<leader>mn", "<cmd>lua require(\"harpoon.ui\").nav_next()<cr>")
 M.map("n", "<leader>mp", "<cmd>lua require(\"harpoon.ui\").nav_prev()<cr>")
 
 
--- Experimental
--- Bracket completion
--- M.map("i", "{} ", "{}<esc>i<cr><esc>O")
--- while typing delete back a WORD
-M.map("n", "<leader>td", "<cmd>VimwikiGoto TODO<cr>")
-
 
 -- jvim.nvim
-
 M.map("n", "<left>", "<cmd>lua require('jvim').to_parent()<cr>")
 M.map("n", "<right>", "<cmd>lua require('jvim').descend()<cr>")
 M.map("n", "<up>", "<cmd>lua require('jvim').prev_sibling()<cr>")
 M.map("n", "<down>", "<cmd>lua require('jvim').next_sibling()<cr>")
--- nnoremap <left> :lua require("jvim").to_parent()<CR>
--- nnoremap <right> :lua require("jvim").descend()<CR>
--- nnoremap <up> :lua require("jvim").prev_sibling()<CR>
--- nnoremap <down> :lua require("jvim").next_sibling()<CR>
 M.map("n", "<leader>dl", "<cmd>lua require('jr.custom.lsp-debug').debug_lsp()<cr>")
-
-
-
-
--- call vimscript function
-
-
--- create new scratch buffer using vim api
---
-
-

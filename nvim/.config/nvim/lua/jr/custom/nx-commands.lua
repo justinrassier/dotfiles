@@ -123,6 +123,8 @@ function M.run_nx_generator(generator_type)
 	end
 
   if generator_type == 'component-store' then
+    local add_spec = vim.fn.input("Add spec file? (y/n):");
+    local add_spec_bool = add_spec == 'y' and true or false
     Job:new({
       command = 'npx',
       args = { 
@@ -133,9 +135,11 @@ function M.run_nx_generator(generator_type)
       , project_name
       , '--path'
       , relative_path
+      , '--addSpec'
+      , add_spec_bool
     },
     on_exit = function (j, return_val)
-      -- print(vim.inspect(j:result()))
+      print(vim.inspect(j:result()))
       -- don't need to do anything here
     end
   }):sync(10000)
@@ -155,7 +159,7 @@ function M.run_nx_test_for_file()
   local test_command = "nx test " .. project_name .. " --testFile "..current_buffer .." --watch"
 
   -- execute the nx command in a new terminal buffer
-  vim.fn.execute("80 vnew | set winfixheight |  terminal " .. test_command )
+  vim.fn.execute("80 vnew | terminal " .. test_command )
 
 end
 

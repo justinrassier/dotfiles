@@ -81,15 +81,16 @@ Plug 'akinsho/bufferline.nvim'
 
 " Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'ellisonleao/glow.nvim'
 
-" Plug 'jiangmiao/auto-pairs'
 
 Plug 'ThePrimeagen/harpoon'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " Experimental
 Plug 'vim-test/vim-test'
 Plug 'pwntester/octo.nvim'
-Plug 'vimwiki/vimwiki'
+" Plug 'vimwiki/vimwiki'
 Plug 'theprimeagen/jvim.nvim'
 Plug 'SmiteshP/nvim-gps'
 Plug 'github/copilot.vim'
@@ -99,8 +100,9 @@ call plug#end()
 
 " lua require("mason").setup()
 " lua require("mason-lspconfig").setup({ensure_installed = { "sumneko_lua", "rust_analyzer" }})
-lua require("jr.lsp")
 lua require("jr.options")
+lua require("jr.lsp")
+lua require("jr.lsp.null-ls")
 lua require("jr.colors")
 lua require("jr.mappings")
 lua require("jr.autocmds")
@@ -113,11 +115,12 @@ lua require('jr.gitsigns')
 lua require('jr.nvim-tree')
 lua require('jr.harpoon')
 
-" stuff that doesn't need its own config file yet
+" stuf that doesn't need its own config file yet
 lua require("todo-comments").setup {}
 lua require('octo').setup()
 lua require'nvim-web-devicons'.setup()
 lua require('nvim-ts-autotag').setup()
+lua require('glow').setup()
 
 
 " au FileType markdown let b:presenting_slide_separator = '---'

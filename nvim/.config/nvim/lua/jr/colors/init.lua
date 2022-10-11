@@ -21,10 +21,12 @@ local M = {
 -- vim.cmd("colorscheme gruvbox")
 
 vim.cmd("colorscheme TokyoNight")
--- document_highlight() colors. Not super great, but something at least
--- vim.cmd("hi LspReferenceRead cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
--- vim.cmd("hi LspReferenceText cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
--- vim.cmd("hi LspReferenceWrite cterm=italic ctermbg=214 guibg=" .. M.blue .. " guifg=" .. M.white)
+-- get if system setting is dark mode and set colorscheme accordingly
+local dark_mode = vim.fn.system("defaults read -g AppleInterfaceStyle")
+dark_mode = string.gsub(dark_mode, "^%s*(.-)%s*$", "%1")
+dark_mode = dark_mode == "Dark" and true or false
+vim.cmd("set background=" .. (dark_mode and "dark" or "light"))
+
 
 
 function M.setItalics()

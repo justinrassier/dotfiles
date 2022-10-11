@@ -9,7 +9,7 @@ export LDFLAGS=-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
 
 
 
-alias vim="nvim"
+# alias vim="nvim"
 alias work="tmuxinator start work"
 
 

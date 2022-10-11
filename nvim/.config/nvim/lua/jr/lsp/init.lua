@@ -135,27 +135,6 @@ local on_attach = function(client, bufnr)
   vim.fn.sign_define("DiagnosticSignInfo", {text = "•"})
   vim.fn.sign_define("DiagnosticSignHint", {text = "•"})
 
-
-
-  --HACK:  disable rename on the angular LS because it causes conflicts with the TS language service during renames (remove after this is solved https://github.com/neovim/neovim/issues/16363)
-  local rc = client.resolved_capabilities 
-  if client.name == "angularls" then
-    rc.rename = false
-  end
-
-  -- only attach renaming mapping if the client supports renaming
-  if client.resolved_capabilities.rename then
-    mapBuf(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
-  end
-
-  -- when you have your curosor over the top it highlights references in scope
-  if client.resolved_capabilities.document_highlight then
-    mapBuf(bufnr, "n", "<Leader>H", "<cmd>lua vim.lsp.buf.document_highlight()<CR>")
-    vim.api.nvim_command("autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()")
-    vim.api.nvim_command("autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()")
-    vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
-  end
-
 end
 
 

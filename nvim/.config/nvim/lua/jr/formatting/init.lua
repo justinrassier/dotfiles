@@ -8,8 +8,6 @@ local prettierConfig = function()
   }
 end
 
-
-
 local formatterConfig = {
   svelte = {
     function()

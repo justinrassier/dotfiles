@@ -28,14 +28,12 @@ STOW_FOLDERS="nvim,kitty,zsh"
 # brew install tmuxinator
 # brew install ripgrep
 
-#
-# Vim Plug (https://github.com/junegunn/vim-plug)
-#
- 
-# curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-#    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# Install packer
 
+# git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+# ~/.local/share/nvim/site/pack/packer/start/packer.nvim
  
+
  # nvim-lsp reference  (https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md)
  
  #  Install language servers needed from npm
@@ -44,7 +42,6 @@ npm install -g @angular/language-server@latest
 npm install -g @tailwindcss/language-server
 npm install -g vscode-langservers-extracted
 npm install -g cspell@latest
-# npm install -g neovim
 
  
 

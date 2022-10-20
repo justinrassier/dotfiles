@@ -283,6 +283,11 @@ lspconfig.gopls.setup{
   capabilities = capabilities
 }
 
+lspconfig.nxls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
 lspconfig.sumneko_lua.setup {
   settings = {
     Lua = {

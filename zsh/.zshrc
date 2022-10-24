@@ -23,6 +23,7 @@ alias python=python2
 export PYTHON=python2
 
 
+alias gpr="gh pr view -w"
 
 alias gc="git add -A && git commit -m"
 alias gco="git checkout"

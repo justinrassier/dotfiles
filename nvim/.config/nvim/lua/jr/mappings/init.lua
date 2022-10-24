@@ -63,6 +63,10 @@ M.map("n", "<leader>nxgp", "<cmd>lua require('jr.custom.nx-commands').run_nx_gen
 M.map("n", "<leader>nxgd", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('directive')<cr>")
 M.map("n", "<leader>nxt", "<cmd>lua require('jr.custom.nx-commands').run_nx_test_for_file()<cr>")
 
+-- Tailwind
+M.map("n", "<leader>twc", "<cmd>lua require('jr.custom.tailwind').add_or_insert_class_attribute()<cr>")
+
+
 -- open github PR in  browser
 M.map('n', "<leader>gpr", "<cmd>lua require('jr.custom').open_github_pr()<cr>")
 
@@ -137,6 +141,10 @@ M.map("n", "<leader>mf", "<cmd>lua require(\"harpoon.mark\").add_file()<cr>")
 M.map("n", "<leader>mu", "<cmd>lua require(\"harpoon.ui\").toggle_quick_menu()<cr>")
 M.map("n", "<leader>mn", "<cmd>lua require(\"harpoon.ui\").nav_next()<cr>")
 M.map("n", "<leader>mp", "<cmd>lua require(\"harpoon.ui\").nav_prev()<cr>")
+
+
+-- prettify JSON
+M.map("n", "<leader>pj", "<cmd>%!jq<cr>")
 
 
 

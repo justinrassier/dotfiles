@@ -16,7 +16,6 @@ vim.api.nvim_create_autocmd("FileType", {
 local inline_testing_augroup = vim.api.nvim_create_augroup("InlineTesting", {clear = true})
 
 vim.api.nvim_create_user_command("AttachToTest", function()
-
   -- get current buffer name
   local buf_name = vim.api.nvim_buf_get_name(0)
   local ns = vim.api.nvim_create_namespace("InlineTesting")
@@ -50,7 +49,6 @@ vim.api.nvim_create_user_command("AttachToTest", function()
 
       vim.fn.jobstart({"nx", "test", project_name, "--testFile="..current_buffer , "--json", "--outputFile=/tmp/results.json", "--skip-nx-cache", }, {
         stdout_buffered = true,
-        cwd = "/Users/justinrassier/dev/cavo",
         on_exit = function()
           -- read in JSON file
           local file = io.open("/tmp/results.json", "r")
@@ -92,7 +90,7 @@ vim.api.nvim_create_user_command("AttachToTest", function()
                       end_lnum = line_num,
                       end_col = 0,
                       severity = vim.diagnostic.severity.ERROR,
-                      message = result.error_message,
+                      message = "Test Failed: "..result.error_message,
                     })
                   end
                 end
@@ -111,6 +109,7 @@ vim.api.nvim_create_user_command("AttachToTest", function()
 
 end,{})
 
+-- execute treesitter query against current buffer
 
 
 

@@ -1,6 +1,5 @@
-require("harpoon").setup({ 
-  menu = {
-    width = 100
-  }
+require("harpoon").setup({
+	menu = {
+		width = 100,
+	},
 })
-

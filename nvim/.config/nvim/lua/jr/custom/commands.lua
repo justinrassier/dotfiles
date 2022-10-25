@@ -20,6 +20,7 @@ vim.api.nvim_create_user_command("AddToBarrel", function()
 		local file_contents = file:read("*all")
 		file:close()
 
+		-- esacpe the export string for lua patterns
 		local escaped_export_string = export_string:gsub("%.", "%%.")
 		escaped_export_string = escaped_export_string:gsub("%*", "%%*")
 		escaped_export_string = escaped_export_string:gsub("%-", "%%-")
@@ -40,8 +41,8 @@ end, {})
 
 local inline_testing_augroup = vim.api.nvim_create_augroup("InlineTesting", { clear = true })
 local inline_testing_ns = vim.api.nvim_create_namespace("InlineTesting")
--- adds an autocommand to run the test suite on save and mark up using virtual text
 
+-- adds an autocommand to run the test suite on save and mark up using virtual text
 vim.api.nvim_create_user_command("AttachToTest", function()
 	local buf_name = vim.api.nvim_buf_get_name(0)
 	vim.api.nvim_create_autocmd("BufWritePost", {
@@ -58,7 +59,7 @@ vim.api.nvim_create_user_command("AttachToTest", function()
 			local line_num = 0
 			for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
 				-- get the test name from the it statement
-				local test = M.get_test_name_from_line(line)
+				local test = M.get_matching_it_statements_for_line(line)
 				local text = { "⌛" }
 
 				if test ~= nil then
@@ -101,7 +102,7 @@ vim.api.nvim_create_user_command("AttachToTest", function()
 						line_num = 0
 						for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
 							-- get the test name from the it statement
-							local test = M.get_test_name_from_line(line)
+							local test = M.get_matching_it_statements_for_line(line)
 							if test ~= nil then
 								local result = testMap[test]
 								if result ~= nil then
@@ -145,9 +146,13 @@ vim.api.nvim_create_user_command("UnattachInlineTesting", function()
 	vim.api.nvim_clear_autocmds({ group = inline_testing_augroup, pattern = buf_name })
 end, {})
 
+--
+-- Private functions
+--
 function M.get_matching_it_statements_for_line(line)
 	return string.match(line, "it%(['\"](.*)['\"].*%)")
 end
+
 function M.clear_namespace_for_current_buffer(bufnr)
 	vim.api.nvim_buf_clear_namespace(bufnr, inline_testing_ns, 0, -1)
 	vim.diagnostic.reset(inline_testing_ns, bufnr)

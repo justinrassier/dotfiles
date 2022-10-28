@@ -1,12 +1,10 @@
 local vim = vim
 local lsp = vim.lsp
-local handlers = lsp.handlers
 local lspconfig = require("lspconfig")
 local util = lspconfig.util
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 local mapBuf = require("jr.utils").mapBuf
-local autocmd = require("jr.utils").autocmd
 local get_node_modules = require("jr.utils").get_node_modules
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 capabilities.textDocument.completion.completionItem.snippetSupport = true

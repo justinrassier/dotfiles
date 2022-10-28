@@ -1,8 +1,3 @@
--- require('nvim_comment').setup({
---   hook = function()
---     require('ts_context_commentstring.internal').update_commentstring()
---   end
--- })
 require("Comment").setup({
 	pre_hook = function(ctx)
 		-- Only calculate commentstring for tsx filetypes

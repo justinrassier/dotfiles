@@ -44,6 +44,32 @@ local inline_testing_ns = vim.api.nvim_create_namespace("InlineTesting")
 
 -- adds an autocommand to run the test suite on save and mark up using virtual text
 vim.api.nvim_create_user_command("AttachToTest", function()
+	local current_buffer = vim.api.nvim_buf_get_name(0)
+	local project_name = get_project_name_from_path(current_buffer)
+	local cmd = {
+		"nx",
+		"test",
+		project_name,
+		"--testFile=" .. current_buffer,
+		"--json",
+		"--outputFile=/tmp/results.json",
+		"--skip-nx-cache",
+	}
+	M.add_test_on_save(cmd)
+end, {})
+vim.api.nvim_create_user_command("AttachToTestJest", function()
+	local current_buffer = vim.api.nvim_buf_get_name(0)
+	local cmd = {
+		"npx",
+		"jest",
+		"--testPathPattern=" .. current_buffer,
+		"--json",
+		"--outputFile=/tmp/results.json",
+	}
+	M.add_test_on_save(cmd)
+end, {})
+
+function M.add_test_on_save(cmd)
 	local buf_name = vim.api.nvim_buf_get_name(0)
 	vim.api.nvim_create_autocmd("BufWritePost", {
 		group = inline_testing_augroup,
@@ -51,9 +77,6 @@ vim.api.nvim_create_user_command("AttachToTest", function()
 		callback = function()
 			local bufnr = vim.api.nvim_get_current_buf()
 			M.clear_namespace_for_current_buffer(bufnr)
-
-			local current_buffer = vim.api.nvim_buf_get_name(0)
-			local project_name = get_project_name_from_path(current_buffer)
 
 			-- add an hour glass to each test line
 			local line_num = 0
@@ -68,15 +91,7 @@ vim.api.nvim_create_user_command("AttachToTest", function()
 				line_num = line_num + 1
 			end
 
-			vim.fn.jobstart({
-				"nx",
-				"test",
-				project_name,
-				"--testFile=" .. current_buffer,
-				"--json",
-				"--outputFile=/tmp/results.json",
-				"--skip-nx-cache",
-			}, {
+			vim.fn.jobstart(cmd, {
 				stdout_buffered = true,
 				on_exit = function()
 					-- read in JSON file
@@ -98,6 +113,7 @@ vim.api.nvim_create_user_command("AttachToTest", function()
 						end
 
 						-- for each line in buffer check if it has a test
+						M.clear_namespace_for_current_buffer(bufnr)
 						local diagnostics_tbl = {}
 						line_num = 0
 						for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
@@ -136,13 +152,13 @@ vim.api.nvim_create_user_command("AttachToTest", function()
 			})
 		end,
 	})
-end, {})
+end
 
 -- unnatach the test runner from the buffer and clear the namespace
 vim.api.nvim_create_user_command("UnattachInlineTesting", function()
 	local bufnr = vim.api.nvim_get_current_buf()
 	local buf_name = vim.api.nvim_buf_get_name(bufnr)
-	M.clear_inline_testing(bufnr)
+	M.clear_namespace_for_current_buffer(bufnr)
 	vim.api.nvim_clear_autocmds({ group = inline_testing_augroup, pattern = buf_name })
 end, {})
 

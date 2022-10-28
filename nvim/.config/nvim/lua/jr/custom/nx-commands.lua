@@ -130,7 +130,7 @@ function M.run_nx_generator(generator_type)
 				"--path",
 				relative_path,
 				"--addSpec",
-				add_spec_bool,
+				tostring(add_spec_bool),
 			},
 			on_exit = function(j, return_val)
 				print(vim.inspect(j:result()))

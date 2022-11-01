@@ -1,6 +1,7 @@
 local path = require("plenary.path")
 local find_nearest_file = require("jr.custom.utils").find_nearest_file
 local get_project_name_from_path = require("jr.custom.utils").get_project_name_from_path
+local popup = require("plenary.popup")
 
 local M = {}
 
@@ -41,6 +42,8 @@ end, {})
 
 local inline_testing_augroup = vim.api.nvim_create_augroup("InlineTesting", { clear = true })
 local inline_testing_ns = vim.api.nvim_create_namespace("InlineTesting")
+local inline_testing_results = {}
+local test_results_winnr = nil
 
 -- adds an autocommand to run the test suite on save and mark up using virtual text
 vim.api.nvim_create_user_command("AttachToTest", function()
@@ -75,6 +78,7 @@ function M.add_test_on_save(cmd)
 		group = inline_testing_augroup,
 		pattern = buf_name,
 		callback = function()
+			inline_testing_results = {}
 			local bufnr = vim.api.nvim_get_current_buf()
 			M.clear_namespace_for_current_buffer(bufnr)
 
@@ -112,9 +116,7 @@ function M.add_test_on_save(cmd)
 								{ status = result.status, error_message = result.failureMessages[1] }
 						end
 
-						-- for each line in buffer check if it has a test
-						M.clear_namespace_for_current_buffer(bufnr)
-						local diagnostics_tbl = {}
+						-- assemble the test results in to the inline_testing_results table
 						line_num = 0
 						for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
 							-- get the test name from the it statement
@@ -122,31 +124,18 @@ function M.add_test_on_save(cmd)
 							if test ~= nil then
 								local result = testMap[test]
 								if result ~= nil then
-									if result.status == "passed" then
-										local text = { "✅" }
-										vim.api.nvim_buf_set_extmark(
-											bufnr,
-											inline_testing_ns,
-											line_num,
-											0,
-											{ virt_text = { text } }
-										)
-									elseif result.status == "failed" then
-										table.insert(diagnostics_tbl, {
-											bufnr = bufnr,
-											lnum = line_num,
-											col = 0,
-											end_lnum = line_num,
-											end_col = 0,
-											severity = vim.diagnostic.severity.ERROR,
-											message = "Test Failed: " .. result.error_message,
-										})
-									end
+									table.insert(inline_testing_results, {
+										name = test,
+										line_num = line_num,
+										passed = result.status == "passed",
+										error_message = result.error_message,
+									})
 								end
 							end
 							line_num = line_num + 1
 						end
-						vim.diagnostic.set(inline_testing_ns, bufnr, diagnostics_tbl, {})
+						M.clear_namespace_for_current_buffer(bufnr)
+						M.add_extmark_to_test_result(inline_testing_results)
 					end
 				end,
 			})
@@ -165,6 +154,75 @@ end, {})
 --
 -- Private functions
 --
+vim.api.nvim_create_user_command("OpenTestResultsPanel", function()
+	M.create_popup_of_test_results(inline_testing_results)
+end, {})
+
+function M.create_popup_of_test_results(test_result)
+	-- creat a new buffer
+	local bufnr = vim.api.nvim_create_buf(false, true)
+
+	-- assemble list of test results
+	local lines = {}
+	for _, result in ipairs(test_result) do
+		local text = result.passed and "✅" or "❌"
+		table.insert(lines, text .. " " .. result.name)
+	end
+
+	-- add a line of text
+	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+
+	local width = 125
+	local height = 25
+	local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+	-- open a window in the center of the screen
+	test_results_winnr, win = popup.create(bufnr, {
+		title = "Test Results",
+		line = math.floor(((vim.o.lines - height) / 2) - 1),
+		col = math.floor((vim.o.columns - width) / 2),
+		minwidth = width,
+		minheight = height,
+		borderchars = borderchars,
+	})
+
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<CR>", "<Cmd>lua require('jr.custom.commands').select_menu_item()<CR>", {})
+end
+
+function M.select_menu_item()
+	local line_num = vim.fn.line(".")
+	print(line_num)
+	vim.api.nvim_win_close(test_results_winnr, true)
+	test_results_winnr = nil
+
+	-- get the test result for the selected line
+	local test_result = inline_testing_results[line_num]
+
+	-- move the cursor to the test result
+	vim.api.nvim_win_set_cursor(0, { test_result.line_num + 1, 0 })
+end
+
+function M.add_extmark_to_test_result(test_results)
+	local bufnr = vim.api.nvim_get_current_buf()
+	local diagnostics_tbl = {}
+	for _, result in ipairs(test_results) do
+		if result.passed == true then
+			local text = { "✅" }
+			vim.api.nvim_buf_set_extmark(bufnr, inline_testing_ns, result.line_num, 0, { virt_text = { text } })
+		else
+			table.insert(diagnostics_tbl, {
+				bufnr = bufnr,
+				lnum = result.line_num,
+				col = 0,
+				end_lnum = result.line_num,
+				end_col = 0,
+				severity = vim.diagnostic.severity.ERROR,
+				message = "Test Failed: " .. result.error_message,
+			})
+		end
+	end
+	vim.diagnostic.set(inline_testing_ns, bufnr, diagnostics_tbl, {})
+end
+
 function M.get_matching_it_statements_for_line(line)
 	return string.match(line, "it%(['\"](.*)['\"].*%)")
 end
@@ -173,3 +231,5 @@ function M.clear_namespace_for_current_buffer(bufnr)
 	vim.api.nvim_buf_clear_namespace(bufnr, inline_testing_ns, 0, -1)
 	vim.diagnostic.reset(inline_testing_ns, bufnr)
 end
+
+return M

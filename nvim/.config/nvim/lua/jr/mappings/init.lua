@@ -121,7 +121,7 @@ M.map("n", "<silent> <Leader>+", ':exe "vertical resize " . (winwidth(0) * 3/2)<
 M.map("n", "<silent> <Leader>-", ':exe "vertical resize  " . (winwidth(0) * 2/3)<CR>')
 
 -- copy all to clipboard
-M.map("n", "<leader>cac", ":%y+<cr>")
+-- M.map("n", "<leader>cac", ":%y+<cr>")
 -- paste from clipboard
 M.map("n", "<leader>pc", ':norm "+p<cr>')
 

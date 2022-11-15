@@ -45,6 +45,11 @@ local inline_testing_ns = vim.api.nvim_create_namespace("InlineTesting")
 local inline_testing_results = {}
 local test_results_winnr = nil
 
+local console_logs = {}
+local capturing_logs = false
+local console_log_win = nil
+local console_log_buf = nil
+
 -- adds an autocommand to run the test suite on save and mark up using virtual text
 vim.api.nvim_create_user_command("AttachToTest", function()
 	local current_buffer = vim.api.nvim_buf_get_name(0)
@@ -79,6 +84,8 @@ function M.add_test_on_save(cmd)
 		pattern = buf_name,
 		callback = function()
 			inline_testing_results = {}
+			M.clear_console_log_stuff()
+
 			local bufnr = vim.api.nvim_get_current_buf()
 			M.clear_namespace_for_current_buffer(bufnr)
 
@@ -97,6 +104,23 @@ function M.add_test_on_save(cmd)
 
 			vim.fn.jobstart(cmd, {
 				stdout_buffered = true,
+				--nx sends output to stderr when uing the --json flag
+				on_stderr = function(_, data)
+					for _, result in ipairs(data) do
+						local match_console_marker = string.match(result, "console.log")
+						if match_console_marker ~= nil then
+							capturing_logs = true
+						end
+						-- if the string has has 'at' and ends with a colon, it's a stack trace
+						if string.match(result, "^.* at .+:") ~= nil then
+							capturing_logs = false
+						end
+
+						if capturing_logs == true and not match_console_marker then
+							table.insert(console_logs, result)
+						end
+					end
+				end,
 				on_exit = function()
 					-- read in JSON file
 					local file = io.open("/tmp/results.json", "r")
@@ -134,6 +158,8 @@ function M.add_test_on_save(cmd)
 							end
 							line_num = line_num + 1
 						end
+
+						M.open_console_log_win()
 						M.clear_namespace_for_current_buffer(bufnr)
 						M.add_extmark_to_test_result(inline_testing_results)
 					end
@@ -230,6 +256,42 @@ end
 function M.clear_namespace_for_current_buffer(bufnr)
 	vim.api.nvim_buf_clear_namespace(bufnr, inline_testing_ns, 0, -1)
 	vim.diagnostic.reset(inline_testing_ns, bufnr)
+end
+
+function M.clear_console_log_stuff()
+	console_logs = {}
+	if console_log_win ~= nil then
+		if vim.api.nvim_win_is_valid(console_log_win) then
+			vim.api.nvim_win_close(console_log_win, true)
+		end
+		console_log_win = nil
+	end
+	if console_log_buf ~= nil then
+		if vim.api.nvim_buf_is_valid(console_log_buf) then
+			vim.api.nvim_buf_delete(console_log_buf, { force = true })
+		end
+		console_log_buf = nil
+	end
+end
+
+function M.open_console_log_win()
+	if #console_logs > 0 then
+		local current_win = vim.api.nvim_get_current_win()
+		if console_log_win == nil then
+			vim.fn.execute("80 vnew")
+			console_log_win = vim.api.nvim_get_current_win()
+		end
+		if console_log_buf == nil then
+			console_log_buf = vim.api.nvim_get_current_buf()
+			-- set buffer to be a scratch buffer
+			vim.api.nvim_buf_set_option(console_log_buf, "buflisted", false)
+		end
+		vim.api.nvim_buf_set_lines(console_log_buf, 0, -1, false, console_logs)
+		vim.api.nvim_win_set_buf(console_log_win, console_log_buf)
+
+		-- set cursor back to the original window
+		vim.api.nvim_set_current_win(current_win)
+	end
 end
 
 return M

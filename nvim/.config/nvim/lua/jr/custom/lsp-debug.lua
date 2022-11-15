@@ -2,38 +2,17 @@ local popup = require("plenary.popup")
 
 local M = {}
 vim.api.nvim_create_user_command("RunThing", function()
-	-- creat a new buffer
-	local bufnr = vim.api.nvim_create_buf(false, true)
-	-- add a line of text
-	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "hello world", "hello world", "hello world" })
+	-- get current buffer
+	local current_win = vim.api.nvim_get_current_win()
+	vim.fn.execute("20 vnew")
+	local console_log_win = vim.api.nvim_get_current_win()
+	local console_log_buf = vim.api.nvim_create_buf(true, false)
+	vim.api.nvim_win_set_buf(console_log_win, console_log_buf)
+	vim.api.nvim_set_current_win(current_win)
 
-	local width = 125
-	local height = 25
-	local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
-	-- open a window in the center of the screen
-	local Harpoon_win_id, win = popup.create(bufnr, {
-		title = "Test Results",
-		line = math.floor(((vim.o.lines - height) / 2) - 1),
-		col = math.floor((vim.o.columns - width) / 2),
-		minwidth = width,
-		minheight = height,
-		borderchars = borderchars,
-	})
-	-- capture enter key
-
-	vim.api.nvim_buf_set_keymap(
-		bufnr,
-		"n",
-		"<CR>",
-		"<Cmd>lua require('jr.custom.lsp-debug').select_menu_item()<CR>",
-		{}
-	)
+	local lines = { "hello", "world" }
+	vim.api.nvim_buf_set_lines(console_log_buf, 0, -1, false, lines)
 end, {})
-
-function M.select_menu_item()
-	local line_num = vim.fn.line(".")
-	print(line_num)
-end
 
 return M
 

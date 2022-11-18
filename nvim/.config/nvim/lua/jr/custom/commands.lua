@@ -250,7 +250,7 @@ function M.add_extmark_to_test_result(test_results)
 end
 
 function M.get_matching_it_statements_for_line(line)
-	return string.match(line, "it%(['\"](.*)['\"].*%)")
+	return string.match(line, "it%(['\"](.*)['\"].*%,")
 end
 
 function M.clear_namespace_for_current_buffer(bufnr)

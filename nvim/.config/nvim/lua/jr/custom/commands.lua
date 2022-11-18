@@ -2,8 +2,13 @@ local path = require("plenary.path")
 local find_nearest_file = require("jr.custom.utils").find_nearest_file
 local get_project_name_from_path = require("jr.custom.utils").get_project_name_from_path
 local popup = require("plenary.popup")
+local open_gh_file = require("jr.custom").open_gh_file
 
 local M = {}
+
+vim.api.nvim_create_user_command("OpenFileInGitHub", function()
+	open_gh_file()
+end, {})
 
 -- Add current file to the nearest barrel file
 vim.api.nvim_create_user_command("AddToBarrel", function()

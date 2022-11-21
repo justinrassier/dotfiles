@@ -39,32 +39,32 @@ M.map("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
 M.map("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")
 
 -- Custom jump around Angular component parts
-M.map("n", "<leader>jm", "<cmd>lua require('jr.custom').jump_to_nearest_module()<cr>")
-M.map("n", "<leader>jc", "<cmd>lua require('jr.custom').jump_to_angular_component_part('ts')<cr>")
-M.map("n", "<leader>jt", "<cmd>lua require('jr.custom').jump_to_angular_component_part('html')<cr>")
-M.map("n", "<leader>js", "<cmd>lua require('jr.custom').jump_to_angular_component_part('scss')<cr>")
-M.map("n", "<leader>jj", "<cmd>lua require('jr.custom').jump_to_angular_component_part('spec%.ts')<cr>")
+M.map("n", "<leader>jm", "<cmd>lua require('jr.custom.angular').jump_to_nearest_module()<cr>")
+M.map("n", "<leader>jc", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('ts')<cr>")
+M.map("n", "<leader>jt", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('html')<cr>")
+M.map("n", "<leader>js", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('scss')<cr>")
+M.map("n", "<leader>jj", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('spec%.ts')<cr>")
 
 -- Jump to ngrx parts
-M.map("n", "<leader>jxr", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('reducer')<cr>")
-M.map("n", "<leader>jxe", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('effect')<cr>")
-M.map("n", "<leader>jxa", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('action')<cr>")
-M.map("n", "<leader>jxf", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('facade')<cr>")
-M.map("n", "<leader>jxs", "<cmd>lua require('jr.custom').jump_to_ngrx_parts('selector')<cr>")
+M.map("n", "<leader>jxr", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('reducer')<cr>")
+M.map("n", "<leader>jxe", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('effect')<cr>")
+M.map("n", "<leader>jxa", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('action')<cr>")
+M.map("n", "<leader>jxf", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('facade')<cr>")
+M.map("n", "<leader>jxs", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('selector')<cr>")
 --
 -- Call nx generator
-M.map("n", "<leader>nxgc", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('component')<cr>")
-M.map("n", "<leader>nxgcs", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('component-store')<cr>")
-M.map("n", "<leader>nxgs", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('service')<cr>")
-M.map("n", "<leader>nxgp", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('pipe')<cr>")
-M.map("n", "<leader>nxgd", "<cmd>lua require('jr.custom.nx-commands').run_nx_generator('directive')<cr>")
-M.map("n", "<leader>nxt", "<cmd>lua require('jr.custom.nx-commands').run_nx_test_for_file()<cr>")
+M.map("n", "<leader>nxgc", "<cmd>lua require('jr.custom.nx').run_nx_generator('component')<cr>")
+M.map("n", "<leader>nxgcs", "<cmd>lua require('jr.custom.nx').run_nx_generator('component-store')<cr>")
+M.map("n", "<leader>nxgs", "<cmd>lua require('jr.custom.nx').run_nx_generator('service')<cr>")
+M.map("n", "<leader>nxgp", "<cmd>lua require('jr.custom.nx').run_nx_generator('pipe')<cr>")
+M.map("n", "<leader>nxgd", "<cmd>lua require('jr.custom.nx').run_nx_generator('directive')<cr>")
+M.map("n", "<leader>nxt", "<cmd>lua require('jr.custom.nx').run_nx_test_for_file()<cr>")
 
 -- Tailwind
 M.map("n", "<leader>twc", "<cmd>lua require('jr.custom.tailwind').add_or_insert_class_attribute()<cr>")
 
 -- open github PR in  browser
-M.map("n", "<leader>gpr", "<cmd>lua require('jr.custom').open_github_pr()<cr>")
+M.map("n", "<leader>gpr", "<cmd>lua require('jr.custom.gh').open_github_pr()<cr>")
 
 -- new scratch buffer
 M.map("n", "<leader>ns", "<cmd>lua require('jr.custom').new_scratch_buffer()<cr>")
@@ -134,9 +134,6 @@ M.map("n", "<leader>mp", '<cmd>lua require("harpoon.ui").nav_prev()<cr>')
 -- prettify JSON
 M.map("n", "<leader>pj", "<cmd>%!jq<cr>")
 
--- jvim.nvim
-M.map("n", "<left>", "<cmd>lua require('jvim').to_parent()<cr>")
-M.map("n", "<right>", "<cmd>lua require('jvim').descend()<cr>")
-M.map("n", "<up>", "<cmd>lua require('jvim').prev_sibling()<cr>")
-M.map("n", "<down>", "<cmd>lua require('jvim').next_sibling()<cr>")
-M.map("n", "<leader>dl", "<cmd>lua require('jr.custom.lsp-debug').debug_lsp()<cr>")
+-- center on up/down
+M.map("n", "<c-u>", "<c-u>zz")
+M.map("n", "<c-d>", "<c-d>zz")

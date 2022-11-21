@@ -6,12 +6,10 @@ local cmp = require("cmp")
 local lspkind = require("lspkind")
 local mapBuf = require("jr.utils").mapBuf
 local get_node_modules = require("jr.utils").get_node_modules
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-
--- use GH CLI as a copletion source for git commit window
-require("jr.lsp.cmp_gh_source")
-
+--
 -- help with function signatures
 require("lsp_signature").setup()
 

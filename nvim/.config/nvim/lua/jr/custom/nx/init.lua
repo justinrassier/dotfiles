@@ -39,10 +39,6 @@ function M.run_nx_generator(generator_type)
 				selected_clean,
 			},
 			cwd = node_path,
-			on_exit = function(j, return_val)
-				-- print(vim.inspect(j:result()))
-				-- don't need to do anything here
-			end,
 		}):sync(10000)
 	end
 
@@ -61,10 +57,6 @@ function M.run_nx_generator(generator_type)
 				"--skipTests",
 			},
 			cwd = node_path,
-			on_exit = function(j, return_val)
-				-- print(vim.inspect(j:result()))
-				-- don't need to do anything here
-			end,
 		}):sync(10000)
 	end
 
@@ -109,10 +101,6 @@ function M.run_nx_generator(generator_type)
 				relative_path,
 			},
 			cwd = node_path,
-			on_exit = function(j, return_val)
-				print(vim.inspect(j:result()))
-				-- don't need to do anything here
-			end,
 		}):sync(10000)
 	end
 
@@ -132,10 +120,6 @@ function M.run_nx_generator(generator_type)
 				"--addSpec",
 				tostring(add_spec_bool),
 			},
-			on_exit = function(j, return_val)
-				print(vim.inspect(j:result()))
-				-- don't need to do anything here
-			end,
 		}):sync(10000)
 	end
 end

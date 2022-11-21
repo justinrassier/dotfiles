@@ -1,4 +1,7 @@
 require("packer").startup(function(use)
+	use("~/dev/jesting.nvim")
+	use("gruvbox-community/gruvbox")
+
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
 
@@ -100,11 +103,15 @@ require("jr.gitsigns")
 require("jr.nvim-tree")
 require("jr.harpoon")
 --
-----stuf that doesn't need its own config file yet
+----stuff that doesn't need its own config file yet
 require("todo-comments").setup({})
 require("nvim-web-devicons").setup()
 require("nvim-ts-autotag").setup()
 require("nx").setup({})
+
+require("jesting").setup({
+	console_log_window_width = 80,
+})
 
 require("aerial").setup({
 	-- optionally use on_attach to set keymaps when aerial has attached to a buffer

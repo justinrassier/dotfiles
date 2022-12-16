@@ -52,6 +52,10 @@ Option.g({
 	splitright = true,
 	termguicolors = true,
 	syntax = true,
+  foldmethod = "expr",
+  foldcolumn = "0",
+  foldlevelstart = 99,
+  foldexpr = "nvim_treesitter#foldexpr()",
 })
 
 vim.g.mapleader = " "

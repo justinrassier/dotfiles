@@ -51,23 +51,22 @@ local function find_nearest_ngrx_part(starting_dir, ngrx_part)
 end
 
 function M.jump_to_angular_component_part(extension)
-	-- get file name for the current buffer
-	local current_buffer = vim.api.nvim_buf_get_name(0)
-	-- get the parts of the component path
-	local component_path, component_name, component_extension =
-		string.match(current_buffer, "(.-)([^\\/]-%.?([^%.\\/]*))$")
+	local buf_name = vim.api.nvim_buf_get_name(0)
+	local buf_path = path:new(buf_name)
+	local relative_path = buf_path:make_relative()
+	-- extract just the filename
+	local filename = string.match(relative_path, "([^/]+)$")
 
-	-- niave replacement of extension with desired destination extension
-	local destination_file = string.gsub(component_name, "%." .. component_extension, "%." .. extension)
+	-- find the name before .component
+	local component_name = string.match(filename, "(.-)%.component")
 
-	-- assemble full path to the new file to navigate to
-	local full_destination = component_path .. destination_file
+	-- assemble the destination based on the extension
+	local full_destination = buf_path:parent() .. "/" .. component_name .. ".component" .. "." .. extension
 
 	local exists = vim.fn.filereadable(full_destination)
-
 	-- don't open a buffer if the file doesn't exist since you may end up creating a file without knowing it
 	if exists == 0 then
-		print("File does not exist!", full_destination)
+		vim.notify("File doesn't exist: " .. full_destination, vim.log.levels.WARN)
 		return
 	end
 
@@ -113,6 +112,33 @@ function M.jump_to_nearest_module()
 		local module_absolute_path = path:new(module_relative_path):absolute()
 		load_file_into_buffer(module_absolute_path)
 	end
+end
+
+function M.toggle_between_spec_and_file()
+	local current_buffer = vim.api.nvim_buf_get_name(0)
+	local buf_path = path:new(current_buffer)
+	local relative_path = buf_path:make_relative()
+	local filename = string.match(relative_path, "([^/]+)$")
+
+	local full_destination = nil
+	if string.match(filename, ".spec.ts") then
+		-- if the current file is a spec file, then jump to the file it is testing
+		local file_name = string.match(filename, "(.-)%.spec")
+		full_destination = buf_path:parent() .. "/" .. file_name .. ".ts"
+	else
+		-- if the current file is not a spec file, then jump to the spec file
+		local filename_without_ext = string.match(filename, "(.-)%.ts")
+		full_destination = buf_path:parent() .. "/" .. filename_without_ext .. ".spec.ts"
+	end
+
+	local exists = vim.fn.filereadable(full_destination)
+	-- don't open a buffer if the file doesn't exist since you may end up creating a file without knowing it
+	if exists == 0 then
+		vim.notify("File doesn't exist: " .. full_destination, vim.log.levels.WARN)
+		return
+	end
+
+	load_file_into_buffer(full_destination)
 end
 
 return M

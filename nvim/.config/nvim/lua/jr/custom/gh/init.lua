@@ -10,15 +10,14 @@ function M.open_github_pr()
 	}):sync()
 end
 
-function M.open_gh_file()
+function M.open_gh_file(args)
 	-- get current line number
-	local line = vim.api.nvim_win_get_cursor(0)[1]
 	local filename = vim.api.nvim_buf_get_name(0)
 	local relative_path = path:new(filename):make_relative()
 
 	Job:new({
 		command = "gh",
-		args = { "browse", relative_path .. ":" .. line },
+		args = { "browse", relative_path .. ":" .. args.line_start .. "-" .. args.line_end },
 	}):sync()
 end
 

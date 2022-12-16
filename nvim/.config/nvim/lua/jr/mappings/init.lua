@@ -27,9 +27,9 @@ M.map("v", "<Leader>P", '"+P', { noremap = false })
 -- nvim-tree
 M.map("n", "<c-n>", "<cmd>:NvimTreeToggle<cr>")
 M.map("n", "<c-f>", "<cmd>:NvimTreeFindFile<cr>")
+M.map("n", "<leader>ts", "<cmd>:JRShrinkTreeWidth<cr>")
 
---telescope mappings
-M.map("n", "<c-p>", "<cmd>lua require('jr.telescope').find_files()<cr>")
+
 M.map("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
 M.map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 
@@ -43,7 +43,7 @@ M.map("n", "<leader>jm", "<cmd>lua require('jr.custom.angular').jump_to_nearest_
 M.map("n", "<leader>jc", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('ts')<cr>")
 M.map("n", "<leader>jt", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('html')<cr>")
 M.map("n", "<leader>js", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('scss')<cr>")
-M.map("n", "<leader>jj", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('spec%.ts')<cr>")
+M.map("n", "<leader>jj", "<cmd>lua require('jr.custom.angular').toggle_between_spec_and_file()<cr>")
 
 -- Jump to ngrx parts
 M.map("n", "<leader>jxr", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('reducer')<cr>")
@@ -131,6 +131,9 @@ M.map("n", "<leader>mu", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>
 M.map("n", "<leader>mn", '<cmd>lua require("harpoon.ui").nav_next()<cr>')
 M.map("n", "<leader>mp", '<cmd>lua require("harpoon.ui").nav_prev()<cr>')
 
+-- Jesting
+M.map("n", "<leader><leader>ja", "<cmd>:JestingAttachNx<cr>")
+M.map("n", "<leader><leader>jc", "<cmd>:JestingCloseConsoleLogWindow<cr>")
 -- prettify JSON
 M.map("n", "<leader>pj", "<cmd>%!jq<cr>")
 

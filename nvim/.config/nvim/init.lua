@@ -59,6 +59,7 @@ require("packer").startup(function(use)
 
 	-- color schemes
 	use("folke/tokyonight.nvim")
+  use("rose-pine/neovim")
 
 	-- git
 	use("lewis6991/gitsigns.nvim")
@@ -75,51 +76,19 @@ require("packer").startup(function(use)
 	use("github/copilot.vim")
 
 	use("stevearc/aerial.nvim")
-
-	use({
-		"Equilibris/nx.nvim",
-		requires = {
-			"nvim-telescope/telescope.nvim",
-		},
-		config = function()
-			require("nx").setup({})
-		end,
-	})
+  use("mbbill/undotree")
 end)
 
 require("jr.options")
 require("jr.lsp")
-require("jr.lsp.null-ls")
 require("jr.colors")
 require("jr.mappings")
 require("jr.autocmds")
 require("jr.custom.commands")
-require("jr.treesitter")
-require("jr.telescope")
-require("jr.comment")
-require("jr.formatting")
-require("jr.statusline")
-require("jr.gitsigns")
-require("jr.nvim-tree")
-require("jr.harpoon")
---
+
 ----stuff that doesn't need its own config file yet
 require("todo-comments").setup({})
 require("nvim-web-devicons").setup()
 require("nvim-ts-autotag").setup()
-require("nx").setup({})
 
-require("jesting").setup({
-	console_log_window_width = 80,
-})
 
-require("aerial").setup({
-	-- optionally use on_attach to set keymaps when aerial has attached to a buffer
-	on_attach = function(bufnr)
-		-- Jump forwards/backwards with '{' and '}'
-		vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-		vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
-	end,
-})
--- You probably also want to set a keymap to toggle aerial
-vim.keymap.set("n", "<leader>x", "<cmd>AerialToggle!<CR>")

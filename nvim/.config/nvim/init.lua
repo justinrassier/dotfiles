@@ -1,16 +1,31 @@
 require("packer").startup(function(use)
 	use("~/dev/jesting.nvim")
-	use("gruvbox-community/gruvbox")
-
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
-
 	use("nvim-lua/plenary.nvim")
-
 	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
-	use("neovim/nvim-lspconfig")
-	use("jose-elias-alvarez/null-ls.nvim")
+
 	use("kyazdani42/nvim-web-devicons")
+
+	-- lsp stuff
+	use({
+		"neovim/nvim-lspconfig",
+		"williamboman/mason.nvim",
+		"williamboman/mason-lspconfig.nvim",
+		"neovim/nvim-lspconfig",
+		"hrsh7th/nvim-cmp",
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-path",
+		"saadparwaiz1/cmp_luasnip",
+		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-nvim-lua",
+		-- Snippets
+		"L3MON4D3/LuaSnip",
+		"rafamadriz/friendly-snippets",
+		-- code actions
+		"weilbith/nvim-code-action-menu",
+		"jose-elias-alvarez/null-ls.nvim",
+	})
 
 	-- Telescope
 	use("nvim-telescope/telescope.nvim")
@@ -20,26 +35,12 @@ require("packer").startup(function(use)
 	use("nvim-telescope/telescope-node-modules.nvim")
 	use("nvim-telescope/telescope-live-grep-args.nvim")
 
-	-- nvim-cmp stuff
-	use("hrsh7th/nvim-cmp")
-	use("hrsh7th/cmp-nvim-lsp")
-	use("hrsh7th/cmp-buffer")
-	use("hrsh7th/cmp-path")
-	use("hrsh7th/cmp-cmdline")
-	use("L3MON4D3/LuaSnip")
-	use("saadparwaiz1/cmp_luasnip")
-	use("onsails/lspkind-nvim")
-	use("ray-x/lsp_signature.nvim")
-	use("weilbith/nvim-code-action-menu")
-
-	--Snippets. vnsip lets you use vs code ones!
+	--Snippets. vnsip lets you use vs code ones!init
 	use("johnpapa/vscode-angular-snippets")
 	use("andys8/vscode-jest-snippets")
 
 	use("folke/todo-comments.nvim")
 	use("machakann/vim-highlightedyank")
-
-	use("mhartington/formatter.nvim")
 	use("windwp/nvim-ts-autotag")
 
 	-- Block commenting
@@ -59,7 +60,7 @@ require("packer").startup(function(use)
 
 	-- color schemes
 	use("folke/tokyonight.nvim")
-  use("rose-pine/neovim")
+	use("rose-pine/neovim")
 
 	-- git
 	use("lewis6991/gitsigns.nvim")
@@ -72,15 +73,13 @@ require("packer").startup(function(use)
 	use("kyazdani42/nvim-tree.lua")
 	use("ThePrimeagen/harpoon")
 	use("SmiteshP/nvim-gps")
-
 	use("github/copilot.vim")
-
 	use("stevearc/aerial.nvim")
-  use("mbbill/undotree")
+	use("mbbill/undotree")
 end)
 
 require("jr.options")
-require("jr.lsp")
+-- require("jr.lsp")
 require("jr.colors")
 require("jr.mappings")
 require("jr.autocmds")
@@ -90,5 +89,3 @@ require("jr.custom.commands")
 require("todo-comments").setup({})
 require("nvim-web-devicons").setup()
 require("nvim-ts-autotag").setup()
-
-

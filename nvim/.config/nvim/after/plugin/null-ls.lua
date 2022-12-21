@@ -1,4 +1,5 @@
 local null_ls = require("null-ls")
+local git_stuff = require("jr.custom.git")
 null_ls.setup({
 	sources = {
 		null_ls.builtins.formatting.prettierd,
@@ -36,3 +37,16 @@ null_ls.setup({
 		end
 	end,
 })
+
+local blame_actions = {
+	method = null_ls.methods.CODE_ACTION,
+	filetypes = {},
+	generator = {
+		fn = function(params)
+			local actions = git_stuff.git_blame_options()
+			return actions
+		end,
+	},
+}
+
+null_ls.register(blame_actions)

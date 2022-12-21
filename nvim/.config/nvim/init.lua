@@ -35,7 +35,7 @@ require("packer").startup(function(use)
 	use("nvim-telescope/telescope-node-modules.nvim")
 	use("nvim-telescope/telescope-live-grep-args.nvim")
 
-	--Snippets. vnsip lets you use vs code ones!init
+	--Snippets. vnsip lets you use vs code ones!
 	use("johnpapa/vscode-angular-snippets")
 	use("andys8/vscode-jest-snippets")
 

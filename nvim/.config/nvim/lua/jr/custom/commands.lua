@@ -1,6 +1,7 @@
 local gh = require("jr.custom.gh")
 local nx_utils = require("jr.custom.nx.utils")
 local nvim_tree_stuff = require("jr.custom.nvim-tree")
+local git_stuff = require("jr.custom.git")
 
 local M = {}
 
@@ -21,6 +22,10 @@ end, {})
 
 vim.api.nvim_create_user_command("JRShrinkTreeWidth", function()
 	nvim_tree_stuff.shrink_width()
+end, {})
+
+vim.api.nvim_create_user_command("JRGitBlameOptions", function()
+	git_stuff.git_blame_options()
 end, {})
 
 return M

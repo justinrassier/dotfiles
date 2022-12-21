@@ -30,3 +30,7 @@ nvim_tree.setup({
 		},
 	},
 })
+
+vim.keymap.set("n", "<c-n>", "<cmd>:NvimTreeToggle<cr>")
+vim.keymap.set("n", "<c-f>", "<cmd>:NvimTreeFindFile<cr>")
+vim.keymap.set("n", "<leader>ts", "<cmd>:JRShrinkTreeWidth<cr>")

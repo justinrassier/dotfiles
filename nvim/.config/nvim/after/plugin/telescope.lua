@@ -11,40 +11,47 @@ telescope.load_extension("live_grep_args")
 local M = {}
 
 telescope.setup({
-  defaults = {
-    -- layout_config = {
-    --   vertical = {width = .75}
-    -- },
-    file_sorter = require("telescope.sorters").get_fzy_sorter,
-    -- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-    mappings = {
-      i = {
-        grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-        ["<esc>"] = actions.close,
-        ["<CR>"] = actions.select_default,
-        ["<Tab>"] = actions.toggle_selection,
-      },
-    },
-  },
-  extensions = {
-    fzy_native = {
-      override_generic_sorter = false,
-      override_file_sorter = true,
-    },
-  },
+	defaults = {
+		-- layout_config = {
+		--   vertical = {width = .75}
+		-- },
+		file_sorter = require("telescope.sorters").get_fzy_sorter,
+		-- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+		mappings = {
+			i = {
+				grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+				["<esc>"] = actions.close,
+				["<CR>"] = actions.select_default,
+				["<Tab>"] = actions.toggle_selection,
+			},
+		},
+	},
+	extensions = {
+		fzy_native = {
+			override_generic_sorter = false,
+			override_file_sorter = true,
+		},
+	},
 })
 
 function M.find_files()
-  local cmn_opts = {} --generateOpts({})
-  cmn_opts.find_command = { "rg", "--hidden", "--files", "-L", "--glob", "!.git" }
-  builtIn.find_files(cmn_opts)
+	local cmn_opts = {} --generateOpts({})
+	cmn_opts.find_command = { "rg", "--hidden", "--files", "-L", "--glob", "!.git" }
+	builtIn.find_files(cmn_opts)
 end
 
-vim.keymap.set("n", "<c-p>", function() M.find_files() end, { noremap = true })
+vim.keymap.set("n", "<c-p>", function()
+	M.find_files()
+end, { noremap = true })
 
+vim.keymap.set("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
+vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+vim.keymap.set("n", "<Leader>a", function()
+	require("telescope").extensions.live_grep_args.live_grep_args()
+end)
 
-
-
-
+vim.keymap.set("n", "<Leader>tr", "<cmd>Telescope resume<cr>")
+vim.keymap.set("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
+vim.keymap.set("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")
 
 return M

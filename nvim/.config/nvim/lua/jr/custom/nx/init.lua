@@ -122,6 +122,20 @@ function M.run_nx_generator(generator_type)
 			},
 		}):sync(10000)
 	end
+	if generator_type == "story" then
+		Job:new({
+			command = "npx",
+			args = {
+				"nx",
+				"workspace-generator",
+				"cavo-story",
+				"--projectName",
+				project_name,
+				"--path",
+				relative_path,
+			},
+		}):sync(10000)
+	end
 end
 
 function M.run_nx_test_for_file()

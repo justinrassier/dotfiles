@@ -1,14 +1,5 @@
-local popup = require("plenary.popup")
-local path = require("plenary.path")
-
 local M = {}
-M.cached_responses = nil
-local ns = vim.api.nvim_create_namespace("playground")
-vim.api.nvim_create_user_command("ClearThing", function(args)
-	vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
-end, {})
-
-vim.api.nvim_create_user_command("RunThing", function(args)
+function M.git_blame_options()
 	-- get the current line number
 	local line = vim.api.nvim_win_get_cursor(0)[1]
 	-- run git blame
@@ -33,7 +24,7 @@ vim.api.nvim_create_user_command("RunThing", function(args)
 	local option_number = 1
 	if ticket ~= nil then
 		table.insert(options, {
-			text = option_number .. " Open Jira (" .. ticket .. ")",
+			title = "Open Jira (" .. ticket .. ")",
 			action = function()
 				vim.fn.system("open https://adventhp.atlassian.net/browse/" .. ticket)
 			end,
@@ -43,7 +34,7 @@ vim.api.nvim_create_user_command("RunThing", function(args)
 
 	if pr_number ~= nil then
 		table.insert(options, {
-			text = option_number .. " Open PR (" .. pr_number .. ")",
+			title = "Open PR (" .. pr_number .. ")",
 			action = function()
 				vim.fn.system("gh pr view --web " .. pr_number)
 			end,
@@ -53,7 +44,7 @@ vim.api.nvim_create_user_command("RunThing", function(args)
 
 	if commit ~= nil then
 		table.insert(options, {
-			text = option_number .. " Copy commit hash (" .. commit .. ")",
+			title = "Copy commit hash (" .. commit .. ")",
 			action = function()
 				vim.fn.setreg("+", commit)
 			end,
@@ -61,17 +52,7 @@ vim.api.nvim_create_user_command("RunThing", function(args)
 		option_number = option_number + 1
 	end
 
-	local option_text = {}
-	for _, option in ipairs(options) do
-		table.insert(option_text, option.text)
-	end
-	local selection = vim.fn.inputlist(option_text)
-
-	if selection ~= 0 then
-		options[selection].action()
-	end
-end, {})
+	return options
+end
 
 return M
-
---

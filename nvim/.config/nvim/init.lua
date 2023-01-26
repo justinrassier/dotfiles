@@ -12,7 +12,6 @@ require("packer").startup(function(use)
 		"neovim/nvim-lspconfig",
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
-		"neovim/nvim-lspconfig",
 		"hrsh7th/nvim-cmp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
@@ -25,6 +24,7 @@ require("packer").startup(function(use)
 		-- code actions
 		"weilbith/nvim-code-action-menu",
 		"jose-elias-alvarez/null-ls.nvim",
+		"ray-x/lsp_signature.nvim",
 	})
 
 	-- Telescope
@@ -61,6 +61,7 @@ require("packer").startup(function(use)
 	-- color schemes
 	use("folke/tokyonight.nvim")
 	use("rose-pine/neovim")
+	use({ "catppuccin/nvim", as = "catppuccin" })
 
 	-- git
 	use("lewis6991/gitsigns.nvim")
@@ -73,9 +74,20 @@ require("packer").startup(function(use)
 	use("kyazdani42/nvim-tree.lua")
 	use("ThePrimeagen/harpoon")
 	use("SmiteshP/nvim-gps")
-	use("github/copilot.vim")
+	use({
+		"github/copilot.vim",
+		branch = "release",
+		-- config = function()
+		-- 	local sysname = vim.loop.os_uname().sysname
+		-- 	if sysname == "Darwin" then
+		-- 		vim.g.copilot_node_command = "/Users/justinrassier/.nvm/versions/node/v18.12.1/bin/node"
+		-- 	end
+		-- end,
+	})
 	use("stevearc/aerial.nvim")
 	use("mbbill/undotree")
+
+	use("christoomey/vim-tmux-navigator")
 end)
 
 require("jr.options")

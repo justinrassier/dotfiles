@@ -36,7 +36,7 @@ function M.git_blame_options()
 		table.insert(options, {
 			title = "Open PR (" .. pr_number .. ")",
 			action = function()
-				vim.fn.system("gh pr view --web " .. pr_number)
+				vim.fn.system("gh pr view --web " .. string.gsub(pr_number, "#", ""))
 			end,
 		})
 		option_number = option_number + 1

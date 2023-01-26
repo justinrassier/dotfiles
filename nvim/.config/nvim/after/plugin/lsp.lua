@@ -2,11 +2,23 @@ require("mason").setup()
 local mason_lsp = require("mason-lspconfig")
 local mapBuf = require("jr.utils").mapBuf
 local nvim_lsp = require("lspconfig")
+require("lsp_signature").setup()
 
 require("luasnip/loaders/from_vscode").lazy_load()
 -- Set up nvim-cmp.
 local cmp = require("cmp")
 cmp.setup({
+	enabled = function()
+		if
+			require("cmp.config.context").in_treesitter_capture("comment") == true
+			or require("cmp.config.context").in_syntax_group("Comment")
+			or vim.api.nvim_buf_get_option(0, "filetype") == "TelescopePrompt"
+		then
+			return false
+		else
+			return true
+		end
+	end,
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
@@ -55,6 +67,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local function on_attach(client, bufnr)
 	-- mapBuf(bufnr, "n", "<Leader>gdc", "<Cmd>lua vim.lsp.buf.declaration()<CR>")
 	mapBuf(bufnr, "n", "<Leader>gd", "<Cmd>lua vim.lsp.buf.definition()<CR>")
+	mapBuf(bufnr, "n", "<Leader>gt", "<Cmd>lua vim.lsp.buf.type_definition()<CR>")
 
 	-- gives me the type info of what I am hovering on
 	mapBuf(bufnr, "n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>")

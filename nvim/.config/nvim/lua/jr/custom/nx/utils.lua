@@ -23,15 +23,15 @@ local function find_nearest_file(starting_dir, file_name)
 	local current_dir = path:new(starting_dir)
 	local scan_result
 	local count = 1
-	-- keep going up directories until you find a `.module.ts` (or stop atmax_depth0 as then something went wrong)
 	repeat
 		current_dir = current_dir:parent()
-		scan_result = scan.scan_dir(current_dir:normalize(), { search_pattern = file_name, depth = 1 })
+		scan_result = scan.scan_dir(current_dir:normalize(), { search_pattern = file_name, depth = 2 })
 		count = count + 1
 	until table_length(scan_result) > 0 or count >= max_depth
 
 	return scan_result[1]
 end
+M.find_nearest_file = find_nearest_file
 
 -- given a path, find the project name by first finding the directory of the nearest project.json file
 -- then using the root angular.json to match the project name to the directory

@@ -21,39 +21,39 @@ vim.keymap.set("n", "<leader>jxe", "<cmd>lua require('jr.custom.angular').jump_t
 vim.keymap.set("n", "<leader>jxa", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('action')<cr>")
 vim.keymap.set("n", "<leader>jxf", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('facade')<cr>")
 vim.keymap.set("n", "<leader>jxs", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('selector')<cr>")
---
 
--- Call nx generator
-vim.keymap.set("n", "<leader>nxgc", function()
+vim.keymap.set("n", "<leader><leader>x", function()
+	-- run luafile for playground
+	vim.cmd("luafile ~/.config/nvim/lua/jr/custom/playground.lua")
+	vim.cmd("RunThing")
+end)
+
+vim.keymap.set("n", "<leader><leader>gc", function()
 	nx.run_nx_generator("component")
 end, { desc = "Nx: Generate Component" })
 
-vim.keymap.set("n", "<leader>nxgcs", function()
+vim.keymap.set("n", "<leader><leader>gt", function()
 	nx.run_nx_generator("component-store")
-end)
+end, { desc = "Nx: Generate Component Store" })
 
-vim.keymap.set("n", "<leader>nxgs", function()
+vim.keymap.set("n", "<leader><leader>", function()
 	nx.run_nx_generator("service")
-end)
+end, { desc = "Nx: Generate Service" })
 
-vim.keymap.set("n", "<leader>nxgp", function()
+vim.keymap.set("n", "<leader><leader>gp", function()
 	nx.run_nx_generator("pipe")
-end)
+end, { desc = "Nx: Generate Pipe" })
 
-vim.keymap.set("n", "<leader>nxgd", function()
+vim.keymap.set("n", "<leader><leader>gd", function()
 	nx.run_nx_generator("directive")
-end)
+end, { desc = "Nx: Generate Directive" })
 
-vim.keymap.set("n", "<leader>nxgy", function()
+vim.keymap.set("n", "<leader><leader>gy", function()
 	nx.run_nx_generator("story")
-end)
-
-vim.keymap.set("n", "<leader>nxt", function()
-	nx.run_nx_test_for_file()
-end)
+end, { desc = "Nx: Generate Story" })
 
 -- Tailwind
-vim.keymap.set("n", "<leader>twc", function()
+vim.keymap.set("n", "<leader><leader>tw", function()
 	tw.add_or_insert_class_attribute()
 end)
 
@@ -68,10 +68,15 @@ vim.keymap.set("n", "<leader>ns", function()
 end)
 
 -- Window navigation
-vim.keymap.set("n", "<c-j>", "<c-w><c-j>")
-vim.keymap.set("n", "<c-k>", "<c-w><c-k>")
-vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
-vim.keymap.set("n", "<c-l>", "<c-w><c-l>")
+-- vim.keymap.set("n", "<c-j>", "<c-w><c-j>", { noremap = true })
+-- vim.keymap.set("n", "<c-k>", "<c-w><c-k>", { noremap = true })
+-- vim.keymap.set("n", "<c-h>", "<c-w><c-h>", { noremap = true })
+-- vim.keymap.set("n", "<c-l>", "<c-w><c-l>", { noremap = true })
+vim.g.tmux_navigator_no_mappings = 1
+vim.keymap.set("n", "<C-j>", ":TmuxNavigateDown<cr>", { silent = true })
+vim.keymap.set("n", "<C-k>", ":TmuxNavigateUp<cr>", { silent = true })
+vim.keymap.set("n", "<C-h>", ":TmuxNavigateLeft<cr>", { silent = true })
+vim.keymap.set("n", "<C-l>", ":TmuxNavigateRight<cr>", { silent = true })
 
 -- Undo breakpoints to make undo less aggressive
 vim.keymap.set("i", ",", ",<c-g>u")
@@ -128,6 +133,8 @@ vim.keymap.set("n", "<leader>mp", '<cmd>lua require("harpoon.ui").nav_prev()<cr>
 -- Jesting
 vim.keymap.set("n", "<leader><leader>ja", "<cmd>:JestingAttachNx<cr>")
 vim.keymap.set("n", "<leader><leader>jc", "<cmd>:JestingCloseConsoleLogWindow<cr>")
+vim.keymap.set("n", "<leader><leader>jt", "<cmd>:JestingRunInTerminal<cr>")
+
 -- prettify JSON
 vim.keymap.set("n", "<leader>pj", "<cmd>%!jq<cr>")
 

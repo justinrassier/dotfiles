@@ -1,6 +1,6 @@
 DOTFILES=$HOME/dotfiles
 #!/usr/bin/env zsh
-STOW_FOLDERS="nvim,kitty,zsh"
+STOW_FOLDERS="nvim,kitty,zsh,tmux"
 
 
 # Prerequisites 
@@ -37,13 +37,11 @@ STOW_FOLDERS="nvim,kitty,zsh"
  # nvim-lsp reference  (https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md)
  
  #  Install language servers needed from npm
-npm install -g typescript typescript-language-server
-npm install -g @angular/language-server@latest
-npm install -g @tailwindcss/language-server
-npm install -g vscode-langservers-extracted
-npm install -g cspell@latest
-
- 
+# npm install -g typescript typescript-language-server
+# npm install -g @angular/language-server@latest
+# npm install -g @tailwindcss/language-server
+# npm install -g vscode-langservers-extracted
+# npm install -g cspell@latest
 
 
 pushd $DOTFILES

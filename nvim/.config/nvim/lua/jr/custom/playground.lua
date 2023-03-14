@@ -14,46 +14,47 @@ local ts_utils = require("nvim-treesitter.ts_utils")
 local test_statement_query = [[
  (expression_statement
    (call_expression
-     function: ((identifier) @function_id 
+     function: ((identifier) @function_id
                  (#match? @function_id "it|describe")
                ) @function
-     arguments: (arguments 
+     arguments: (arguments
        (string
          (string_fragment) @fragments
        )
      )
-    ) 
-   ) 
+    )
+   )
   ]]
 
 local function get_nearest_function(start_node, type)
-	-- local query = vim.treesitter.parse_query("typescript", test_statement_query)
-	-- local node_start_row, _, node_end_row, _ = start_node:range()
-	-- print(node_start_row, node_end_row)
-	-- for id, node, _ in query:iter_captures(start_node, 0, node_start_row - 1, node_end_row + 1) do
-	-- 	local capture_name = query.captures[id] -- name of the capture in the query
-	-- 	if capture_name == "fragments" then
-	-- 		local start_row, start_col, end_row, end_col = node:range()
-	-- 		-- get the text within the string
-	-- 		local text = vim.api.nvim_buf_get_lines(0, start_row, end_row + 1, false)[1]:sub(start_col + 1, end_col)
-	-- 		print(text)
-	-- 	end
-	-- end
+  -- local query = vim.treesitter.parse_query("typescript", test_statement_query)
+  -- local node_start_row, _, node_end_row, _ = start_node:range()
+  -- print(node_start_row, node_end_row)
+  -- for id, node, _ in query:iter_captures(start_node, 0, node_start_row - 1, node_end_row + 1) do
+  -- 	local capture_name = query.captures[id] -- name of the capture in the query
+  -- 	if capture_name == "fragments" then
+  -- 		local start_row, start_col, end_row, end_col = node:range()
+  -- 		-- get the text within the string
+  -- 		local text = vim.api.nvim_buf_get_lines(0, start_row, end_row + 1, false)[1]:sub(start_col + 1, end_col)
+  -- 		print(text)
+  -- 	end
+  -- end
 end
 local function find_nearest_file(starting_dir, file_name)
-	local current_dir = path:new(starting_dir)
-	local scan_result
-	local count = 1
-	repeat
-		current_dir = current_dir:parent()
-		scan_result = scan.scan_dir(current_dir:normalize(), { search_pattern = file_name, max_depth = 3 })
-		count = count + 1
-	until #scan_result > 0 or count >= 3
+  local current_dir = path:new(starting_dir)
+  local scan_result
+  local count = 1
+  repeat
+    current_dir = current_dir:parent()
+    scan_result = scan.scan_dir(current_dir:normalize(), { search_pattern = file_name, max_depth = 3 })
+    count = count + 1
+  until #scan_result > 0 or count >= 3
 
-	return scan_result[1]
+  return scan_result[1]
 end
+
 vim.api.nvim_create_user_command("RunThing", function()
-	vim.api.nvim_feedkeys("_f.dt(f)i, async()=>{}iO", "n", true)
+  nx_utils.prime_project_map()
 end, {})
 
 -- Jump to jest snaphost WIP

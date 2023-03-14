@@ -12,14 +12,13 @@ local M = {}
 
 telescope.setup({
 	defaults = {
-		-- layout_config = {
-		--   vertical = {width = .75}
-		-- },
+		layout_config = {
+			horizontal = { width = 0.8 },
+		},
 		-- file_ignore_patterns = {
 		-- 	{ "(*min.(js|css))" },
 		-- },
 		file_sorter = require("telescope.sorters").get_fzy_sorter,
-		-- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
 		mappings = {
 			i = {
 				grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
@@ -44,7 +43,11 @@ telescope.setup({
 function M.find_files()
 	local cmn_opts = {} --generateOpts({})
 	cmn_opts.find_command = { "rg", "--hidden", "--files", "-L", "--glob", "!.git" }
-	builtIn.find_files(cmn_opts)
+	-- cmn_opts.previewer = false
+	-- cmn_opts.layout_strategy = "horizontal"
+	cmn_opts.layout_config = { width = 0.8 }
+	-- builtIn.find_files(cmn_opts)
+	builtIn.find_files(require("telescope.themes").get_dropdown(cmn_opts))
 end
 
 vim.keymap.set("n", "<c-p>", function()
@@ -54,9 +57,9 @@ end, { noremap = true })
 vim.keymap.set("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
 vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 vim.keymap.set("n", "<Leader>a", function()
-	require("telescope").extensions.live_grep_args.live_grep_args({
-		-- glob_pattern = { "!*min.js", "!*min.css", "!*min.js.map", "!*min.css.map", "!**/trucode-assets/*" },
-	})
+	require("telescope").extensions.live_grep_args.live_grep_args(require("telescope.themes").get_dropdown({
+		layout_config = { width = 0.8 },
+	}))
 	-- require("telescope.builtin").live_grep({
 	-- 	glob_pattern = { "!*min.js", "!*min.css", "!*min.js.map", "!*min.css.map", "!**/trucode-assets/*" },
 	-- })

@@ -2,11 +2,11 @@
 # # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+source ~/.zshrc.env
+
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/justinrassier/.oh-my-zsh"
 export LDFLAGS=-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
-
-
 
 # alias vim="nvim"
 alias work="tmuxinator start work"

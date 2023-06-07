@@ -1,6 +1,7 @@
 local nx = require("jr.custom.nx")
 local tw = require("jr.custom.tailwind")
 local gh = require("jr.custom.gh")
+local git = require("jr.custom.git")
 
 local vim = vim
 
@@ -23,48 +24,49 @@ vim.keymap.set("n", "<leader>jxf", "<cmd>lua require('jr.custom.angular').jump_t
 vim.keymap.set("n", "<leader>jxs", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('selector')<cr>")
 
 vim.keymap.set("n", "<leader><leader>x", function()
-  -- run luafile for playground
-  vim.cmd("luafile ~/.config/nvim/lua/jr/custom/playground.lua")
-  vim.cmd("RunThing")
+	-- run luafile for playground
+	vim.cmd("messages clear")
+	vim.cmd("luafile ~/.config/nvim/lua/jr/custom/playground.lua")
+	vim.cmd("RunThing")
 end)
 
 vim.keymap.set("n", "<leader><leader>gc", function()
-  nx.run_nx_generator("component")
+	nx.run_nx_generator("component")
 end, { desc = "Nx: Generate Component" })
 
 vim.keymap.set("n", "<leader><leader>gt", function()
-  nx.run_nx_generator("component-store")
+	nx.run_nx_generator("component-store")
 end, { desc = "Nx: Generate Component Store" })
 
 vim.keymap.set("n", "<leader><leader>gs", function()
-  nx.run_nx_generator("service")
+	nx.run_nx_generator("service")
 end, { desc = "Nx: Generate Service" })
 
 vim.keymap.set("n", "<leader><leader>gp", function()
-  nx.run_nx_generator("pipe")
+	nx.run_nx_generator("pipe")
 end, { desc = "Nx: Generate Pipe" })
 
 vim.keymap.set("n", "<leader><leader>gd", function()
-  nx.run_nx_generator("directive")
+	nx.run_nx_generator("directive")
 end, { desc = "Nx: Generate Directive" })
 
 vim.keymap.set("n", "<leader><leader>gy", function()
-  nx.run_nx_generator("story")
+	nx.run_nx_generator("story")
 end, { desc = "Nx: Generate Story" })
 
 -- Tailwind
 vim.keymap.set("n", "<leader><leader>tw", function()
-  tw.add_or_insert_class_attribute()
+	tw.add_or_insert_class_attribute()
 end)
 
 -- open github PR in  browser
 vim.keymap.set("n", "<leader>gpr", function()
-  gh.open_github_pr()
+	gh.open_github_pr()
 end)
 
 -- new scratch buffer
 vim.keymap.set("n", "<leader>ns", function()
-  require("jr.custom").new_scratch_buffer()
+	require("jr.custom").new_scratch_buffer()
 end)
 
 -- Window navigation
@@ -91,8 +93,21 @@ vim.keymap.set("i", ")", ")<c-g>u")
 -- gitsigns
 vim.keymap.set("n", "<leader>gl", ":Gitsigns toggle_current_line_blame<cr>")
 vim.keymap.set("n", "<leader>lg", ":LazyGit<cr>")
-vim.keymap.set("n", "<leader>dv", ":DiffviewOpen<cr>")
-vim.keymap.set("n", "<leader>dc", ":DiffviewClose<cr>")
+
+vim.keymap.set("n", "<leader>dvo", ":DiffviewOpen<cr>")
+vim.keymap.set("n", "<leader>dvc", ":DiffviewClose<cr>")
+vim.keymap.set("n", "<leader>dvp", function()
+	git.fetch()
+	local base_ref = gh.get_base_branch_for_pr()
+	local current_ref = "HEAD"
+
+	if base_ref == nil then
+		base_ref = "main"
+	end
+
+	local diff_view_command = "DiffviewOpen " .. "origin/" .. base_ref .. ".." .. current_ref
+	vim.cmd(diff_view_command)
+end)
 
 -- quickfix navigation
 vim.keymap.set("n", "<leader>cn", ":cn<CR>")
@@ -132,6 +147,7 @@ vim.keymap.set("n", "<leader>mp", '<cmd>lua require("harpoon.ui").nav_prev()<cr>
 
 -- Jesting
 vim.keymap.set("n", "<leader><leader>ja", "<cmd>:JestingAttachNx<cr>")
+vim.keymap.set("n", "<leader><leader>ju", "<cmd>:JestingUnattach<cr>")
 vim.keymap.set("n", "<leader><leader>jc", "<cmd>:JestingCloseConsoleLogWindow<cr>")
 vim.keymap.set("n", "<leader><leader>jt", "<cmd>:JestingRunInTerminal<cr>")
 
@@ -141,3 +157,6 @@ vim.keymap.set("n", "<leader>pj", "<cmd>%!jq<cr>")
 -- center on up/down
 vim.keymap.set("n", "<c-u>", "<c-u>zz")
 vim.keymap.set("n", "<c-d>", "<c-d>zz")
+
+-- copy current buffer relative path into clipboard
+vim.keymap.set("n", "<leader><leader>cp", "<cmd>let @+ = expand('%:~:.')<CR>")

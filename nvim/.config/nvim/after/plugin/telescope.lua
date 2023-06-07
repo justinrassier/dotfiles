@@ -25,6 +25,7 @@ telescope.setup({
 				["<esc>"] = actions.close,
 				["<CR>"] = actions.select_default,
 				["<Tab>"] = actions.toggle_selection,
+				["<C-f>"] = actions.send_selected_to_qflist + actions.open_qflist,
 			},
 		},
 	},
@@ -33,20 +34,27 @@ telescope.setup({
 			override_generic_sorter = false,
 			override_file_sorter = true,
 		},
-		-- live_grep_args = {
-		-- 	max_results = 10r
-		-- 	glob_pattern = { "*.md" },
-		-- },
+		live_grep_args = {
+			max_results = 10,
+			glob_pattern = { "*.md" },
+		},
+	},
+})
+
+local simple_theme = require("telescope.themes").get_dropdown({
+	winblend = 10,
+	border = true,
+	previewer = true,
+	shorten_path = false,
+	layout_config = {
+		width = 0.8,
 	},
 })
 
 function M.find_files()
-	local cmn_opts = {} --generateOpts({})
+	local cmn_opts = {}
 	cmn_opts.find_command = { "rg", "--hidden", "--files", "-L", "--glob", "!.git" }
-	-- cmn_opts.previewer = false
-	-- cmn_opts.layout_strategy = "horizontal"
 	cmn_opts.layout_config = { width = 0.8 }
-	-- builtIn.find_files(cmn_opts)
 	builtIn.find_files(require("telescope.themes").get_dropdown(cmn_opts))
 end
 
@@ -55,18 +63,26 @@ vim.keymap.set("n", "<c-p>", function()
 end, { noremap = true })
 
 vim.keymap.set("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
-vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+
 vim.keymap.set("n", "<Leader>a", function()
-	require("telescope").extensions.live_grep_args.live_grep_args(require("telescope.themes").get_dropdown({
+	local opts = vim.deepcopy(simple_theme)
+	opts.glob_pattern =
+		{ "!*min.js", "!*min.css", "!*min.js.map", "!*min.css.map", "!**/trucode-assets/*", "!package-lock.json" }
+	require("telescope.builtin").live_grep(opts)
+end)
+
+vim.keymap.set("n", "<Leader>fa", function()
+	local opts = vim.deepcopy(simple_theme)
+	require("telescope").extensions.live_grep_args.live_grep_args(opts)
+end)
+
+vim.keymap.set("n", "<leader>fj", function()
+	require("jr.telescope.jira_picker").jira_tickets(require("telescope.themes").get_dropdown({
 		layout_config = { width = 0.8 },
 	}))
-	-- require("telescope.builtin").live_grep({
-	-- 	glob_pattern = { "!*min.js", "!*min.css", "!*min.js.map", "!*min.css.map", "!**/trucode-assets/*" },
-	-- })
 end)
 
 vim.keymap.set("n", "<Leader>tr", "<cmd>Telescope resume<cr>")
-vim.keymap.set("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
-vim.keymap.set("n", "<Leader>gb", "<cmd>Telescope git_branches<cr>")
+vim.keymap.set("n", "<Leader>fb", "<cmd>Telescope buffers<cr>")
 
 return M

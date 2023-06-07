@@ -3,13 +3,25 @@ local bufferline = require("bufferline")
 local lualine = require("lualine")
 local colors = require("jr.colors")
 local gps = require("nvim-gps")
+local jesting = require("jesting")
 
 lualine.setup({
 	sections = {
 		lualine_a = { "" },
-		lualine_b = { "branch" },
+		lualine_b = {
+			{
+				"branch",
+				fmt = function(branch)
+					if string.len(branch) > 20 then
+						return branch:sub(1, 20) .. "..."
+					end
+					return branch
+				end,
+			},
+		},
 		lualine_c = { "filename" },
-		lualine_x = { { gps.get_location, cond = gps.is_available } },
+		-- lualine_x = { { gps.get_location, cond = gps.is_available } },
+		lualine_x = { jesting.lualine_status },
 		-- lualine_x = {"b:gitsigns_status"},
 		lualine_y = { "filetype" },
 		lualine_z = {

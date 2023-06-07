@@ -75,7 +75,6 @@ require("packer").startup(function(use)
   -- git
   use("lewis6991/gitsigns.nvim")
   use("kdheepak/lazygit.nvim")
-  use("sindrets/diffview.nvim")
 
   -- tree/navigation/bufferline
   use("nvim-lualine/lualine.nvim")
@@ -99,6 +98,8 @@ require("packer").startup(function(use)
   use("christoomey/vim-tmux-navigator")
 
   use("RRethy/vim-illuminate")
+
+  use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
 end)
 
 require("jr.options")

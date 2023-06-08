@@ -11,6 +11,13 @@ function M.open_github_pr()
 	}):sync()
 end
 
+function M.open_pr_by_number(number)
+	Job:new({
+		command = "gh",
+		args = { "pr", "view", number, "--web" },
+	}):sync()
+end
+
 function M.open_gh_file(args)
 	-- get current line number
 	local filename = vim.api.nvim_buf_get_name(0)
@@ -79,6 +86,43 @@ function M.create_pr()
 		-- open the PR in the browser
 		vim.fn.system("open " .. result[1])
 	end
+end
+
+function M.list_prs_for_review_async(callback)
+	local job = Job:new({
+		command = "gh",
+		args = {
+			"pr",
+			"list",
+			"--search",
+			"is:open -reviewed-by:@me review-requested:@me ",
+			"--json",
+			"number,title,author",
+		},
+		on_exit = function(j)
+			local result = j:result()
+			vim.schedule(function()
+				callback(vim.fn.json_decode(result[1]))
+			end)
+		end,
+	})
+
+	job:start()
+end
+
+function M.get_repo_name_async(callback)
+	local job = Job:new({
+		command = "gh",
+		args = { "repo", "view", "--json", "name", "--jq", ".name" },
+		on_exit = function(j)
+			local result = j:result()
+			vim.schedule(function()
+				callback(result[1])
+			end)
+		end,
+	})
+
+	job:start()
 end
 
 return M

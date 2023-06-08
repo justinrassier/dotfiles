@@ -3,6 +3,7 @@ local nx_utils = require("jr.custom.nx.utils")
 local nvim_tree_stuff = require("jr.custom.nvim-tree")
 local git_stuff = require("jr.custom.git")
 local nx = require("jr.custom.nx")
+local utils = require("jr.utils")
 
 local M = {}
 
@@ -40,5 +41,29 @@ vim.api.nvim_create_user_command("JRExtractToComponent", function(opts)
 end, {
 	range = true,
 })
+
+vim.api.nvim_create_user_command("JRStartCheckingPRs", function(opts)
+	gh.get_repo_name_async(function(name)
+		if name == "cavo" then
+			local interval = 1000 * 60 * 10 -- 10 minutes
+			local timer = vim.loop.new_timer()
+			timer:start(
+				0,
+				interval,
+				vim.schedule_wrap(function()
+					gh.list_prs_for_review_async(function(results)
+						if utils.table_length(results) > 0 then
+							M.pr_count = utils.table_length(results)
+							vim.notify(
+								"You have " .. utils.table_length(results) .. " PRs to review",
+								vim.log.levels.WARN
+							)
+						end
+					end)
+				end)
+			)
+		end
+	end)
+end, {})
 
 return M

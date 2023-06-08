@@ -4,10 +4,18 @@ local lualine = require("lualine")
 local colors = require("jr.colors")
 local gps = require("nvim-gps")
 local jesting = require("jesting")
+local commands = require("jr.custom.commands")
+
+local function pr_count()
+	if commands.pr_count == nil then
+		return ""
+	end
+	return " " .. commands.pr_count .. " PRs for Review"
+end
 
 lualine.setup({
 	sections = {
-		lualine_a = { "" },
+		lualine_a = { pr_count },
 		lualine_b = {
 			{
 				"branch",

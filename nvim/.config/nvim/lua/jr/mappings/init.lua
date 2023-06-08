@@ -34,6 +34,10 @@ vim.keymap.set("n", "<leader><leader>gc", function()
 	nx.run_nx_generator("component")
 end, { desc = "Nx: Generate Component" })
 
+-- vim.keymap.set("v", "<leader><leader>gc", function()
+-- 	vim.cmd("JRExtractToComponent")
+-- end, { desc = "Nx: Generate Component" })
+
 vim.keymap.set("n", "<leader><leader>gt", function()
 	nx.run_nx_generator("component-store")
 end, { desc = "Nx: Generate Component Store" })

@@ -52,14 +52,13 @@ local function prime_project_map(opts)
 end
 
 vim.api.nvim_create_user_command("RunThing", function(opts)
-	-- print(vim.inspect(opts))
-	--check if current active buffer is nvim-tree
-	local line_start = opts.line1
-	local line_end = opts.line2
-
-	local selected_lines = vim.api.nvim_buf_get_lines(0, line_start, line_end, false)
-	local selected_text = table.concat(selected_lines, "\n")
-	print(selected_text)
+	Job:new({
+		command = "gh",
+		args = { "pr", "list", "--search", "is:open review-requested:@me", "--json", "number,title,author" },
+		on_exit = function(j)
+			print(vim.inspect(j))
+		end,
+	}):start()
 end, {
 	range = true,
 })

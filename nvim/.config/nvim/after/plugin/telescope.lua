@@ -2,7 +2,6 @@ local vim = vim
 local telescope = require("telescope")
 local builtIn = require("telescope.builtin")
 local actions = require("telescope.actions")
-local gh = telescope.load_extension("gh")
 
 telescope.load_extension("fzy_native")
 telescope.load_extension("node_modules")
@@ -78,6 +77,11 @@ end)
 
 vim.keymap.set("n", "<leader>fj", function()
 	require("jr.telescope.jira_picker").jira_tickets(require("telescope.themes").get_dropdown({
+		layout_config = { width = 0.8 },
+	}))
+end)
+vim.keymap.set("n", "<leader>fpr", function()
+	require("jr.telescope.pr_picker").list_prs_for_review(require("telescope.themes").get_dropdown({
 		layout_config = { width = 0.8 },
 	}))
 end)

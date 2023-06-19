@@ -95,14 +95,27 @@ function M.list_prs_for_review_async(callback)
 			"pr",
 			"list",
 			"--search",
-			"is:open -reviewed-by:@me review-requested:@me ",
+			"is:open -reviewed-by:@me -is:draft",
 			"--json",
 			"number,title,author",
 		},
 		on_exit = function(j)
 			local result = j:result()
 			vim.schedule(function()
-				callback(vim.fn.json_decode(result[1]))
+				local results = vim.fn.json_decode(result[1])
+
+				local final_results = {}
+				for _, pr in ipairs(results) do
+					if
+						pr.author.login == "mgerb"
+						or pr.author.login == "nmoll"
+						or pr.author.login == "cknightdevelopment"
+					then
+						table.insert(final_results, pr)
+					end
+				end
+
+				callback(final_results)
 			end)
 		end,
 	})

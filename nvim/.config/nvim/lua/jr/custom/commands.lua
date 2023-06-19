@@ -1,6 +1,5 @@
 local gh = require("jr.custom.gh")
 local nx_utils = require("jr.custom.nx.utils")
-local nvim_tree_stuff = require("jr.custom.nvim-tree")
 local git_stuff = require("jr.custom.git")
 local nx = require("jr.custom.nx")
 local utils = require("jr.utils")
@@ -22,10 +21,6 @@ vim.api.nvim_create_user_command("JRAddToBarrel", function()
 	nx_utils.add_current_file_to_nearest_barrel()
 end, {})
 
-vim.api.nvim_create_user_command("JRShrinkTreeWidth", function()
-	nvim_tree_stuff.shrink_width()
-end, {})
-
 vim.api.nvim_create_user_command("JRCreatePR", function()
 	gh.create_pr()
 end, {})
@@ -44,6 +39,7 @@ end, {
 
 vim.api.nvim_create_user_command("JRStartCheckingPRs", function(opts)
 	gh.get_repo_name_async(function(name)
+		-- only do this for my work repo
 		if name == "cavo" then
 			local interval = 1000 * 60 * 10 -- 10 minutes
 			local timer = vim.loop.new_timer()

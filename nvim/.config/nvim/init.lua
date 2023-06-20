@@ -100,6 +100,9 @@ require("packer").startup(function(use)
 	use("RRethy/vim-illuminate")
 
 	use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
+
+	-- use("nvim-treesitter/nvim-treesitter-angular")
+	use({ "justinrassier/nvim-treesitter-angular", branch = "topic/jsx-fix" })
 end)
 
 require("jr.options")

@@ -54,6 +54,8 @@ vim.api.nvim_create_user_command("JRStartCheckingPRs", function(opts)
 								"You have " .. utils.table_length(results) .. " PRs to review",
 								vim.log.levels.WARN
 							)
+						else
+							M.pr_count = nil
 						end
 					end)
 				end)

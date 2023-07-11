@@ -17,6 +17,7 @@ local sorters = require("telescope.sorters")
 local table_length = require("jr.utils").table_length
 local nvim_lsp = require("lspconfig")
 local nvim_tree_api = require("nvim-tree.api")
+local jira = require("jr.custom.jira")
 
 local project_map = {}
 
@@ -52,14 +53,10 @@ local function prime_project_map(opts)
 end
 
 vim.api.nvim_create_user_command("RunThing", function(opts)
-	Job:new({
-		command = "gh",
-		args = { "pr", "list", "--search", "is:open review-requested:@me", "--json", "number,title,author" },
-		on_exit = function(j)
-			print(vim.inspect(j))
-		end,
-	}):start()
+	local cwd = vim.fn.getcwd()
+	print(cwd)
 end, {
+
 	range = true,
 })
 

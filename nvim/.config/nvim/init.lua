@@ -69,8 +69,9 @@ require("packer").startup(function(use)
 
 	-- color schemes
 	use("folke/tokyonight.nvim")
-	use("rose-pine/neovim")
+	-- use("rose-pine/neovim")
 	use({ "catppuccin/nvim", as = "catppuccin" })
+	use("rebelot/kanagawa.nvim")
 
 	-- git
 	use("lewis6991/gitsigns.nvim")
@@ -92,7 +93,7 @@ require("packer").startup(function(use)
 		-- 	end
 		-- end,
 	})
-	use("stevearc/aerial.nvim")
+	-- use("stevearc/aerial.nvim")
 	use("mbbill/undotree")
 
 	use("christoomey/vim-tmux-navigator")
@@ -102,7 +103,7 @@ require("packer").startup(function(use)
 	use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
 
 	-- use("nvim-treesitter/nvim-treesitter-angular")
-	use({ "justinrassier/nvim-treesitter-angular", branch = "topic/jsx-fix" })
+	use({ "justinrassier/nvim-treesitter-angular", branch = "fixes" })
 end)
 
 require("jr.options")
@@ -123,3 +124,4 @@ require("jr.colors.illuminate")
 
 -- TODO: put this somewhere better
 vim.cmd("JRStartCheckingPRs")
+vim.cmd("JRStartTimeTracking")

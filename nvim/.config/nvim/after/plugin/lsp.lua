@@ -95,7 +95,7 @@ local function on_attach(client, bufnr)
 	vim.fn.sign_define("DiagnosticSignHint", { text = "•" })
 
 	-- disable augo formatting from the language server to not conflict with
-	local language_servers = { "tsserver", "lua_ls", "gopls", "html", "rust_analyzer", "jsonls" }
+	local language_servers = { "tsserver", "lua_ls", "gopls", "html", "rust_analyzer", "jsonls", "vtsls" }
 	for _, value in ipairs(language_servers) do
 		if value == client.name then
 			client.server_capabilities.documentFormattingProvider = false
@@ -141,7 +141,7 @@ mason_lsp.setup_handlers({
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
-		elseif server_name == "tsserver" then
+		elseif server_name == "tsserver" or server_name == "vtsls" then
 			nvim_lsp.tsserver.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,

@@ -1,5 +1,6 @@
 -- vim.cmd("colorscheme rose-pine")
-vim.cmd("colorscheme catppuccin")
+-- vim.cmd("colorscheme catppuccin")
+vim.cmd("colorscheme kanagawa")
 
 -- get if system setting is dark mode and set colorscheme accordingly
 local dark_mode = vim.fn.system("defaults read -g AppleInterfaceStyle")

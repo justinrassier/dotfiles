@@ -75,6 +75,11 @@ vim.keymap.set("n", "<Leader>fa", function()
 	require("telescope").extensions.live_grep_args.live_grep_args(opts)
 end)
 
+vim.keymap.set({ "n", "v" }, "<Leader>fr", function()
+	local opts = vim.deepcopy(simple_theme)
+	require("telescope.builtin").grep_string(opts)
+end)
+
 vim.keymap.set("n", "<leader>fj", function()
 	require("jr.telescope.jira_picker").jira_tickets(require("telescope.themes").get_dropdown({
 		layout_config = { width = 0.8 },

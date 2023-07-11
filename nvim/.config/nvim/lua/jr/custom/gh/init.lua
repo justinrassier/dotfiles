@@ -57,12 +57,19 @@ end
 function M.create_pr()
 	local pull_request_template = path:new("./.github/pull_request_template.md"):read()
 	local ticket = git.get_current_branch():match("CAVO%-[0-9]+")
+
+	if not ticket then
+		vim.notify("No ticket found in branch name")
+		return false
+	end
+
+	-- Sub in the ticket number in the PR template
 	pull_request_template =
 		string.gsub(pull_request_template, "<!%-%- List any Jira ticket numbers %-%->", ticket .. "\n")
 
-	-- pull_request_template = pull_request_template:gsub("\n", "\\n")
 	local title = git.get_current_commit_message():gsub("\n", "")
 
+	-- if the PR already exists, open it
 	local pr_check_job = Job:new({
 		command = "gh",
 		args = { "pr", "view", "--json", "state", "--jq", ".state" },
@@ -75,6 +82,7 @@ function M.create_pr()
 		return
 	end
 
+	-- Otherwise create the PR
 	local job = Job:new({
 		command = "gh",
 		args = { "pr", "create", "--title", title, "--body", pull_request_template },
@@ -86,6 +94,7 @@ function M.create_pr()
 		-- open the PR in the browser
 		vim.fn.system("open " .. result[1])
 	end
+	return true
 end
 
 function M.list_prs_for_review_async(callback)

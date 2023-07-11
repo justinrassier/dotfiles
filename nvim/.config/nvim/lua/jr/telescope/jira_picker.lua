@@ -6,6 +6,7 @@ local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local git = require("jr.custom.git")
+local jira = require("jr.custom.jira")
 
 local M = {}
 
@@ -17,20 +18,7 @@ local function slugify(text)
 end
 
 function M.jira_tickets(opts)
-	local API_KEY = vim.fn.getenv("JIRA_API_KEY")
-	if not API_KEY then
-		print("JIRA_API_KEY not set")
-		return
-	end
-
-	local res = curl.request({
-		url = "https://adventhp.atlassian.net/rest/api/latest/search?jql=assignee='jrassier@adventhp.com'%20AND%20status%20in%20(Backlog,'In%20Progress','In%20Review')&fields=summary,status",
-		method = "get",
-		auth = "jrassier@adventhp.com:" .. API_KEY,
-		accept = "application/json",
-	}).body
-
-	local json = vim.fn.json_decode(res)
+	local json = jira.get_my_jira_tickets()
 
 	local results = {}
 	for _, issue in ipairs(json.issues) do

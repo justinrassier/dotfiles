@@ -3,6 +3,8 @@ local nx_utils = require("jr.custom.nx.utils")
 local git_stuff = require("jr.custom.git")
 local nx = require("jr.custom.nx")
 local utils = require("jr.utils")
+local jira = require("jr.custom.jira")
+local time_tracking = require("jr.custom.time-tracking")
 
 local M = {}
 
@@ -22,7 +24,25 @@ vim.api.nvim_create_user_command("JRAddToBarrel", function()
 end, {})
 
 vim.api.nvim_create_user_command("JRCreatePR", function()
-	gh.create_pr()
+	local created = gh.create_pr()
+
+	if not created then
+		vim.notify("No PR created", vim.log.levels.ERROR)
+		return
+	end
+
+	-- Log time for the ticket
+	local branch_name = git_stuff.get_current_branch()
+	local ticket = branch_name:match("CAVO%-[0-9]+")
+
+	if not ticket then
+		ticket = vim.fn.input("What ticket is this for? (CAVO-XXXX): ")
+	end
+
+	local time_in_hours = vim.fn.input("How long did this take? (in hours): ")
+	time_in_hours = tonumber(time_in_hours)
+
+	jira.log_time_for_issue(ticket, time_in_hours)
 end, {})
 
 vim.api.nvim_create_user_command("JRExtractToComponent", function(opts)
@@ -36,6 +56,18 @@ vim.api.nvim_create_user_command("JRExtractToComponent", function(opts)
 end, {
 	range = true,
 })
+
+vim.api.nvim_create_user_command("JRStartTimeTracking", function(opts)
+	gh.get_repo_name_async(function(name)
+		-- only do this for my work repo
+		if name == "cavo" then
+			time_tracking.start_time_tracking()
+		end
+	end)
+end, {})
+vim.api.nvim_create_user_command("JRPrintTimeTracking", function(opts)
+	time_tracking.print_ticket_map()
+end, {})
 
 vim.api.nvim_create_user_command("JRStartCheckingPRs", function(opts)
 	gh.get_repo_name_async(function(name)

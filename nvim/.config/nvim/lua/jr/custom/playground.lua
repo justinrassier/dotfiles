@@ -53,8 +53,9 @@ local function prime_project_map(opts)
 end
 
 vim.api.nvim_create_user_command("RunThing", function(opts)
-	local cwd = vim.fn.getcwd()
-	print(cwd)
+	get_time_worked_for_ticket_async("CAVO-3509", function(total_time_seconds)
+		print("TOTAL", total_time_seconds)
+	end)
 end, {
 
 	range = true,

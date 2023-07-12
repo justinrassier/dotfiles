@@ -124,4 +124,4 @@ require("jr.colors.illuminate")
 
 -- TODO: put this somewhere better
 vim.cmd("JRStartCheckingPRs")
-vim.cmd("JRStartTimeTracking")
+vim.cmd("JRTimeTrackingStart")

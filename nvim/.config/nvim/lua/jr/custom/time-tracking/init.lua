@@ -149,6 +149,41 @@ function M.get_time_worked_for_ticket_async(ticket_number, callback)
 		end,
 	}):start()
 end
+function M.get_time_worked_for_all_tickets_async(callback)
+	local db_path = vim.fn.getcwd() .. "/time-tracking.db"
+
+	local query_by_ticket_number = [[
+     SELECT ticket_number, SUM(strftime('%s', end_time) - strftime('%s', start_time))  AS total_time_seconds
+     from tickets
+     GROUP BY ticket_number
+     ]]
+
+	Job:new({
+		command = "sqlite3",
+		args = {
+			db_path,
+			query_by_ticket_number,
+		},
+		on_exit = function(j, return_val)
+			local result = j:result()
+			if #result == 0 then
+				callback(nil)
+			end
+			local results = {}
+			for _, row in ipairs(result) do
+				local row_split = vim.split(row, "|")
+				results[row_split[1]] = tonumber(row_split[2])
+				callback(results)
+			end
+		end,
+		on_stdout = function(j, data)
+			print("on_stdout", data)
+		end,
+		on_stderr = function(j, data)
+			print("on_stderr", data)
+		end,
+	}):start()
+end
 
 function M.delete_time_for_ticket(ticket_number)
 	local db_path = vim.fn.getcwd() .. "/time-tracking.db"
@@ -167,12 +202,39 @@ function M.delete_time_for_ticket(ticket_number)
 		on_exit = function(j, return_val)
 			print("deleted ticket " .. ticket_number)
 		end,
-		on_stdout = function(j, data)
-			print("on_stdout", data)
-		end,
+		on_stdout = function(j, data) end,
 		on_stderr = function(j, data)
 			print("on_stderr", data)
 		end,
+	}):start()
+end
+
+function M.delete_time_for_tickets_with_less_than_5_min()
+	local query = [[
+  DELETE FROM tickets where ticket_number IN (
+    SELECT ticket_number
+    FROM (
+        SELECT ticket_number, SUM(strftime('%s', end_time) - strftime('%s', start_time))  AS total_time_seconds
+        from tickets
+        GROUP BY ticket_number
+    )
+    WHERE total_time_seconds < 300
+)
+  ]]
+
+	local db_path = vim.fn.getcwd() .. "/time-tracking.db"
+
+	Job:new({
+		command = "sqlite3",
+		args = {
+			db_path,
+			query,
+		},
+		on_exit = function(j, return_val)
+			print("deleted tickets with less than 5 min")
+		end,
+		on_stdout = function(j, data) end,
+		on_stderr = function(j, data) end,
 	}):start()
 end
 return M

@@ -123,8 +123,8 @@ end
 
 mason_lsp.setup({
 	ensure_installed = {
-		"tsserver",
-		"eslint",
+		-- "tsserver",
+		-- "eslint",
 		"lua_ls",
 		"rust_analyzer",
 		"angularls",
@@ -145,13 +145,19 @@ mason_lsp.setup_handlers({
 			nvim_lsp.tsserver.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-				root_dir = nvim_lsp.util.root_pattern("package.json", "tsconfig.base.json", "jsconfig.json", ".git"),
+				root_dir = nvim_lsp.util.root_pattern("package.json", "tsconfig.base.json", "jsconfig.json"),
 				commands = {
 					OrganizeImports = {
 						organize_imports,
 						description = "Organize Imports",
 					},
 				},
+			})
+		elseif server_name == "eslint" then
+			nvim_lsp.eslint.setup({
+				root_dir = nvim_lsp.util.root_pattern("package.json"),
+				on_attach = on_attach,
+				capabilities = capabilities,
 			})
 		elseif server_name == "angularls" then
 			nvim_lsp.angularls.setup({

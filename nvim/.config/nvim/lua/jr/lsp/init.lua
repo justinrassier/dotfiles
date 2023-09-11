@@ -185,7 +185,6 @@ local ngls_cmd = {
 	"--ngProbeLocations",
 	default_node_modules,
 }
--- local cmd = {"ngserver", "--stdio", "--tsProbeLocations", project_library_path , "--ngProbeLocations", project_library_path}
 
 lspconfig.angularls.setup({
 	cmd = ngls_cmd,

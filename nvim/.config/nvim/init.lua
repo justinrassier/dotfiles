@@ -23,7 +23,7 @@ require("packer").startup(function(use)
 		"rafamadriz/friendly-snippets",
 		-- code actions
 		"weilbith/nvim-code-action-menu",
-		"jose-elias-alvarez/null-ls.nvim",
+		-- "jose-elias-alvarez/null-ls.nvim",
 		"ray-x/lsp_signature.nvim",
 	})
 
@@ -77,9 +77,7 @@ require("packer").startup(function(use)
 	use("lewis6991/gitsigns.nvim")
 	use("kdheepak/lazygit.nvim")
 
-	-- tree/navigation/bufferline
 	use("nvim-lualine/lualine.nvim")
-	use("akinsho/bufferline.nvim")
 	use("kyazdani42/nvim-tree.lua")
 	use("ThePrimeagen/harpoon")
 	use("SmiteshP/nvim-gps")
@@ -101,9 +99,9 @@ require("packer").startup(function(use)
 	use("RRethy/vim-illuminate")
 
 	use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
-
-	-- use("nvim-treesitter/nvim-treesitter-angular")
 	use({ "justinrassier/nvim-treesitter-angular", branch = "fixes" })
+
+  use { 'mhartington/formatter.nvim' }
 end)
 
 require("jr.options")

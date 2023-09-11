@@ -61,7 +61,7 @@ vim.keymap.set("n", "<c-p>", function()
 	M.find_files()
 end, { noremap = true })
 
-vim.keymap.set("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
+-- vim.keymap.set("n", "<Leader>fr", "<cmd>Telescope lsp_references<cr>")
 
 vim.keymap.set("n", "<Leader>a", function()
 	local opts = vim.deepcopy(simple_theme)
@@ -87,6 +87,11 @@ vim.keymap.set("n", "<leader>fj", function()
 end)
 vim.keymap.set("n", "<leader>fpr", function()
 	require("jr.telescope.pr_picker").list_prs_for_review(require("telescope.themes").get_dropdown({
+		layout_config = { width = 0.8 },
+	}))
+end)
+vim.keymap.set("n", "<leader>fh", function()
+	require("jr.telescope.history_picker").list_shell_history(require("telescope.themes").get_dropdown({
 		layout_config = { width = 0.8 },
 	}))
 end)

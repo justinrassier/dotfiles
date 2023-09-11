@@ -74,7 +74,11 @@ end, {})
 vim.api.nvim_create_user_command("JRTimeTrackingFlush", function(opts)
 	time_tracking.flush_time_tracking()
 end, {})
+vim.api.nvim_create_user_command("JRTimeTrackingClearInsignificantTime", function(opts)
+	time_tracking.delete_time_for_tickets_with_less_than_5_min()
+end, {})
 vim.api.nvim_create_user_command("JRTimeTrackingLogTime", function(opts)
+	time_tracking.flush_time_tracking()
 	local current_ticket = git_stuff.get_jira_ticket_from_branch()
 	if not current_ticket then
 		vim.notify("No ticket found in branch name", vim.log.levels.WARN)
@@ -88,8 +92,8 @@ vim.api.nvim_create_user_command("JRTimeTrackingLogTime", function(opts)
 				return
 			end
 			local hours_worked = seconds_worked / 60 / 60
-			-- round up to nearest 4 hour increment
-			hours_worked = math.ceil(hours_worked / 4) * 4
+			-- round up to nearest hour
+			hours_worked = math.ceil(hours_worked)
 
 			local confirm = vim.fn.input("Log " .. hours_worked .. " hours for " .. current_ticket .. "? (y/n): ")
 			if confirm ~= "y" then
@@ -101,6 +105,23 @@ vim.api.nvim_create_user_command("JRTimeTrackingLogTime", function(opts)
 			time_tracking.delete_time_for_ticket(current_ticket)
 		end)
 	)
+end, {})
+vim.api.nvim_create_user_command("JRTimeTrackingLogTimeForAllTickets", function(opts)
+	local confirm = vim.fn.input("Log time for all tickets? (y/n): ")
+	if confirm ~= "y" then
+		return
+	end
+
+	local tickets = time_tracking.get_tickets_with_time_worked()
+	for _, ticket in ipairs(tickets) do
+		local seconds_worked = time_tracking.get_time_worked_for_ticket(ticket)
+		local hours_worked = seconds_worked / 60 / 60
+		-- round up to nearest hour
+		hours_worked = math.ceil(hours_worked)
+		jira.log_time_for_issue(ticket, hours_worked)
+		print("Logged " .. hours_worked .. " hours for " .. ticket)
+	end
+	time_tracking.flush_time_tracking()
 end, {})
 
 vim.api.nvim_create_user_command("JRStartCheckingPRs", function(opts)

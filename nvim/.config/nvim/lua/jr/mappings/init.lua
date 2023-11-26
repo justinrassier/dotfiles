@@ -2,6 +2,7 @@ local nx = require("jr.custom.nx")
 local tw = require("jr.custom.tailwind")
 local gh = require("jr.custom.gh")
 local git = require("jr.custom.git")
+local jira = require("jr.custom.jira")
 
 local vim = vim
 
@@ -66,6 +67,13 @@ end)
 -- open github PR in  browser
 vim.keymap.set("n", "<leader>gpr", function()
 	gh.open_github_pr()
+end)
+
+-- open jira ticket in browser
+vim.keymap.set("n", "<leader>gj", function()
+	local word = vim.fn.expand("<cWORD>")
+	local jira_number = string.match(word, "([A-Z]+-[0-9]+)")
+	jira.open_ticket_in_browser(jira_number)
 end)
 
 -- new scratch buffer

@@ -142,17 +142,31 @@ mason_lsp.setup_handlers({
 				capabilities = capabilities,
 			})
 		elseif server_name == "tsserver" or server_name == "vtsls" then
-			nvim_lsp.tsserver.setup({
-				on_attach = on_attach,
-				capabilities = capabilities,
-				root_dir = nvim_lsp.util.root_pattern("package.json", "tsconfig.base.json", "jsconfig.json"),
-				commands = {
-					OrganizeImports = {
-						organize_imports,
-						description = "Organize Imports",
+			if server_name == "tsserver" then
+				nvim_lsp.tsserver.setup({
+					on_attach = on_attach,
+					capabilities = capabilities,
+					root_dir = nvim_lsp.util.root_pattern("package.json", "tsconfig.base.json", "jsconfig.json"),
+					commands = {
+						OrganizeImports = {
+							organize_imports,
+							description = "Organize Imports",
+						},
 					},
-				},
-			})
+				})
+			else
+				nvim_lsp.vtsls.setup({
+					on_attach = on_attach,
+					capabilities = capabilities,
+					root_dir = nvim_lsp.util.root_pattern("package.json", "tsconfig.base.json", "jsconfig.json"),
+					commands = {
+						OrganizeImports = {
+							organize_imports,
+							description = "Organize Imports",
+						},
+					},
+				})
+			end
 		elseif server_name == "eslint" then
 			nvim_lsp.eslint.setup({
 				root_dir = nvim_lsp.util.root_pattern("package.json"),

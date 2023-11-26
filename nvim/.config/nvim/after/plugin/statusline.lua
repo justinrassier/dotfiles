@@ -27,7 +27,7 @@ lualine.setup({
 				end,
 			},
 		},
-		lualine_c = { "filename" },
+		lualine_c = { { "filename", path = 1 } },
 		-- lualine_x = { { gps.get_location, cond = gps.is_available } },
 		lualine_x = { jesting.lualine_status },
 		-- lualine_x = {"b:gitsigns_status"},

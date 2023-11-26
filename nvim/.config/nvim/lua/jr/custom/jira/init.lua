@@ -47,4 +47,9 @@ function M.get_my_jira_tickets()
 	return json
 end
 
+function M.open_ticket_in_browser(jira_number)
+	local url = "https://adventhp.atlassian.net/browse/" .. jira_number
+	vim.fn.jobstart("open " .. url, { detach = true })
+end
+
 return M

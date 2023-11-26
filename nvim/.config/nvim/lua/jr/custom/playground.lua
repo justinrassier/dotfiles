@@ -57,45 +57,10 @@ function do_thing()
 	print("hello")
 end
 vim.api.nvim_create_user_command("RunThing", function(opts)
-	local history_cmd = "cat /Users/justinrassier/.zsh_history | awk -F';' '{print $2}'"
-	local history = vim.fn.systemlist(history_cmd)
-
-	print(vim.inspect(history))
-
-	-- vim.keymap.set("t", "<cr>", function()
-	-- 	print("hello")
-	-- -- 	-- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<cr>", true, true, true), "t", true)
-	-- end, {
-	-- 	noremap = false,
-	-- })
-	-- vim.api.nvim_set_keymap("t", "<cr>", 	end, { noremap = true, silent = true })
-
-	-- vim.api.nvim_create_autocmd("InsertCharPre", {
-	-- 	-- buffer = ev.buffer,
-	-- 	group = vim.api.nvim_create_augroup("TerminalEnterKeyPressed", { clear = true }),
-	-- 	callback = function(blah)
-	-- 		local inserted_char = vim.fn.getchar()
-	-- 		print("char changed", inserted_char)
-	-- 	end,
-	-- })
-
-	-- vim.api.nvim_create_autocmd("TermOpen", {
-	-- 	group = vim.api.nvim_create_augroup("TerminalOpen", { clear = true }),
-	-- 	callback = function(ev)
-	-- 		vim.api.nvim_create_autocmd("InsertCharPre", {
-	-- 			buffer = ev.buffer,
-	-- 			group = vim.api.nvim_create_augroup("TerminalEnterKeyPressed", { clear = true }),
-	-- 			callback = function(blah)
-	-- 				print("char changed", vim.inspect(blah))
-	-- 			end,
-	-- 		})
-	-- 		-- -- hacky, but works. wait for 5 seconds so we know the shell is initialized
-	-- 		-- vim.defer_fn(function()
-	-- 		-- 	-- get the bare prompt from the terminal so we can strip it out of the output
-	-- 		-- 	bare_prompt = vim.fn.getline(".")
-	-- 		-- end, 5000)
-	-- 	end,
-	-- })
+	-- get the current word under the cursor including hyphens
+	local word = vim.fn.expand("<cWORD>")
+	local jira_number = string.match(word, "([A-Z]+-[0-9]+)")
+	jira.open_ticket_in_browser(jira_number)
 end, {
 
 	range = true,

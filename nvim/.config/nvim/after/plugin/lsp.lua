@@ -123,8 +123,6 @@ end
 
 mason_lsp.setup({
 	ensure_installed = {
-		-- "tsserver",
-		-- "eslint",
 		"lua_ls",
 		"rust_analyzer",
 		"angularls",
@@ -190,7 +188,7 @@ mason_lsp.setup_handlers({
 							path = vim.split(package.path, ";"),
 						},
 						diagnostics = {
-							globals = { "vim" },
+							globals = { "vim", "use", "describe", "it", "before_each", "after_each" },
 						},
 						workspace = {
 							library = {

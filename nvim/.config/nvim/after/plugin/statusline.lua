@@ -1,8 +1,4 @@
-require("nvim-gps").setup()
--- local bufferline = require("bufferline")
 local lualine = require("lualine")
-local colors = require("jr.colors")
-local gps = require("nvim-gps")
 local jesting = require("jesting")
 local commands = require("jr.custom.commands")
 

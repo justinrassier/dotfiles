@@ -1,5 +1,6 @@
 require("packer").startup(function(use)
 	use("~/dev/jesting.nvim")
+	-- use({ "justinrassier/jesting.nvim", branch = "test" })
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
 	use("nvim-lua/plenary.nvim")
@@ -37,7 +38,6 @@ require("packer").startup(function(use)
 
 	--Snippets. vnsip lets you use vs code ones!
 	use("johnpapa/vscode-angular-snippets")
-	use("andys8/vscode-jest-snippets")
 
 	use("folke/todo-comments.nvim")
 	use("machakann/vim-highlightedyank")
@@ -80,7 +80,6 @@ require("packer").startup(function(use)
 	use("nvim-lualine/lualine.nvim")
 	use("kyazdani42/nvim-tree.lua")
 	use("ThePrimeagen/harpoon")
-	use("SmiteshP/nvim-gps")
 	use({
 		"github/copilot.vim",
 		branch = "release",
@@ -91,21 +90,17 @@ require("packer").startup(function(use)
 		-- 	end
 		-- end,
 	})
-	-- use("stevearc/aerial.nvim")
 	use("mbbill/undotree")
-
 	use("christoomey/vim-tmux-navigator")
-
 	use("RRethy/vim-illuminate")
-
 	use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
-	use({ "justinrassier/nvim-treesitter-angular", branch = "fixes" })
 
-  use { 'mhartington/formatter.nvim' }
+	use({ "mhartington/formatter.nvim" })
+
+	use("folke/trouble.nvim")
 end)
 
 require("jr.options")
--- require("jr.lsp")
 require("jr.colors")
 require("jr.mappings")
 require("jr.autocmds")
@@ -123,3 +118,4 @@ require("jr.colors.illuminate")
 -- TODO: put this somewhere better
 vim.cmd("JRStartCheckingPRs")
 vim.cmd("JRTimeTrackingStart")
+-- vim.cmd("Copilot disable")

@@ -18,7 +18,7 @@ end
 nvim_tree.setup({
 	-- open_on_setup = true,
 	view = {
-		width = 60,
+		width = 40,
 	},
 	renderer = {
 		icons = {

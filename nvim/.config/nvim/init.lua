@@ -36,9 +36,6 @@ require("packer").startup(function(use)
 	use("nvim-telescope/telescope-node-modules.nvim")
 	use("nvim-telescope/telescope-live-grep-args.nvim")
 
-	--Snippets. vnsip lets you use vs code ones!
-	use("johnpapa/vscode-angular-snippets")
-
 	use("folke/todo-comments.nvim")
 	use("machakann/vim-highlightedyank")
 	use("windwp/nvim-ts-autotag")
@@ -47,29 +44,7 @@ require("packer").startup(function(use)
 	use("numToStr/Comment.nvim")
 	use("JoosepAlviste/nvim-ts-context-commentstring")
 
-	-- Markdown
-	--use ("iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  ")
-	use({
-		"iamcco/markdown-preview.nvim",
-		run = "cd app && npm install",
-		setup = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
-		ft = { "markdown" },
-	})
-
-	use({
-		"heavenshell/vim-jsdoc",
-		run = "make install",
-		setup = function()
-			vim.g.jsdoc_lehre_path = "/Users/justinrassier/.nvm/versions/node/v18.13.0/bin/lehre"
-			vim.g.jsdoc_formatter = "tsdoc"
-		end,
-	})
-
 	-- color schemes
-	use("folke/tokyonight.nvim")
-	-- use("rose-pine/neovim")
 	use({ "catppuccin/nvim", as = "catppuccin" })
 	use("rebelot/kanagawa.nvim")
 
@@ -92,12 +67,20 @@ require("packer").startup(function(use)
 	})
 	use("mbbill/undotree")
 	use("christoomey/vim-tmux-navigator")
-	use("RRethy/vim-illuminate")
 	use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
+
+	use({ "justinrassier/nvim-treesitter-angular", branch = "fixes" })
 
 	use({ "mhartington/formatter.nvim" })
 
-	use("folke/trouble.nvim")
+	use({
+		"iamcco/markdown-preview.nvim",
+		run = "cd app && npm install",
+		setup = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+		ft = { "markdown" },
+	})
 end)
 
 require("jr.options")
@@ -113,9 +96,17 @@ require("nvim-web-devicons").setup()
 require("nvim-ts-autotag").setup()
 
 -- do this last so colors actually work
-require("jr.colors.illuminate")
+-- require("jr.colors.illuminate")
 
 -- TODO: put this somewhere better
 vim.cmd("JRStartCheckingPRs")
 vim.cmd("JRTimeTrackingStart")
 -- vim.cmd("Copilot disable")
+--
+--
+vim.api.nvim_exec(
+	[[
+    autocmd BufNewFile,BufRead *.ng set filetype=ng
+]],
+	false
+)

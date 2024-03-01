@@ -132,6 +132,14 @@ mason_lsp.setup({
 
 mason_lsp.setup_handlers({
 	function(server_name)
+		if server_name == "volar" then
+			nvim_lsp.volar.setup({
+				filetypes = { "ng", "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+				root_dir = nvim_lsp.util.root_pattern("package.json"),
+				capabilities = capabilities,
+			})
+		end
+
 		-- only add deno if there is a deno.json file at the root
 		if server_name == "denols" then
 			nvim_lsp.denols.setup({

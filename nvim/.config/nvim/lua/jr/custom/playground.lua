@@ -1,6 +1,5 @@
 local scan = require("plenary.scandir")
 local Job = require("plenary.job")
-local popup = require("plenary.popup")
 local path = require("plenary.path")
 local curl = require("plenary.curl")
 local nx_utils = require("jr.custom.nx.utils")
@@ -18,6 +17,7 @@ local table_length = require("jr.utils").table_length
 local nvim_lsp = require("lspconfig")
 local nvim_tree_api = require("nvim-tree.api")
 local jira = require("jr.custom.jira")
+local curl = require("plenary.curl")
 
 local project_map = {}
 
@@ -56,11 +56,79 @@ local bare_prompt = ""
 function do_thing()
 	print("hello")
 end
+
+local function create_popup_for_response(completion)
+	-- creat a new buffer
+	local bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_option(bufnr, "filetype", "markdown")
+	local lines = vim.split(completion, "\n")
+
+	-- assemble list of test results
+	-- local lines = {}
+	-- for _, result in ipairs(test_result) do
+	-- 	local text = result.passed and "✅" or "❌"
+	-- 	table.insert(lines, text .. " " .. result.name)
+	-- end
+
+	-- add a line of text
+	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+
+	local width = 125
+	local height = 25
+	local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+	-- open a window in the center of the screen
+	popup.create(bufnr, {
+		title = "OpenAI Completion",
+		line = math.floor(((vim.o.lines - height) / 2) - 1),
+		col = math.floor((vim.o.columns - width) / 2),
+		minwidth = width,
+		minheight = height,
+		borderchars = borderchars,
+	})
+	vim.opt_local.wrap = true
+end
+
 vim.api.nvim_create_user_command("RunThing", function(opts)
-	-- get the current word under the cursor including hyphens
-	local word = vim.fn.expand("<cWORD>")
-	local jira_number = string.match(word, "([A-Z]+-[0-9]+)")
-	jira.open_ticket_in_browser(jira_number)
+	local OPENAI_API_KEY = vim.fn.getenv("OPENAI_API_KEY")
+
+	-- get text from selected range
+	local text = vim.fn.getline(vim.fn.getpos("'<")[2], vim.fn.getpos("'>")[2])
+	local file_type = vim.bo.filetype
+
+	local messages = {
+		{
+			role = "system",
+			content = "You are a helpful assistant that knows a lot about programming",
+		},
+		{
+			role = "user",
+			content = "explain the following code to me \n" .. "```" .. file_type .. "\n" .. text[1] .. "```",
+		},
+	}
+	local body = {
+		model = "gpt-3.5-turbo",
+		messages = messages,
+		temperature = 0.7,
+	}
+	--
+	--json encode messages
+	-- print(vim.fn.json_encode(body))
+
+	local response = curl.post("https://api.openai.com/v1/chat/completions", {
+		headers = {
+			["Authorization"] = "Bearer " .. OPENAI_API_KEY,
+			["Content-Type"] = "application/json",
+		},
+		body = vim.fn.json_encode(body),
+	})
+
+	-- local completion = "hello world"
+	-- get the body
+	local response_body = vim.fn.json_decode(response.body)
+	local completion = response_body.choices[1].message.content
+	--
+	-- local completion = "foo"
+	create_popup_for_response(completion)
 end, {
 
 	range = true,

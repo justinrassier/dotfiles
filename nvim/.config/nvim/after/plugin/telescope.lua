@@ -2,7 +2,6 @@ local vim = vim
 local telescope = require("telescope")
 local builtIn = require("telescope.builtin")
 local actions = require("telescope.actions")
-local trouble = require("trouble.providers.telescope")
 
 telescope.load_extension("fzy_native")
 telescope.load_extension("node_modules")
@@ -23,9 +22,7 @@ telescope.setup({
 				["<CR>"] = actions.select_default,
 				["<Tab>"] = actions.toggle_selection,
 				["<C-f>"] = actions.send_selected_to_qflist + actions.open_qflist,
-				["<c-t>"] = trouble.open_with_trouble,
 			},
-			n = { ["<c-t>"] = trouble.open_with_trouble },
 		},
 	},
 	extensions = {

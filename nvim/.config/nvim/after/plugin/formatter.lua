@@ -13,7 +13,7 @@ require("formatter").setup({
 			require("formatter.filetypes.lua").stylua,
 		},
 		typescript = {
-			require("formatter.filetypes.typescript").prettier,
+			require("formatter.filetypes.typescript").prettierd,
 		},
 		html = {
 			require("formatter.filetypes.html").prettier,
@@ -31,7 +31,7 @@ vim.api.nvim_exec(
 	[[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.ts,*.tsx,*.js,*.jsx,*.lua,*.html,*.go,*.md FormatWrite
+  autocmd BufWritePost *.ts,*.tsx,*.js,*.jsx,*.lua,*.html,*.go FormatWrite
 augroup end
 ]],
 	true

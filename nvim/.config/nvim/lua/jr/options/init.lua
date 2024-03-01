@@ -56,6 +56,7 @@ Option.g({
 	foldcolumn = "0",
 	foldlevelstart = 99,
 	foldexpr = "nvim_treesitter#foldexpr()",
+	spell = true,
 })
 
 vim.g.mapleader = " "

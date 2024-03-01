@@ -1,63 +1,70 @@
--- Options
-local parsers = require("nvim-treesitter.parsers")
-local Type = { GLOBAL_OPTION = "o", WINDOW_OPTION = "wo", BUFFER_OPTION = "bo" }
-local add_options = function(option_type, options)
-	if type(options) ~= "table" then
-		error('options should be a type of "table"')
-		return
-	end
-	local vim_option = vim[option_type]
-	for key, value in pairs(options) do
-		vim_option[key] = value
-	end
-end
-local Option = {}
-Option.g = function(options)
-	add_options(Type.GLOBAL_OPTION, options)
-end
-Option.w = function(options)
-	add_options(Type.WINDOW_OPTION, options)
-end
-Option.b = function(options)
-	add_options(Type.BUFFER_OPTION, options)
-end
-
---vim.g.loaded = 1
---vim.g.loaded_netrwPlugin = 1
-
-Option.g({
-	completeopt = "menu,menuone,noselect",
-	tabstop = 2,
-	softtabstop = 2,
-	shiftwidth = 2,
-	expandtab = true,
-	-- incremental search
-	incsearch = true,
-	-- disable higlighting after searching
-	hlsearch = false,
-	-- keep buffers open in the background
-	hidden = true,
-	wrap = false,
-	-- history stuff
-	swapfile = false,
-	backup = false,
-	undodir = vim.fn.expand("$HOME/.vim/undos"),
-	undofile = true,
-	-- start scrolling 8 lines from the bottom
-	scrolloff = 8,
-	signcolumn = "yes",
-	number = true,
-	rnu = true,
-	splitbelow = true,
-	splitright = true,
-	termguicolors = true,
-	syntax = true,
-	foldmethod = "expr",
-	foldcolumn = "0",
-	foldlevelstart = 99,
-	foldexpr = "nvim_treesitter#foldexpr()",
-	spell = true,
-})
-
+-- Set <space> as the leader key
+-- See `:help mapleader`
+--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
-vim.g.highlightedyank_highlight_duration = 100
+vim.g.maplocalleader = " "
+
+-- [[ Setting options ]]
+-- See `:help vim.opt`
+-- NOTE: You can change these options as you wish!
+--  For more options, you can see `:help option-list`
+
+-- Make line numbers default
+vim.opt.number = true
+-- You can also add relative line numbers, for help with jumping.
+--  Experiment for yourself to see if you like it!
+-- vim.opt.relativenumber = true
+
+-- Enable mouse mode, can be useful for resizing splits for example!
+vim.opt.mouse = "a"
+
+-- Don't show the mode, since it's already in status line
+vim.opt.showmode = false
+
+-- Sync clipboard between OS and Neovim.
+--  Remove this option if you want your OS clipboard to remain independent.
+--  See `:help 'clipboard'`
+vim.opt.clipboard = "unnamedplus"
+
+-- Enable break indent
+vim.opt.breakindent = true
+
+-- Save undo history
+vim.opt.undofile = true
+
+-- Case-insensitive searching UNLESS \C or capital in search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+-- Keep signcolumn on by default
+vim.opt.signcolumn = "yes"
+
+-- Decrease update time
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
+
+-- Configure how new splits should be opened
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
+-- Sets how neovim will display certain whitespace in the editor.
+--  See :help 'list'
+--  and :help 'listchars'
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
+-- Preview substitutions live, as you type!
+vim.opt.inccommand = "split"
+
+-- Show which line your cursor is on
+vim.opt.cursorline = true
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.opt.scrolloff = 10
+
+-- [[ Basic Keymaps ]]
+--  See `:help vim.keymap.set()`
+
+-- Set highlight on search, but clear on pressing <Esc> in normal mode
+vim.opt.hlsearch = true
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")

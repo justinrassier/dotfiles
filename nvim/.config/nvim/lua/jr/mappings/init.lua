@@ -1,14 +1,9 @@
 local nx = require("jr.custom.nx")
 local tw = require("jr.custom.tailwind")
 local gh = require("jr.custom.gh")
-local git = require("jr.custom.git")
 local jira = require("jr.custom.jira")
 
 local vim = vim
-
--- save to system clipboard shortcuts
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 -- Custom jump around Angular component parts
 vim.keymap.set("n", "<leader>jm", "<cmd>lua require('jr.custom.angular').jump_to_nearest_module()<cr>")
@@ -81,17 +76,6 @@ vim.keymap.set("n", "<leader>ns", function()
 	require("jr.custom").new_scratch_buffer()
 end)
 
--- Window navigation
--- vim.keymap.set("n", "<c-j>", "<c-w><c-j>", { noremap = true })
--- vim.keymap.set("n", "<c-k>", "<c-w><c-k>", { noremap = true })
--- vim.keymap.set("n", "<c-h>", "<c-w><c-h>", { noremap = true })
--- vim.keymap.set("n", "<c-l>", "<c-w><c-l>", { noremap = true })
-vim.g.tmux_navigator_no_mappings = 1
-vim.keymap.set("n", "<C-j>", ":TmuxNavigateDown<cr>", { silent = true })
-vim.keymap.set("n", "<C-k>", ":TmuxNavigateUp<cr>", { silent = true })
-vim.keymap.set("n", "<C-h>", ":TmuxNavigateLeft<cr>", { silent = true })
-vim.keymap.set("n", "<C-l>", ":TmuxNavigateRight<cr>", { silent = true })
-
 -- Undo breakpoints to make undo less aggressive
 vim.keymap.set("i", ",", ",<c-g>u")
 vim.keymap.set("i", ".", ".<c-g>u")
@@ -101,25 +85,6 @@ vim.keymap.set("i", "{", "{<c-g>u")
 vim.keymap.set("i", "}", "}<c-g>u")
 vim.keymap.set("i", "(", "(<c-g>u")
 vim.keymap.set("i", ")", ")<c-g>u")
-
--- gitsigns
-vim.keymap.set("n", "<leader>gl", ":Gitsigns toggle_current_line_blame<cr>")
-vim.keymap.set("n", "<leader>lg", ":LazyGit<cr>")
-
-vim.keymap.set("n", "<leader>dvo", ":DiffviewOpen<cr>")
-vim.keymap.set("n", "<leader>dvc", ":DiffviewClose<cr>")
-vim.keymap.set("n", "<leader>dvp", function()
-	git.fetch()
-	local base_ref = gh.get_base_branch_for_pr()
-	local current_ref = "HEAD"
-
-	if base_ref == nil then
-		base_ref = "main"
-	end
-
-	local diff_view_command = "DiffviewOpen " .. "origin/" .. base_ref .. ".." .. current_ref
-	vim.cmd(diff_view_command)
-end)
 
 -- quickfix navigation
 vim.keymap.set("n", "<leader>cn", ":cn<CR>")
@@ -146,17 +111,6 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "<silent> <Leader>+", ':exe "vertical resize " . (winwidth(0) * 3/2)<CR>')
 vim.keymap.set("n", "<silent> <Leader>-", ':exe "vertical resize  " . (winwidth(0) * 2/3)<CR>')
 
--- copy all to clipboard
--- vim.keymap.set("n", "<leader>cac", ":%y+<cr>")
--- paste from clipboard
-vim.keymap.set("n", "<leader>pc", ':norm "+p<cr>')
-
---Harpoooooooon
-vim.keymap.set("n", "<leader>mf", '<cmd>lua require("harpoon.mark").add_file()<cr>')
-vim.keymap.set("n", "<leader>mu", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>')
-vim.keymap.set("n", "<leader>mn", '<cmd>lua require("harpoon.ui").nav_next()<cr>')
-vim.keymap.set("n", "<leader>mp", '<cmd>lua require("harpoon.ui").nav_prev()<cr>')
-
 -- Jesting
 vim.keymap.set("n", "<leader><leader>ja", "<cmd>:JestingAttachNx<cr>")
 vim.keymap.set("n", "<leader><leader>ju", "<cmd>:JestingUnattach<cr>")
@@ -176,3 +130,17 @@ vim.keymap.set("n", "<leader><leader>cp", "<cmd>let @+ = expand('%:~:.')<CR>")
 -- copilot enable/disable
 vim.keymap.set("n", "<leader>cd", "<cmd>Copilot disable<cr>")
 vim.keymap.set("n", "<leader>ce", "<cmd>Copilot enable<cr>")
+
+-- Diagnostic keymaps
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
+vim.keymap.set("n", "<leader>E", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+
+-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
+-- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
+-- is not what someone will guess without a bit more experience.
+--
+-- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
+-- or just use <C-\><C-n> to exit terminal mode
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })

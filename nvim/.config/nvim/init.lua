@@ -11,5 +11,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	"tpope/vim-sleuth",
 	"github/copilot.vim",
+	{ dir = "~/dev/jesting.nvim" },
 	{ import = "plugins" },
 })

@@ -57,6 +57,15 @@ end, {
 	range = true,
 })
 
+vim.api.nvim_create_user_command("JROpenGitBlameJiraTicket", function()
+	local jira_ticket = git_stuff.get_jira_ticket_from_git_blame()
+	if not jira_ticket then
+		vim.notify("No Jira ticket found", vim.log.levels.WARN)
+		return
+	end
+	jira.open_ticket_in_browser(jira_ticket)
+end, {})
+
 --
 -- Time tracking
 --
@@ -124,6 +133,7 @@ vim.api.nvim_create_user_command("JRTimeTrackingLogTimeForAllTickets", function(
 	time_tracking.flush_time_tracking()
 end, {})
 
+------------------------------------------ PR checking -------------------------------------
 vim.api.nvim_create_user_command("JRStartCheckingPRs", function(opts)
 	gh.get_repo_name_async(function(name)
 		-- only do this for my work repo

@@ -1,6 +1,7 @@
 require("jr.options")
 require("jr.autocmds")
 require("jr.mappings")
+require("jr.custom.commands")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -14,3 +15,6 @@ require("lazy").setup({
 	{ dir = "~/dev/jesting.nvim" },
 	{ import = "plugins" },
 })
+
+vim.cmd("JRStartCheckingPRs")
+vim.cmd("JRTimeTrackingStart")

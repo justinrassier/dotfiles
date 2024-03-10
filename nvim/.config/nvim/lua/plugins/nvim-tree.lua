@@ -20,12 +20,19 @@ return {
 			-- open the tree
 			require("nvim-tree.api").tree.open()
 		end
+		-- if we are in cavo, we need more room than other projects
+		local current_directory = vim.fn.expand("%:p:h")
+		local width = 40
+		if string.find(current_directory, "cavo") then
+			width = 60
+		end
+		print(current_directory)
 
 		require("nvim-tree").setup({
 
 			-- open_on_setup = true,
 			view = {
-				width = 40,
+				width = width,
 			},
 			renderer = {
 				icons = {

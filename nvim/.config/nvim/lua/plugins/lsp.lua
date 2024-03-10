@@ -1,3 +1,15 @@
+local lspconfig = require("lspconfig")
+local get_node_modules = require("jr.utils").get_node_modules
+local util = lspconfig.util
+local default_node_modules = get_node_modules(vim.fn.getcwd())
+local ngls_cmd = {
+	"ngserver",
+	"--stdio",
+	"--tsProbeLocations",
+	default_node_modules,
+	"--ngProbeLocations",
+	default_node_modules,
+}
 return { -- LSP Configuration & Plugins
 	"neovim/nvim-lspconfig",
 	dependencies = {
@@ -158,6 +170,25 @@ return { -- LSP Configuration & Plugins
 					},
 				},
 			},
+			angularls = {
+				cmd = ngls_cmd,
+				capabilities = capabilities,
+				root_dir = util.root_pattern("package.json"),
+				-- 	on_attach = on_attach,
+				-- 	on_new_config = function(new_config)
+				-- 		new_config.cmd = ngls_cmd
+				-- 	end,
+			},
+			-- lspconfig.angularls.setup({
+			-- 	cmd = ngls_cmd,
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	on_new_config = function(new_config)
+			-- 		new_config.cmd = ngls_cmd
+			-- 	end,
+			-- })
+
+			-- local default_node_modules = get_node_modules(vim.fn.getcwd())
 		}
 
 		-- Ensure the servers and tools above are installed

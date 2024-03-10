@@ -24,10 +24,14 @@ STOW_FOLDERS="nvim,kitty,zsh,tmux,tmuxinator"
 
 # brew install neovim
 # brew tap homebrew/cask-fonts && brew install font-Fira-Code-nerd-font
+# brew install --cask homebrew/cask-fonts/font-caskaydia-cove-nerd-font
+# brew install --cask homebrew/cask-fonts/font-symbols-only-nerd-font
+#
 # brew install stow
- # brew install jesseduffield/lazygit/lazygit
- # brew install tmuxinator
- # brew install ripgrep
+# brew install jesseduffield/lazygit/lazygit
+# brew install tmuxinator
+# brew install ripgrep
+# brew install gh
 
 # Install packer
 

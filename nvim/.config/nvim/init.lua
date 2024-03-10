@@ -11,12 +11,12 @@ require("lazy").setup({
 	"nvim-lua/plenary.nvim",
 	"tpope/vim-sleuth",
 	"github/copilot.vim",
-	{ dir = "~/dev/jesting.nvim" },
+	{ dir = "~/git/jesting.nvim" },
 	{ import = "plugins" },
 })
 
 require("jr.custom.commands")
 require("jr.autocmds")
 require("jr.mappings")
--- vim.cmd("JRStartCheckingPRs")
--- vim.cmd("JRTimeTrackingStart")
+vim.cmd("JRStartCheckingPRs")
+vim.cmd("JRTimeTrackingStart")

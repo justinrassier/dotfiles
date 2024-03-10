@@ -173,20 +173,16 @@ return { -- LSP Configuration & Plugins
 			angularls = {
 				cmd = ngls_cmd,
 				capabilities = capabilities,
-				root_dir = util.root_pattern("package.json"),
+				root_dir = util.root_pattern("package-lock.json"),
 				-- 	on_attach = on_attach,
 				-- 	on_new_config = function(new_config)
 				-- 		new_config.cmd = ngls_cmd
 				-- 	end,
 			},
-			-- lspconfig.angularls.setup({
-			-- 	cmd = ngls_cmd,
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	on_new_config = function(new_config)
-			-- 		new_config.cmd = ngls_cmd
-			-- 	end,
-			-- })
+			eslint = {
+				capabilities = capabilities,
+				root_dir = util.root_pattern("package-lock.json"),
+			},
 
 			-- local default_node_modules = get_node_modules(vim.fn.getcwd())
 		}

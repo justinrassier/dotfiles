@@ -1,7 +1,4 @@
 require("jr.options")
-require("jr.autocmds")
-require("jr.mappings")
-require("jr.custom.commands")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -10,11 +7,16 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
+	"neovim/nvim-lspconfig",
+	"nvim-lua/plenary.nvim",
 	"tpope/vim-sleuth",
 	"github/copilot.vim",
 	{ dir = "~/dev/jesting.nvim" },
 	{ import = "plugins" },
 })
 
-vim.cmd("JRStartCheckingPRs")
-vim.cmd("JRTimeTrackingStart")
+require("jr.custom.commands")
+require("jr.autocmds")
+require("jr.mappings")
+-- vim.cmd("JRStartCheckingPRs")
+-- vim.cmd("JRTimeTrackingStart")

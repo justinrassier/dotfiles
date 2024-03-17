@@ -1,6 +1,13 @@
 return { -- Collection of various small independent plugins/modules
 	"echasnovski/mini.nvim",
 	config = function()
+		local commands = require("jr.custom.commands")
+		local function pr_count()
+			if commands.pr_count == nil then
+				return ""
+			end
+			return " " .. commands.pr_count
+		end
 		-- Better Around/Inside textobjects
 		--
 		-- Examples:
@@ -42,7 +49,11 @@ return { -- Collection of various small independent plugins/modules
 		-- cursor location to LINE:COLUMN
 		---@diagnostic disable-next-line: duplicate-set-field
 		statusline.section_location = function()
-			return ""
+			local count = commands.pr_count
+			if count == nil then
+				return "%2l:%-2v"
+			end
+			return "" .. count
 		end
 		-- ---@diagnostic disable-next-line: duplicate-set-field
 		-- statusline.section_filename = function()

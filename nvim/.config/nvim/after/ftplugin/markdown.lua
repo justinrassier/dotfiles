@@ -1,6 +1,7 @@
 vim.b.minihipatterns_config = {
 	highlighters = {
 		markdown_ticks = { pattern = "`[^`]*`", group = "Special" },
+		cavo_jira_tickets = { pattern = "CAVO+-[0-9]+", group = "Special" },
 	},
 }
 vim.cmd("setlocal wrap")

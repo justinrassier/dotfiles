@@ -153,5 +153,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
 				layout_config = { width = 0.8 },
 			}))
 		end, { desc = "[S]earch [PR] for review" })
+
+		vim.keymap.set({ "n", "v" }, "<Leader>fr", function()
+			local opts = vim.deepcopy(simple_theme)
+			require("telescope.builtin").grep_string(opts)
+		end)
 	end,
 }

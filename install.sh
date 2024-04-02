@@ -46,6 +46,9 @@ STOW_FOLDERS="nvim,kitty,zsh,tmux,tmuxinator"
 # git clone git@github.com:rupa/z.git git/z
  
 
+# If font smoothing is causing fat fonts, you can run the following command to disable it
+#defaults write -g AppleFontSmoothing -int 3
+
 
 pushd $DOTFILES
 for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")

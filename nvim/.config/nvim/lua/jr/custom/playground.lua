@@ -52,11 +52,6 @@ local function prime_project_map(opts)
 	})
 end
 
-local bare_prompt = ""
-function do_thing()
-	print("hello")
-end
-
 local function create_popup_for_response(completion)
 	-- creat a new buffer
 	local bufnr = vim.api.nvim_create_buf(false, true)
@@ -89,70 +84,92 @@ local function create_popup_for_response(completion)
 end
 
 vim.api.nvim_create_user_command("RunThing", function(opts)
-	local line_number = vim.fn.line(".")
-	local file_name = vim.fn.expand("%:p")
+	local file_type = vim.bo.filetype
+	local text = vim.fn.getline(vim.fn.getpos("'<")[2], vim.fn.getpos("'>")[2])
+	local full_text = table.concat(text, "\n")
+	-- write the file to /tmp/freeze
+	local file = io.open("/tmp/freeze", "w")
+	if file == nil then
+		print("could not open file")
+		return
+	end
+	file:write(full_text)
+	file:close()
 
-	local blame_commit = vim.fn.system(
-		"git blame --porcelain -L "
-			.. line_number
-			.. ","
-			.. line_number
-			.. " "
-			.. file_name
-			.. "| awk '{print $1; exit}'"
-	)
-	blame_commit = string.gsub(blame_commit, "%s+", "")
-	--
-	local jira_ticket = vim.fn.system("git log --format=%B -n 1 " .. blame_commit)
+	-- call the freeze command
+	vim.fn.system("freeze /tmp/freeze -l" .. file_type .. " -o /tmp/freeze.png")
 
-	jira_ticket = jira_ticket:match("CAVO%-[0-9]+")
-
-	print(jira_ticket)
-	-- return blame_line:match("CAVO%-[0-9]+")
-	-- local OPENAI_API_KEY = vim.fn.getenv("OPENAI_API_KEY")
-	--
-	-- -- get text from selected range
-	-- local text = vim.fn.getline(vim.fn.getpos("'<")[2], vim.fn.getpos("'>")[2])
-	-- local file_type = vim.bo.filetype
-	--
-	-- local messages = {
-	-- 	{
-	-- 		role = "system",
-	-- 		content = "You are a helpful assistant that knows a lot about programming",
-	-- 	},
-	-- 	{
-	-- 		role = "user",
-	-- 		content = "explain the following code to me \n" .. "```" .. file_type .. "\n" .. text[1] .. "```",
-	-- 	},
-	-- }
-	-- local body = {
-	-- 	model = "gpt-3.5-turbo",
-	-- 	messages = messages,
-	-- 	temperature = 0.7,
-	-- }
-	-- --
-	-- --json encode messages
-	-- -- print(vim.fn.json_encode(body))
-	--
-	-- local response = curl.post("https://api.openai.com/v1/chat/completions", {
-	-- 	headers = {
-	-- 		["Authorization"] = "Bearer " .. OPENAI_API_KEY,
-	-- 		["Content-Type"] = "application/json",
-	-- 	},
-	-- 	body = vim.fn.json_encode(body),
-	-- })
-	--
-	-- -- local completion = "hello world"
-	-- -- get the body
-	-- local response_body = vim.fn.json_decode(response.body)
-	-- local completion = response_body.choices[1].message.content
-	-- --
-	-- -- local completion = "foo"
-	-- create_popup_for_response(completion)
+	-- open the file in a new buffer
+	vim.fn.system("open /tmp/freeze.png")
 end, {
 
 	range = true,
 })
+
+---------------------- Open AI thing
+
+-- local line_number = vim.fn.line(".")
+-- local file_name = vim.fn.expand("%:p")
+--
+-- local blame_commit = vim.fn.system(
+-- 	"git blame --porcelain -L "
+-- 		.. line_number
+-- 		.. ","
+-- 		.. line_number
+-- 		.. " "
+-- 		.. file_name
+-- 		.. "| awk '{print $1; exit}'"
+-- )
+-- blame_commit = string.gsub(blame_commit, "%s+", "")
+-- --
+-- local jira_ticket = vim.fn.system("git log --format=%B -n 1 " .. blame_commit)
+--
+-- jira_ticket = jira_ticket:match("CAVO%-[0-9]+")
+--
+-- print(jira_ticket)
+-- return blame_line:match("CAVO%-[0-9]+")
+-- local OPENAI_API_KEY = vim.fn.getenv("OPENAI_API_KEY")
+--
+-- -- get text from selected range
+-- local text = vim.fn.getline(vim.fn.getpos("'<")[2], vim.fn.getpos("'>")[2])
+-- local file_type = vim.bo.filetype
+--
+-- local messages = {
+-- 	{
+-- 		role = "system",
+-- 		content = "You are a helpful assistant that knows a lot about programming",
+-- 	},
+-- 	{
+-- 		role = "user",
+-- 		content = "explain the following code to me \n" .. "```" .. file_type .. "\n" .. text[1] .. "```",
+-- 	},
+-- }
+-- local body = {
+-- 	model = "gpt-3.5-turbo",
+-- 	messages = messages,
+-- 	temperature = 0.7,
+-- }
+-- --
+-- --json encode messages
+-- -- print(vim.fn.json_encode(body))
+--
+-- local response = curl.post("https://api.openai.com/v1/chat/completions", {
+-- 	headers = {
+-- 		["Authorization"] = "Bearer " .. OPENAI_API_KEY,
+-- 		["Content-Type"] = "application/json",
+-- 	},
+-- 	body = vim.fn.json_encode(body),
+-- })
+--
+-- -- local completion = "hello world"
+-- -- get the body
+-- local response_body = vim.fn.json_decode(response.body)
+-- local completion = response_body.choices[1].message.content
+-- --
+-- -- local completion = "foo"
+-- create_popup_for_response(completion)
+
+-----------------
 
 -- vim.api.nvim_create_user_command("RunThing", function()
 -- 	-- Specify the directory for the LSP client

@@ -91,7 +91,8 @@ vim.keymap.set("n", "<leader>cn", ":cn<CR>")
 vim.keymap.set("n", "<leader>cp", ":cp<CR>")
 vim.keymap.set("n", "<leader>co", ":copen<CR>")
 vim.keymap.set("n", "<leader>cl", ":cclose<CR>")
-vim.keymap.set("n", "<leader>cl", ":cclose<CR>")
+-- close location list as well with the same keymap
+vim.keymap.set("n", "<leader>cl", ":lcl<CR>")
 
 -- buffer navigation
 vim.keymap.set("n", "<leader>bn", ":bnext<cr>")

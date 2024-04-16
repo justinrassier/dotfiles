@@ -5,6 +5,7 @@ local nx = require("jr.custom.nx")
 local utils = require("jr.utils")
 local jira = require("jr.custom.jira")
 local time_tracking = require("jr.custom.time-tracking")
+local text_utils = require("jr.utils.text-utils")
 
 local M = {}
 
@@ -160,5 +161,50 @@ vim.api.nvim_create_user_command("JRStartCheckingPRs", function(opts)
 		end
 	end)
 end, {})
+
+------------------- Screen Shot ---------------
+
+vim.api.nvim_create_user_command("JRFreeze", function()
+	local file_type = vim.bo.filetype
+	local full_text = text_utils.get_selected_text()
+
+	-- write the file to /tmp/freeze
+	local file = io.open("/tmp/freeze", "w")
+	if file == nil then
+		print("could not open file")
+		return
+	end
+	file:write(full_text)
+	file:close()
+
+	-- call the freeze command
+	vim.fn.system("freeze /tmp/freeze -l" .. file_type .. " -o /tmp/freeze.png")
+
+	--  use apple script to copy the image to the clipboard
+	vim.fn.system("osascript -e 'set the clipboard to (read (POSIX file \"/tmp/freeze.png\") as TIFF picture)'")
+
+	vim.notify("Image copied to clipboard", vim.log.levels.INFO)
+end, {
+	range = true,
+})
+
+---------- Formatting ----------------
+vim.api.nvim_create_user_command("FormatDisable", function(args)
+	if args.bang then
+		-- FormatDisable! will disable formatting just for this buffer
+		vim.b.disable_autoformat = true
+	else
+		vim.g.disable_autoformat = true
+	end
+end, {
+	desc = "Disable autoformat-on-save",
+	bang = true,
+})
+vim.api.nvim_create_user_command("FormatEnable", function()
+	vim.b.disable_autoformat = false
+	vim.g.disable_autoformat = false
+end, {
+	desc = "Re-enable autoformat-on-save",
+})
 
 return M

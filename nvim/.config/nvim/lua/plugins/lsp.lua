@@ -21,6 +21,7 @@ return { -- LSP Configuration & Plugins
 		-- Useful status updates for LSP.
 		-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 		{ "j-hui/fidget.nvim", opts = {} },
+		{ "ray-x/lsp_signature.nvim", opts = {} },
 	},
 	config = function()
 		-- Brief Aside: **What is LSP?**

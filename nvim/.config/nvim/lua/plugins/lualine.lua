@@ -182,6 +182,12 @@ return {
 
 		ins_right({
 			"branch",
+			fmt = function(branch)
+				if string.len(branch) > 20 then
+					return branch:sub(1, 20) .. "..."
+				end
+				return branch
+			end,
 			icon = "",
 			color = { fg = colors.violet, gui = "bold" },
 		})

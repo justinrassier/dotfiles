@@ -184,6 +184,7 @@ return { -- LSP Configuration & Plugins
 				capabilities = capabilities,
 				root_dir = util.root_pattern("package-lock.json"),
 			},
+			-- gleam = {},
 
 			-- local default_node_modules = get_node_modules(vim.fn.getcwd())
 		}
@@ -216,5 +217,7 @@ return { -- LSP Configuration & Plugins
 				end,
 			},
 		})
+
+		require("lspconfig").gleam.setup({})
 	end,
 }

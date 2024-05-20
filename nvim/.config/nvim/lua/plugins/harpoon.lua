@@ -8,7 +8,7 @@ return {
 		harpoon:setup()
 
 		vim.keymap.set("n", "<leader>mf", function()
-			harpoon:list():append()
+			harpoon:list():add()
 		end, {
 			desc = "[M]ark a [F]ile in Harpoon",
 		})

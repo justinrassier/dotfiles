@@ -11,6 +11,7 @@ return {
 			return { timeout_ms = 2000, lsp_fallback = true }
 		end,
 		formatters_by_ft = {
+			sql = { "sql_formatter" },
 			lua = { "stylua" },
 			-- Conform can also run multiple formatters sequentially
 			-- python = { "isort", "black" },

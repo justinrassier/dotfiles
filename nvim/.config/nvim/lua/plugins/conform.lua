@@ -21,6 +21,8 @@ return {
 			-- is found.
 			javascript = { { "prettierd", "prettier" } },
 			typescript = { { "prettierd", "prettier" } },
+			css = { "prettierd", "prettier" },
+			scss = { "prettierd", "prettier" },
 			html = { { "prettierd", "prettier" } },
 			json = { { "prettierd", "prettier" } },
 			markdown = { "prettierd" },

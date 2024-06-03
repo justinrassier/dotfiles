@@ -207,4 +207,10 @@ end, {
 	desc = "Re-enable autoformat-on-save",
 })
 
+vim.api.nvim_create_user_command("JRInlayHints", function()
+	vim.lsp.inlay_hint.enable()
+end, {
+	desc = "Enable Inlay Hints",
+})
+
 return M

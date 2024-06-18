@@ -18,7 +18,7 @@ function M.log_time_for_issue(jira_issue, time_in_hours)
 	local res = curl.request({
 		url = "https://adventhp.atlassian.net/rest/api/latest/issue/" .. jira_issue .. "/worklog",
 		method = "post",
-		auth = "jrassier@adventhp.com:" .. API_KEY,
+		auth = "jrassier@trendhealthpartners.com:" .. API_KEY,
 		headers = {
 			content_type = "application/json",
 		},
@@ -36,9 +36,9 @@ function M.get_my_jira_tickets()
 	local API_KEY = get_api_key()
 
 	local res = curl.request({
-		url = "https://adventhp.atlassian.net/rest/api/latest/search?jql=assignee='jrassier@adventhp.com'%20AND%20status%20in%20(Backlog,'In%20Progress','In%20Review')&fields=summary,status",
+		url = "https://adventhp.atlassian.net/rest/api/latest/search?jql=assignee='jrassier@trendhealthpartners.com'%20AND%20status%20in%20(Backlog,'In%20Progress','In%20Review')&fields=summary,status",
 		method = "get",
-		auth = "jrassier@adventhp.com:" .. API_KEY,
+		auth = "jrassier@trendhealthpartners.com:" .. API_KEY,
 		accept = "application/json",
 	}).body
 

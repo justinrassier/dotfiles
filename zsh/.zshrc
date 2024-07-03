@@ -1,7 +1,7 @@
 source ~/.zshrc.env
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/jrassier/.oh-my-zsh"
+export ZSH="/Users/justinrassier/.oh-my-zsh"
 export LDFLAGS=-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
 
 # alias vim="nvim"
@@ -18,16 +18,7 @@ export EDITOR='nvim'
 # export PYTHON=python2
 
 
-alias gpr="gh pr view -w"
 
-alias gc="git add -A && git commit -m"
-alias gco="git checkout"
-alias gcb="git checkout -b"
-alias gca="git add -A && git commit --amend"
-alias gpf="git push --force"
-alias gl="git pull"
-alias gp="git push"
-alias glb="git branch --sort=-committerdate | head -n 20"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -97,8 +88,18 @@ DEFAULT_USER=`whoami`
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
+plugins=( git z )
 # custom git aliases
-. ~/git/z/z.sh
+alias ghpr="gh pr view -w"
+alias gc="git add -A && git commit -m"
+alias gco="git checkout"
+alias gcb="git checkout -b"
+alias gca="git add -A && git commit --amend"
+alias gpf="git push --force"
+alias gl="git pull"
+alias gp="git push"
+alias glb="git branch --sort=-committerdate | head -n 20"
+alias lg="LazyGit"
 
 
 source $ZSH/oh-my-zsh.sh

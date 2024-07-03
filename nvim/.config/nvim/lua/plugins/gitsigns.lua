@@ -57,9 +57,9 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
 				delay = 1000,
 				ignore_whitespace = false,
 			},
-			current_line_blame_formatter_opts = {
-				relative_time = false,
-			},
+			-- current_line_blame_formatter_opts = {
+			-- 	relative_time = false,
+			-- },
 			sign_priority = 6,
 			update_debounce = 100,
 			status_formatter = nil, -- Use default
@@ -72,9 +72,9 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
 				row = 0,
 				col = 1,
 			},
-			yadm = {
-				enable = false,
-			},
+			-- yadm = {
+			-- 	enable = false,
+			-- },
 		})
 
 		vim.keymap.set("n", "<leader>gl", ":Gitsigns toggle_current_line_blame<cr>")

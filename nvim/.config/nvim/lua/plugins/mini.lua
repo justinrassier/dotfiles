@@ -38,29 +38,8 @@ return { -- Collection of various small independent plugins/modules
 			},
 		})
 
-		-- Simple and easy statusline.
-		--  You could remove this setup call if you don't like it,
-		--  and try some other statusline plugin
-		-- local statusline = require("mini.statusline")
-		-- statusline.setup()
-		--
-		-- -- You can configure sections in the statusline by overriding their
-		-- -- default behavior. For example, here we set the section for
-		-- -- cursor location to LINE:COLUMN
-		-- ---@diagnostic disable-next-line: duplicate-set-field
-		-- statusline.section_location = function()
-		-- 	local count = commands.pr_count
-		-- 	if count == nil then
-		-- 		return "%2l:%-2v"
-		-- 	end
-		-- 	return "" .. count
-		-- end
-		-- ---@diagnostic disable-next-line: duplicate-set-field
-		-- statusline.section_filename = function()
-		-- 	return "FOO"
-		-- end
+		require("mini.files").setup()
 
-		-- ... and there is more!
-		--  Check out: https://github.com/echasnovski/mini.nvim
+		vim.keymap.set("n", "<leader>mn", "<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>")
 	end,
 }

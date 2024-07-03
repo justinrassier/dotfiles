@@ -1,6 +1,6 @@
 local path = require("plenary.path")
 local Job = require("plenary.job")
-local nvim_tree_api = require("nvim-tree.api")
+-- local nvim_tree_api = require("nvim-tree.api")
 local get_project_name_from_path = require("jr.custom.nx.utils").get_project_name_from_path
 
 local M = {}

@@ -12,6 +12,7 @@ require("lazy").setup({
 	"tpope/vim-sleuth",
 	"github/copilot.vim",
 	{ dir = "~/git/jesting.nvim" },
+	-- { "justinrassier/nvim-treesitter-angular", version = "fixes" },
 	{ import = "plugins" },
 })
 
@@ -19,4 +20,4 @@ require("jr.custom.commands")
 require("jr.autocmds")
 require("jr.mappings")
 vim.cmd("JRStartCheckingPRs")
-vim.cmd("JRTimeTrackingStart")
+-- vim.cmd("JRTimeTrackingStart")

@@ -15,7 +15,7 @@ local popup = require("plenary.popup")
 local sorters = require("telescope.sorters")
 local table_length = require("jr.utils").table_length
 local nvim_lsp = require("lspconfig")
-local nvim_tree_api = require("nvim-tree.api")
+-- local nvim_tree_api = require("nvim-tree.api")
 local jira = require("jr.custom.jira")
 local curl = require("plenary.curl")
 

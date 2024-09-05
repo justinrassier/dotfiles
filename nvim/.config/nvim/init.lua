@@ -11,6 +11,7 @@ require("lazy").setup({
 	"nvim-lua/plenary.nvim",
 	"tpope/vim-sleuth",
 	"github/copilot.vim",
+	"mbbill/undotree",
 	{ dir = "~/git/jesting.nvim" },
 	-- { "justinrassier/nvim-treesitter-angular", version = "fixes" },
 	{ import = "plugins" },

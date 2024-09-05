@@ -12,10 +12,7 @@ alias work="tmuxinator start work"
 export NODE_ENV="development"
 export EDITOR='nvim'
 
-# add gopath
-# export PATH=$PATH:$(go env GOPATH)/bin
-# alias python=python2
-# export PYTHON=python2
+export PATH=$PATH:~/bin
 
 
 
@@ -141,3 +138,5 @@ export NVM_DIR="$HOME/.nvm"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh

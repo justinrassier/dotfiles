@@ -184,6 +184,20 @@ return { -- LSP Configuration & Plugins
 				capabilities = capabilities,
 				root_dir = util.root_pattern("package-lock.json"),
 			},
+			tailwindcss = {
+				capabilities = capabilities,
+				root_dir = util.root_pattern("tailwind.config.js"),
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"gleam",
+				},
+			},
 			-- gleam = {},
 
 			-- local default_node_modules = get_node_modules(vim.fn.getcwd())

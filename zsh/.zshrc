@@ -4,14 +4,13 @@ source ~/.zshrc.env
 export ZSH="/Users/justinrassier/.oh-my-zsh"
 export LDFLAGS=-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
 
-# alias vim="nvim"
 alias work="tmuxinator start work"
 
 
 # Custom env vars
 export NODE_ENV="development"
 export EDITOR='nvim'
-
+# add in local bin to the path for downloaded binaries
 export PATH=$PATH:~/bin
 
 
@@ -131,12 +130,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-
-# bun completions
-[ -s "/Users/justinrassier/.bun/_bun" ] && source "/Users/justinrassier/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh

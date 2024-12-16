@@ -38,8 +38,8 @@ return { -- Collection of various small independent plugins/modules
 			},
 		})
 
-		require("mini.files").setup()
-
-		vim.keymap.set("n", "<leader>mn", "<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>")
+		-- require("mini.files").setup()
+		--
+		-- vim.keymap.set("n", "<leader>mn", "<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>")
 	end,
 }

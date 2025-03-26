@@ -83,29 +83,75 @@ local function create_popup_for_response(completion)
 	vim.opt_local.wrap = true
 end
 
+local function async_sleep(milliseconds, callback)
+	vim.defer_fn(callback, milliseconds)
+end
 vim.api.nvim_create_user_command("RunThing", function(opts)
-	local file_type = vim.bo.filetype
-	local text = vim.fn.getline(vim.fn.getpos("'<")[2], vim.fn.getpos("'>")[2])
-	local full_text = table.concat(text, "\n")
-	-- write the file to /tmp/freeze
-	local file = io.open("/tmp/freeze", "w")
-	if file == nil then
-		print("could not open file")
-		return
-	end
-	file:write(full_text)
-	file:close()
+	local initial_modified = get_last_modified("/tmp/results.json")
+	local timer = vim.loop.new_timer()
+	timer:start(
+		0,
+		500,
+		vim.schedule_wrap(function()
+			local modified = get_last_modified("/tmp/results.json")
+			if modified ~= initial_modified then
+				print("FILE MODIFIED!!!")
+				initial_modified = modified
+			else
+				print("file has not been modified")
+			end
+		end)
+	)
 
-	-- call the freeze command
-	vim.fn.system("freeze /tmp/freeze -l" .. file_type .. " -o /tmp/freeze.png")
+	-- defer for 3 seconds then stop the timer
 
-	-- open the file in a new buffer
-	vim.fn.system("open /tmp/freeze.png")
+	async_sleep(30000, function()
+		timer:stop()
+	end)
+
+	-- for i = 1, 100 do
+	-- 	print(i)
+	-- 	async_sleep(500, function()
+	-- 		local modified = get_last_modified("/tmp/results.json")
+	-- 		if modified ~= initial_modified then
+	-- 			print("FILE MODIFIED!!!")
+	-- 			initial_modified = modified
+	-- 		else
+	-- 			print("file has not been modified")
+	-- 		end
+
+	-- end
+
+	-- local file_type = vim.bo.filetype
+	-- local text = vim.fn.getline(vim.fn.getpos("")[2], vim.fn.getpos("'>")[2])
+	-- local full_text = table.concat(text, "\n")
+	-- -- write the file to /tmp/freeze
+	-- local file = io.open("/tmp/freeze", "w")
+	-- if file == nil then
+	-- 	print("could not open file")
+	-- 	return
+	-- end
+	-- file:write(full_text)
+	-- file:close()
+	--
+	-- -- call the freeze command
+	-- vim.fn.system("freeze /tmp/freeze -l" .. file_type .. " -o /tmp/freeze.png")
+	--
+	-- -- open the file in a new buffer
+	-- vim.fn.system("open /tmp/freeze.png")
 end, {
 
 	range = true,
 })
 
+function get_last_modified(file_path)
+	local attr = io.popen('stat -f "%m" "' .. file_path .. '"'):read("*a")
+	if attr then
+		return os.date("%Y-%m-%d %H:%M:%S", attr)
+	else
+		return nil, "File not found or error retrieving metadata"
+	end
+end
 ---------------------- Open AI thing
 
 -- local line_number = vim.fn.line(".")

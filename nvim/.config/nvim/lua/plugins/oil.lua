@@ -3,8 +3,9 @@ return {
 	opts = {
 		keymaps = {
 			["<C-r>"] = "actions.refresh",
-			["<C-v>"] = "actions.select_vsplit",
+			["<C-v>"] = false, --"actions.select_vsplit",
 			["<C-l>"] = false,
+			["<C-p>"] = false,
 			["<C-h>"] = false,
 			["<C-s>"] = false,
 		},
@@ -22,6 +23,6 @@ return {
 		end
 
 		vim.cmd.cd(dir)
-		vim.keymap.set("n", "<leader>o", "<cmd>Oil<cr>")
+		vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 	end,
 }

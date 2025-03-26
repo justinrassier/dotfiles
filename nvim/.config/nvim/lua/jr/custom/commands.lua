@@ -166,6 +166,7 @@ end, {})
 
 vim.api.nvim_create_user_command("JRFreeze", function()
 	local file_type = vim.bo.filetype
+	file_type = vim.fn.input({ default = file_type })
 	local full_text = text_utils.get_selected_text()
 
 	-- write the file to /tmp/freeze

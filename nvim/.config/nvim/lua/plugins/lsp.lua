@@ -182,7 +182,7 @@ return { -- LSP Configuration & Plugins
 			},
 			eslint = {
 				capabilities = capabilities,
-				root_dir = util.root_pattern("package-lock.json"),
+				root_dir = util.root_pattern("package.json"),
 			},
 			tailwindcss = {
 				capabilities = capabilities,

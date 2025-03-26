@@ -1,1 +1,1 @@
-return { "numToStr/Comment.nvim", opts = {} }
+return { "folke/ts-comments.nvim", opts = {} }

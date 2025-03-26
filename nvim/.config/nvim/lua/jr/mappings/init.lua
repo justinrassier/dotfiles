@@ -6,11 +6,20 @@ local jira = require("jr.custom.jira")
 local vim = vim
 
 -- Custom jump around Angular component parts
-vim.keymap.set("n", "<leader>jm", "<cmd>lua require('jr.custom.angular').jump_to_nearest_module()<cr>")
 vim.keymap.set("n", "<leader>jc", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('ts')<cr>")
 vim.keymap.set("n", "<leader>jt", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('html')<cr>")
-vim.keymap.set("n", "<leader>js", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('scss')<cr>")
+vim.keymap.set(
+	"n",
+	"<leader>js",
+	"<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('styles.ts')<cr>"
+)
+vim.keymap.set(
+	"n",
+	"<leader>jy",
+	"<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('stories.ts')<cr>"
+)
 vim.keymap.set("n", "<leader>jj", "<cmd>lua require('jr.custom.angular').toggle_between_spec_and_file()<cr>")
+vim.keymap.set("n", "<leader>jd", "<cmd>lua require('jr.custom.angular').jump_to_mdx_file()<cr>")
 
 -- Jump to ngrx parts
 vim.keymap.set("n", "<leader>jxr", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('reducer')<cr>")
@@ -147,3 +156,5 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 vim.keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>cc", "<cmd>lua require('color-converter').to_rgb()<cr>")

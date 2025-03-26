@@ -3,6 +3,7 @@
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.g.copilot_proxy_strict_ssl = false
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`

@@ -71,14 +71,13 @@ return { -- Autoformat
 			html = { "prettier" },
 			-- You can use a sub-list to tell conform to run *until* a formatter
 			-- is found.
-			javascript = { "prettier" },
-			typescript = { "prettier" },
-			typescriptreact = { "prettier" },
-			css = { "prettier" },
-			-- scss = { "prettierd", "prettier" },
-			json = { "prettier" },
-			markdown = { "prettier" },
-			mdx = { "prettier" },
+			javascript = { "prettierd", "prettier", stop_after_first = true },
+			typescript = { "prettierd", "prettier", stop_after_first = true },
+			css = { "prettierd", "prettier", stop_after_first = true },
+			scss = { "prettierd", "prettier", stop_after_first = true },
+			html = { "prettierd", "prettier", stop_after_first = true },
+			json = { "prettierd", "prettier", stop_after_first = true },
+			markdown = { "prettierd" },
 		},
 	},
 }

@@ -10,6 +10,16 @@
   "features": {
     "edit_prediction_provider": "zed"
   },
+  // "lsp": {
+  //   "eslint": {
+  //     "settings": {
+  //       "nodePath": "/Users/c794666/git/ngm-blocks/node_modules/.bin",
+  //       "workingDirectory": {
+  //         "mode": "auto"
+  //       }
+  //     }
+  //   }
+  // },
   "ssh_connections": [
     {
       "host": "192.168.4.40",
@@ -30,16 +40,16 @@
       "show_edit_predictions": true
     },
     "Gleam": {
-      "show_edit_predictions": false
+      "show_edit_predictions": true
     }
   },
   "agent": {
+    "default_profile": "write",
     "always_allow_tool_actions": true,
     "default_model": {
       "provider": "anthropic",
-      "model": "claude-3-7-sonnet-latest"
+      "model": "claude-sonnet-4-latest"
     },
-    "version": "2"
   },
   "vim_mode": true,
   "ui_font_size": 16,
@@ -51,7 +61,15 @@
     "dark": "One Dark"
   },
   "context_servers": {
+    "local-figma": {
+      "source": "custom",
+      "command": "http://localhost:3845/sse",
+      "args": [],
+      "env": null,
+      "settings": {}
+    },
     "postgres-context-server": {
+      "source": "extension",
       "settings": {
         "database_url": "postgresql://postgres:postgres@192.168.4.40:5432/nxtime"
       }

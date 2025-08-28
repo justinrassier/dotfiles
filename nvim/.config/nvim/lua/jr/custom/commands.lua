@@ -138,7 +138,7 @@ end, {})
 vim.api.nvim_create_user_command("JRStartCheckingPRs", function(opts)
 	gh.get_repo_name_async(function(name)
 		-- only do this for my work repo
-		if name == "cavo" then
+		if name == "ngm-blocks" then
 			local interval = 1000 * 60 * 10 -- 10 minutes
 			local timer = vim.loop.new_timer()
 			timer:start(

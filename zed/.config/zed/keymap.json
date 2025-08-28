@@ -30,7 +30,9 @@
       "] d": "editor::GoToDiagnostic",
       "[ d": "editor::GoToPreviousDiagnostic",
       "gd": "editor::GoToImplementation",
-      "shift-k": "editor::Hover"
+      "shift-k": "editor::Hover",
+      "h r": "git::Restore",
+      "h R": "git::RestoreFile"
     }
   }
 ]

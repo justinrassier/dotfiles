@@ -104,7 +104,7 @@ function M.list_prs_for_review_async(callback)
 			"pr",
 			"list",
 			"--search",
-			"is:open -reviewed-by:@me -is:draft",
+			"is:open user-review-requested:@me -is:draft",
 			"--json",
 			"number,title,author",
 		},
@@ -115,11 +115,7 @@ function M.list_prs_for_review_async(callback)
 
 				local final_results = {}
 				for _, pr in ipairs(results) do
-					if
-						pr.author.login == "mgerb"
-						or pr.author.login == "nmoll"
-						or pr.author.login == "cknightdevelopment"
-					then
+					if pr.author.login == "Tyler-Perry_cvsh" then
 						table.insert(final_results, pr)
 					end
 				end

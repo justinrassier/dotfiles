@@ -41,11 +41,12 @@ function M.jump_to_angular_component_part(extension)
 	-- extract just the filename
 	local filename = string.match(relative_path, "([^/]+)$")
 
-	-- find the name before .component
-	local component_name = string.match(filename, "(.-)%.component")
+	-- find the name before .component or .page
+	local component_name = string.match(filename, "(.-)%.component") or string.match(filename, "(.-)%.page")
+	local file_type = string.match(filename, "%.component") and "component" or "page"
 
 	-- assemble the destination based on the extension
-	local full_destination = buf_path:parent() .. "/" .. component_name .. ".component" .. "." .. extension
+	local full_destination = buf_path:parent() .. "/" .. component_name .. "." .. file_type .. "." .. extension
 
 	local exists = vim.fn.filereadable(full_destination)
 	-- don't open a buffer if the file doesn't exist since you may end up creating a file without knowing it

@@ -1,5 +1,5 @@
 local nx = require("jr.custom.nx")
-local tw = require("jr.custom.tailwind")
+-- local tw = require("jr.custom.tailwind")
 local gh = require("jr.custom.gh")
 local jira = require("jr.custom.jira")
 
@@ -63,10 +63,10 @@ vim.keymap.set("n", "<leader><leader>gy", function()
 	nx.run_nx_generator("story")
 end, { desc = "Nx: Generate Story" })
 
--- Tailwind
-vim.keymap.set("n", "<leader><leader>tw", function()
-	tw.add_or_insert_class_attribute()
-end)
+-- -- Tailwind
+-- vim.keymap.set("n", "<leader><leader>tw", function()
+-- 	tw.add_or_insert_class_attribute()
+-- end)
 
 -- open github PR in  browser
 vim.keymap.set("n", "<leader>gpr", function()

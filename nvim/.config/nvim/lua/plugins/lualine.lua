@@ -3,7 +3,7 @@ return {
 	config = function()
 		local lualine = require("lualine")
 
-		local jesting = require("jesting")
+		-- local jesting = require("jesting")
 		local commands = require("jr.custom.commands")
 
 		local function pr_count()
@@ -204,11 +204,11 @@ return {
 			cond = conditions.hide_in_width,
 		})
 
-		ins_right({
-			function()
-				return jesting.lualine_status()
-			end,
-		})
+		-- ins_right({
+		-- 	function()
+		-- 		return jesting.lualine_status()
+		-- 	end,
+		-- })
 
 		ins_right({
 			function()

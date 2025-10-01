@@ -1,6 +1,6 @@
 DOTFILES=$HOME/dotfiles
 #!/usr/bin/env zsh
-STOW_FOLDERS="nvim,kitty,zsh,tmux,tmuxinator,zed"
+STOW_FOLDERS="nvim,kitty,zsh,tmux,tmuxinator,zed,hypr"
 
 
 # Prerequisites 

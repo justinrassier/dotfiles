@@ -45,6 +45,11 @@ return { -- Autoformat
 	},
 	opts = {
 		notify_on_error = false,
+		formatters = {
+			-- rubocop = {
+			-- 	args = { "--autocorrect", "--stdin", "$FILENAME", "--stderr" },
+			-- },
+		},
 		format_on_save = function(bufnr)
 			-- Disable "format_on_save lsp_fallback" for languages that don't
 			-- have a well standardized coding style. You can add additional
@@ -57,7 +62,7 @@ return { -- Autoformat
 				lsp_format_opt = "fallback"
 			end
 			return {
-				timeout_ms = 1000,
+				timeout_ms = 3000,
 				lsp_format = lsp_format_opt,
 			}
 		end,
@@ -68,16 +73,18 @@ return { -- Autoformat
 			-- python = { "isort", "black" },
 			--
 			rust = { "rust-analyzer" },
-			html = { "prettier" },
 			-- You can use a sub-list to tell conform to run *until* a formatter
 			-- is found.
 			javascript = { "prettierd", "prettier", stop_after_first = true },
 			typescript = { "prettierd", "prettier", stop_after_first = true },
 			css = { "prettierd", "prettier", stop_after_first = true },
 			scss = { "prettierd", "prettier", stop_after_first = true },
-			html = { "prettierd", "prettier", stop_after_first = true },
+			-- html = { "prettierd", "prettier", stop_after_first = true },
 			json = { "prettierd", "prettier", stop_after_first = true },
 			markdown = { "prettierd" },
+			eruby = { "erb_format" },
+			ruby = { "rufo" },
+			blade = { "prettierd" },
 		},
 	},
 }

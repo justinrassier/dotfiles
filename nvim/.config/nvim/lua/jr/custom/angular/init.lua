@@ -58,29 +58,6 @@ function M.jump_to_angular_component_part(extension)
 	load_file_into_buffer(full_destination)
 end
 
-function M.jump_to_ngrx_parts(ngrx_part)
-	local current_buffer = vim.api.nvim_buf_get_name(0)
-	local project_name = nx_utils.get_project_name_from_path(current_buffer)
-
-	if project_name == nil then
-		print("Could not find project name")
-		return
-	end
-
-	local is_data_access = string.find(project_name, "data%-access")
-	local found_ngrx_part
-
-	if is_data_access then
-		found_ngrx_part = find_nearest_ngrx_part(current_buffer, ngrx_part)
-	end
-	if found_ngrx_part ~= nil then
-		local full_destination = path:new(found_ngrx_part):absolute()
-		load_file_into_buffer(full_destination)
-	else
-		print("Could not find related ngrx part: " .. ngrx_part)
-	end
-end
-
 function M.toggle_between_spec_and_file()
 	local current_buffer = vim.api.nvim_buf_get_name(0)
 	local buf_path = path:new(current_buffer)

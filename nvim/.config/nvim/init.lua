@@ -12,7 +12,7 @@ require("lazy").setup({
 	"tpope/vim-sleuth",
 	"tpope/vim-rails",
 
-	"github/copilot.vim",
+	-- "github/copilot.vim",
 	"mbbill/undotree",
 	"NTBBloodbath/color-converter.nvim",
 	-- { dir = "~/git/jesting.nvim" },
@@ -23,5 +23,4 @@ require("lazy").setup({
 require("jr.custom.commands")
 require("jr.autocmds")
 require("jr.mappings")
-vim.cmd("JRStartCheckingPRs")
--- vim.cmd("JRTimeTrackingStart")
+-- vim.cmd("JRStartCheckingPRs")

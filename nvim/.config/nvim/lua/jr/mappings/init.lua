@@ -1,4 +1,3 @@
-local nx = require("jr.custom.nx")
 local tw = require("jr.custom.tailwind")
 local gh = require("jr.custom.gh")
 local jira = require("jr.custom.jira")
@@ -9,80 +8,49 @@ local vim = vim
 vim.keymap.set("n", "<leader>jc", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('ts')<cr>")
 vim.keymap.set("n", "<leader>jt", "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('html')<cr>")
 vim.keymap.set(
-    "n",
-    "<leader>js",
-    "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('styles.ts')<cr>"
+	"n",
+	"<leader>js",
+	"<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('styles.ts')<cr>"
 )
 vim.keymap.set(
-    "n",
-    "<leader>jy",
-    "<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('stories.ts')<cr>"
+	"n",
+	"<leader>jy",
+	"<cmd>lua require('jr.custom.angular').jump_to_angular_component_part('stories.ts')<cr>"
 )
 vim.keymap.set("n", "<leader>jj", "<cmd>lua require('jr.custom.angular').toggle_between_spec_and_file()<cr>")
 vim.keymap.set("n", "<leader>jd", "<cmd>lua require('jr.custom.angular').jump_to_mdx_file()<cr>")
 
--- Jump to ngrx parts
-vim.keymap.set("n", "<leader>jxr", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('reducer')<cr>")
-vim.keymap.set("n", "<leader>jxe", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('effect')<cr>")
-vim.keymap.set("n", "<leader>jxa", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('action')<cr>")
-vim.keymap.set("n", "<leader>jxf", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('facade')<cr>")
-vim.keymap.set("n", "<leader>jxs", "<cmd>lua require('jr.custom.angular').jump_to_ngrx_parts('selector')<cr>")
-
 vim.keymap.set("n", "<leader><leader>x", function()
-    -- run luafile for playground
-    vim.cmd("messages clear")
-    vim.cmd("luafile ~/.config/nvim/lua/jr/custom/playground.lua")
-    vim.cmd("RunThing")
+	-- run luafile for playground
+	vim.cmd("messages clear")
+	vim.cmd("luafile ~/.config/nvim/lua/jr/custom/playground.lua")
+	vim.cmd("RunThing")
 end)
 
 vim.keymap.set("n", "<leader><leader>gc", function()
-    nx.run_nx_generator("component")
+	nx.run_nx_generator("component")
 end, { desc = "Nx: Generate Component" })
-
--- vim.keymap.set("v", "<leader><leader>gc", function()
--- 	vim.cmd("JRExtractToComponent")
--- end, { desc = "Nx: Generate Component" })
-
-vim.keymap.set("n", "<leader><leader>gt", function()
-    nx.run_nx_generator("component-store")
-end, { desc = "Nx: Generate Component Store" })
-
-vim.keymap.set("n", "<leader><leader>gs", function()
-    nx.run_nx_generator("service")
-end, { desc = "Nx: Generate Service" })
-
-vim.keymap.set("n", "<leader><leader>gp", function()
-    nx.run_nx_generator("pipe")
-end, { desc = "Nx: Generate Pipe" })
-
-vim.keymap.set("n", "<leader><leader>gd", function()
-    nx.run_nx_generator("directive")
-end, { desc = "Nx: Generate Directive" })
-
-vim.keymap.set("n", "<leader><leader>gy", function()
-    nx.run_nx_generator("story")
-end, { desc = "Nx: Generate Story" })
 
 -- -- Tailwind
 vim.keymap.set("n", "<leader><leader>tw", function()
-    tw.add_or_insert_class_attribute()
+	tw.add_or_insert_class_attribute()
 end)
 
 -- open github PR in  browser
 vim.keymap.set("n", "<leader>gpr", function()
-    gh.open_github_pr()
+	gh.open_github_pr()
 end)
 
 -- open jira ticket in browser
 vim.keymap.set("n", "<leader>gj", function()
-    local word = vim.fn.expand("<cWORD>")
-    local jira_number = string.match(word, "([A-Z]+-[0-9]+)")
-    jira.open_ticket_in_browser(jira_number)
+	local word = vim.fn.expand("<cWORD>")
+	local jira_number = string.match(word, "([A-Z]+-[0-9]+)")
+	jira.open_ticket_in_browser(jira_number)
 end)
 
 -- new scratch buffer
 vim.keymap.set("n", "<leader>ns", function()
-    require("jr.custom").new_scratch_buffer()
+	require("jr.custom").new_scratch_buffer()
 end)
 
 -- Undo breakpoints to make undo less aggressive
@@ -134,6 +102,12 @@ vim.keymap.set("n", "<leader>pj", "<cmd>%!jq<cr>")
 vim.keymap.set("n", "<c-u>", "<c-u>zz")
 vim.keymap.set("n", "<c-d>", "<c-d>zz")
 
+-- window navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+
 -- copy current buffer relative path into clipboard
 vim.keymap.set("n", "<leader><leader>cp", "<cmd>let @+ = expand('%:~:.')<CR>")
 
@@ -147,13 +121,19 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagn
 vim.keymap.set("n", "<leader>E", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+-- Terminal navigation
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Terminal Esc" })
+vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], { desc = "Terminal Left" })
+vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Terminal Down" })
+vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Terminal Up" })
+vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Terminal Right" })
+
+vim.keymap.set("n", "<leader>nt", function()
+    vim.cmd("botright split")
+    vim.cmd("resize 12")
+    vim.cmd("terminal")
+    vim.cmd("startinsert")
+end, { desc = "New terminal split" })
 
 vim.keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { noremap = true, silent = true })
 

@@ -13,6 +13,7 @@ vim.api.nvim_buf_set_keymap(0, "n", "k", "gk", { noremap = true, silent = true }
 -- -- set line length to 80
 -- print("setting textwidth")
 -- vim.cmd("setlocal textwidth=80")
+-- vim.opt_local.textwidth = 80
 
 -- turn line into a task
 vim.keymap.set("n", "<leader>mc", function()

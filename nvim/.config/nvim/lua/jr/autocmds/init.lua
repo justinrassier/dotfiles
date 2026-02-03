@@ -7,6 +7,14 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.highlight.on_yank()
 	end,
 })
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.djot",
+	group = vim.api.nvim_create_augroup("DjotAsMarkdown", { clear = true }),
+	callback = function()
+		vim.bo.filetype = "markdown"
+	end,
+})
 -- moved to the after/ftplugin/markdown.lua file
 --
 --

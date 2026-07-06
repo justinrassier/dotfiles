@@ -1,5 +1,3 @@
-local ts_utils = require("nvim-treesitter.ts_utils")
-
 -- HTML queries for 'class' attribute
 local html_attribute_query = [[
   (element
@@ -112,7 +110,7 @@ local function get_queries_for_filetype(file_type)
 end
 
 function M.add_or_insert_class_attribute()
-    local node = ts_utils.get_node_at_cursor()
+    local node = vim.treesitter.get_node()
 
     if not node then
         return
